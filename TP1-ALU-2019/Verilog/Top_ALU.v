@@ -39,13 +39,13 @@ module Top_ALU
     reg signed [NB_SW-1:0]     i_data_a;
     reg signed [NB_SW-1:0]     i_data_b;
     reg        [NB_SW-1:0]     i_operation;
-    //wire       [NB_LED-1:0]    o_leds;
+    wire       [NB_LED-1:0]    o_leds;
     
     ALU
     u_ALU(.i_data_a       (i_data_a),
           .i_data_b       (i_data_b),
           .i_operation    (i_operation),
-          .o_result       (o_led)
+          .o_result       (o_leds)
     );
     
     always @(posedge i_clk) 
@@ -63,9 +63,9 @@ module Top_ALU
             i_data_a    <= i_data_a;
             i_data_b    <= i_data_b;
             i_operation <= i_operation;
-        end   
+        end
     end
     
+    assign o_led = o_leds;
     
 endmodule
-

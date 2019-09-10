@@ -25,10 +25,10 @@ module ALU
             NB_OP   = 6
   )
 (
-  input wire        [NB_OP: 0] i_operation,
-  input wire        [NB_DATA - 1: 0] i_data_a,
-  input wire        [NB_DATA - 1: 0] i_data_b,
-  output reg signed [NB_DATA - 1: 0] o_result
+  input wire signed [NB_OP: 0]        i_operation,
+  input wire signed [NB_DATA - 1: 0]  i_data_a,
+  input wire        [NB_DATA - 1: 0]  i_data_b,
+  output reg signed [NB_DATA - 1: 0]  o_result
 );
 
 always @(*) begin
