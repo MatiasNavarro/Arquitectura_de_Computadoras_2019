@@ -24,13 +24,14 @@ module tb_ALU();
   
   //local parameters
   localparam    NB_DATA_01      = 8;
+  localparam    NB_OP           = 6;
 
   //inputs
-  reg [5:0] i_operation_01;
+  reg [NB_OP-1:0] i_operation_01;
   reg [NB_DATA_01 - 1: 0] i_data_a_01;
   reg [NB_DATA_01 - 1: 0] i_data_b_01;
   //outputs
-  reg [NB_DATA_01 - 1: 0] o_result_01;
+  wire signed [NB_DATA_01 - 1: 0] o_result_01;
   
   initial begin
     #0
