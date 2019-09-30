@@ -100,22 +100,15 @@ Para comprobar el correcto funcionamiento del módulo, se desarrollaron varios t
 	
 	\begin{figure}[H] 
 		\centering
-		\includegraphics[scale=0.6]{figure/test-suma.PNG}
+		\includegraphics[scale=0.6]{figure/test-suma.png}
 		\caption{\textit{Simulación de la operación de suma}}
 	\end{figure}
 	\item Simulación de operación AND: Se incrementa el operando A y decrementa B en el test en cada ciclo de clock para obtener diferentes resultados
 	
 	\begin{figure}[H] 
 		\centering
-		\includegraphics[scale=0.6]{figure/test-and.PNG}
+		\includegraphics[scale=0.6]{figure/test-and.png}
 		\caption{\textit{Simulación de la operación AND}}
-	\end{figure}
-	\item Simulación de operación de desplazamiento: Se desplaza a A tantas veces como indique B, en este caso se guarda la salida de x en A para simular un registro de desplazamientos
-	
-	\begin{figure}[H] 
-		\centering
-		\includegraphics[scale=0.6]{figure/test-despl.PNG}
-		\caption{\textit{Simulación de la operación de desplazamiento}}
 	\end{figure}
 
 \end{itemize}
@@ -135,19 +128,19 @@ Para evitar latches en este módulo se trabajó con una señal de clock, la cual
 
 \begin{figure}[H] 
 	\centering
-	\includegraphics[scale=0.6]{figure/rtl-top.png}
+	\includegraphics[scale=0.55]{figure/rtl-top.png}
 	\caption{\textit{Estructura RTL del módulo top obtenida de la herramienta Verilog}}
 \end{figure}
+
+\newpage
 \section{Conclusión}
 Mediante un desarrollo sencillo de una ALU, se pudo comprender el principio de funcionamiento de una FPGA. Una vez terminado el práctico, a través de la herramienta Verilog se obtuvieron las especificaciones de la utilización del la FPGA en términos de LUT y FF como se introdujo en clase 
 
 \begin{figure}[H] 
 	\centering
-	\includegraphics[scale=0.7]{figure/utilizacion.PNG}
+	\includegraphics[scale=0.7]{figure/utilizacion.png}
 	\caption{\textit{Utilización de la FPGA}}
 \end{figure}
-
-Se pude ver que la utilización de los puertos I/O es un poco grande, esto se debe a que cuando se tomaron estos parámetros en el proyecto se encontraba instanciado también un display de 7 segmentos.
 
 \end{document}
 
