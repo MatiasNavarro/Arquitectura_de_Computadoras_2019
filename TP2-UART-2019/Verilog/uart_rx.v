@@ -22,8 +22,7 @@
 module uart_rx
    #(
      parameter DBIT     =   8,      // # data bits
-               SB_TICK  =   16,      // # ticks for stop bits
-               LEN_DATA =   8
+               SB_TICK  =   16      // # ticks for stop bits
    )
    (
     input   wire                    i_clk, 
@@ -31,21 +30,21 @@ module uart_rx
     input   wire                    rx, 
     input   wire                    s_tick,
     output  reg                     rx_done_tick,
-    output  wire    [LEN_DATA-1:0]  data_out
+    output  wire    [DBIT-1:0]      data_out
    );
 
    // symbolic state declaration
    localparam [1:0]
-      idle  = 2'b00,    //Espero el bir de start
+      idle  = 2'b00,    //Espero el bit de start
       start = 2'b01,    //Inicializa los registros, solo se ejecuta un ciclo
       data  = 2'b10,    //Carga datos en el shift reg
       stop  = 2'b11;    //Paso los datos a out, espero el bit de stop
 
    // signal declaration
-   reg [1:0]            state_reg, state_next;
-   reg [3:0]            s_reg, s_next;
-   reg [2:0]            n_reg, n_next;
-   reg [LEN_DATA-1:0]   b_reg, b_next;
+   reg [1:0]        state_reg, state_next;
+   reg [3:0]        s_reg, s_next;
+   reg [2:0]        n_reg, n_next;
+   reg [DBIT-1:0]   buffer, buffer_next;
 
    // body
    // FSMD state & data registers
@@ -55,14 +54,14 @@ module uart_rx
             state_reg <= idle;
             s_reg <= 0;
             n_reg <= 0;
-            b_reg <= 0;
+            buffer <= 0;
          end
       else
          begin
             state_reg <= state_next;
             s_reg <= s_next;
             n_reg <= n_next;
-            b_reg <= b_next;
+            buffer <= buffer_next;
          end
 
    // FSMD next-state logic 
@@ -73,7 +72,7 @@ module uart_rx
       rx_done_tick = 1'b0;
       s_next = s_reg;
       n_next = n_reg;
-      b_next = b_reg;
+      buffer_next = buffer;
       case (state_reg)
          idle:
             if (~rx)
@@ -96,7 +95,7 @@ module uart_rx
                if (s_reg==15)
                   begin
                      s_next = 0;
-                     b_next = {rx, b_reg[7:1]};
+                     buffer_next = {rx, buffer[7:1]};
                      if (n_reg==(DBIT-1))
                         state_next = stop ;
                       else
@@ -116,6 +115,6 @@ module uart_rx
       endcase
    end
    // output
-   assign data_out = b_reg;
+   assign data_out = buffer;
 
 endmodule

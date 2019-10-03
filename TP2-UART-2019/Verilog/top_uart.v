@@ -46,7 +46,7 @@ module top_uart
    wire [7:0]       tx_fifo_out, rx_data_out;
 
    //body
-   mod_m_counter #(.M(DVSR), .N(DVSR_BIT)) baud_gen_unit
+   baud_rate_gen #(.M(DVSR), .N(DVSR_BIT)) u_baud_rate
       (.i_clk(i_clk), .reset(reset), .q(), .max_tick(tick));
 
    uart_rx #(.DBIT(DBIT), .SB_TICK(SB_TICK)) uart_rx_unit
