@@ -27,23 +27,29 @@ The width of the UART signal is 1/9600 equal to 104us. The width of the main clo
 How many 20ns pulses we need to cont to get to 104us/16??? Well (104000ns/16)/ 20ns = 325 pulses (
 That's why in the top we set baud rate to 325)
 */
-module baud_rate_gen(
-    input   wire            i_clk,
-    input   wire            reset,
-    input   wire    [15:0]  i_baudrate,
-    output  wire            tick    
+module baud_rate_gen
+    #(
+    parameter   BAUDRATE_DIVISOR = 326,     // 50.000.000 / (16 * 9600)
+                BAUDRATE_DIVISOR_BITS = 10
+    )
+    (
+    input   wire            i_clk,      // Clock input
+    input   wire            reset,      // Reset input
+    // input   wire    [15:0]  i_baudrate, // Value to divide the generator by
+    output  wire            o_tick      // Each "BaudRate" pulses we create a tick pulse
     );
 
-input           Clk                 ; // Clock input
-input           Rst_n               ; // Reset input
-input [15:0]    BaudRate            ; // Value to divide the generator by
-output          Tick                ; // Each "BaudRate" pulses we create a tick pulse
-reg [15:0]      baudRateReg         ; // Register used to count
+reg [BAUDRATE_DIVISOR_BITS:0] baudRateReg; // Register used to count
 
 
-always @(posedge Clk or negedge Rst_n)
-    if (!Rst_n) baudRateReg <= 16'b1;
-    else if (Tick) baudRateReg <= 16'b1;
-         else baudRateReg <= baudRateReg + 1'b1;
-assign Tick = (baudRateReg == BaudRate);
+always @(posedge i_clk or negedge reset) begin
+    if (!reset) begin
+        baudRateReg <= {BAUDRATE_DIVISOR_BITS{1'b0}};
+    end else if (o_tick) begin
+        baudRateReg <= {BAUDRATE_DIVISOR_BITS{1'b0}};
+    end else begin
+        baudRateReg <= baudRateReg + 1;
+    end
+end
+assign o_tick = (baudRateReg == BAUDRATE_DIVISOR);
 endmodule

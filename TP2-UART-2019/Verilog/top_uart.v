@@ -23,14 +23,14 @@
 module top_uart
    #( // Default setting:
       // 19,200 baud, 8 data bits, 1 stop bit, 2^2 FIFO
-      parameter DBIT = 8,     // # data bits
-                SB_TICK = 16, // # ticks for stop bits, 16/24/32
-                              // for 1/1.5/2 stop bits
-                DVSR = 163,   // baud rate divisor
-                              // DVSR = 50M/(16*baud rate)
-                DVSR_BIT = 8, // # bits of DVSR
-                FIFO_W = 2    // # addr bits of FIFO
-                              // # words in FIFO=2^FIFO_W
+      parameter DBIT = 8,                   // # data bits
+                SB_TICK = 16,               // # ticks for stop bits, 16/24/32
+                                            // for 1/1.5/2 stop bits
+                BAUDRATE_DIVISOR = 10,     // baud rate divisor
+                                            // BAUDRATE_DIVISOR = 50M/(16*baud_rate) ... 19,200BR=>163
+                BAUDRATE_DIVISOR_BITS = 8,  // # bits of BAUDRATE_DIVISOR
+                FIFO_W = 2                  // # addr bits of FIFO
+                                            // # words in FIFO=2^FIFO_W
    )
    (
     input wire          i_clk, reset,
@@ -46,28 +46,33 @@ module top_uart
    wire [7:0]       tx_fifo_out, rx_data_out;
 
    //body
-   baud_rate_gen #(.M(DVSR), .N(DVSR_BIT)) u_baud_rate
-      (.i_clk(i_clk), .reset(reset), .q(), .max_tick(tick));
+    baud_rate_gen #(.BAUDRATE_DIVISOR(BAUDRATE_DIVISOR), .BAUDRATE_DIVISOR_BITS(BAUDRATE_DIVISOR_BITS))
+    u_baud_rate (
+    .i_clk      (i_clk),
+    .reset      (reset)/*,
+    .p          ()
+    .max_tick   (tick)*/
+    );
 
-   uart_rx #(.DBIT(DBIT), .SB_TICK(SB_TICK)) uart_rx_unit
+    uart_rx #(.DBIT(DBIT), .SB_TICK(SB_TICK)) uart_rx_unit
       (.clk(i_clk), .reset(reset), .rx(rx), .s_tick(tick),
        .rx_done_tick(rx_done_tick), .dout(rx_data_out));
-
-   fifo_buf #(.B(DBIT), .W(FIFO_W)) fifo_rx_unit
+    
+    fifo_buf #(.B(DBIT), .W(FIFO_W)) fifo_rx_unit    
       (.i_clk(i_clk), .reset(reset), .rd(rd_uart),
        .wr(rx_done_tick), .w_data(rx_data_out),
        .empty(rx_empty), .full(), .r_data(r_data));
-
-   fifo_buf #(.B(DBIT), .W(FIFO_W)) fifo_tx_unit
+    
+    fifo_buf #(.B(DBIT), .W(FIFO_W)) fifo_tx_unit
       (.i_clk(i_clk), .reset(reset), .rd(tx_done_tick),
        .wr(wr_uart), .w_data(w_data), .empty(tx_empty),
        .full(tx_full), .r_data(tx_fifo_out));
-
-   uart_tx #(.DBIT(DBIT), .SB_TICK(SB_TICK)) uart_tx_unit
+    
+    uart_tx #(.DBIT(DBIT), .SB_TICK(SB_TICK)) uart_tx_unit
       (.i_clk(i_clk), .reset(reset), .tx_start(tx_fifo_not_empty),
        .s_tick(tick), .din(tx_fifo_out),
        .tx_done_tick(tx_done_tick), .tx(tx));
-
-   assign tx_fifo_not_empty = ~tx_empty;
+    
+    assign tx_fifo_not_empty = ~tx_empty;
 
 endmodule
