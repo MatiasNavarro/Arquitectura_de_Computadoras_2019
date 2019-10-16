@@ -26,7 +26,7 @@ module top_uart
       parameter DBIT = 8,                   // # data bits
                 SB_TICK = 16,               // # ticks for stop bits, 16/24/32
                                             // for 1/1.5/2 stop bits
-                BAUDRATE_DIVISOR = 10,     // baud rate divisor
+                BAUDRATE_DIVISOR = 10,      // baud rate divisor
                                             // BAUDRATE_DIVISOR = 50M/(16*baud_rate) ... 19,200BR=>163
                 BAUDRATE_DIVISOR_BITS = 8,  // # bits of BAUDRATE_DIVISOR
                 FIFO_W = 2                  // # addr bits of FIFO
@@ -58,20 +58,28 @@ module top_uart
       (.clk(i_clk), .reset(reset), .rx(rx), .s_tick(tick),
        .rx_done_tick(rx_done_tick), .dout(rx_data_out));
     
-    fifo_buf #(.B(DBIT), .W(FIFO_W)) fifo_rx_unit    
-      (.i_clk(i_clk), .reset(reset), .rd(rd_uart),
-       .wr(rx_done_tick), .w_data(rx_data_out),
-       .empty(rx_empty), .full(), .r_data(r_data));
+//    fifo_buf #(.B(DBIT), .W(FIFO_W)) fifo_rx_unit    
+//      (.i_clk(i_clk), .reset(reset), .rd(rd_uart),
+//       .wr(rx_done_tick), .w_data(rx_data_out),
+//       .empty(rx_empty), .full(), .r_data(r_data));
     
-    fifo_buf #(.B(DBIT), .W(FIFO_W)) fifo_tx_unit
-      (.i_clk(i_clk), .reset(reset), .rd(tx_done_tick),
-       .wr(wr_uart), .w_data(w_data), .empty(tx_empty),
-       .full(tx_full), .r_data(tx_fifo_out));
+//    fifo_buf #(.B(DBIT), .W(FIFO_W)) fifo_tx_unit
+//      (.i_clk(i_clk), .reset(reset), .rd(tx_done_tick),
+//       .wr(wr_uart), .w_data(w_data), .empty(tx_empty),
+//       .full(tx_full), .r_data(tx_fifo_out));
     
     uart_tx #(.DBIT(DBIT), .SB_TICK(SB_TICK)) uart_tx_unit
       (.i_clk(i_clk), .reset(reset), .tx_start(tx_fifo_not_empty),
        .s_tick(tick), .din(tx_fifo_out),
        .tx_done_tick(tx_done_tick), .tx(tx));
+       
+    ALU
+    u_ALU(.i_data_a       (i_data_a),
+          .i_data_b       (i_data_b),
+          .i_operation    (i_operation),
+          .o_result       (o_leds)
+    );
+       
     
     assign tx_fifo_not_empty = ~tx_empty;
 
