@@ -26,7 +26,7 @@ module uart_rx
    )
    (
     input   wire                    i_clk, 
-    input   wire                    reset,
+    input   wire                    i_reset,
     input   wire                    rx, 
     input   wire                    s_tick,
     output  reg                     rx_done_tick,
@@ -48,8 +48,8 @@ module uart_rx
 
    // body
    // FSMD state & data registers
-   always @(posedge i_clk, posedge reset)
-      if (reset)
+   always @(posedge s_tick, posedge i_reset)
+      if (i_reset)
          begin
             state_reg   <= idle;
             s_reg       <= 0;
