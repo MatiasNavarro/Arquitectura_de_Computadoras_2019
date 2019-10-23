@@ -32,16 +32,16 @@ module rx_tb();
     reg                         clock;      //i_clk	
     reg                         stick;      //s_tick
     reg                         bit_rx;     //i_rx
-    reg                         reset;      //i_rst
+    reg                         rst;      //i_rst
     wire    [DBIT_TEST - 1: 0 ] d_out;      //data_out
     wire                        rx_done;    //rx_done_tick
 
     initial begin
         clock = 1'b0;
         stick = 1'b0;
-        reset = 1'b0; // Reset en 0. (Normal cerrado el boton del reset).
+        rst = 1'b0; // Reset en 0. (Normal cerrado el boton del reset).
         bit_rx = 1'b1;
-        #10 reset = 1'b1; // Desactivo la accion del reset.
+        #10 rst = 1'b1; // Desactivo la accion del reset.
         
 
         // Test 1: Envío de trama correcta.
@@ -77,8 +77,8 @@ module rx_tb();
 
         
         // Test 3: Prueba reset.
-        #10000 reset = 1'b0; // Reset.
-        #10000 reset = 1'b1; // Desactivo el reset.
+        #10000 rst = 1'b0; // Reset.
+        #10000 rst = 1'b1; // Desactivo el reset.
         
         
         #500000 $finish;
@@ -97,7 +97,7 @@ uart_rx
     (
       .s_tick (stick),
       .rx (bit_rx),
-      .i_reset (reset),
+      .reset (rst),
       .i_clk (clock),
       .rx_done_tick (rx_done),
       .data_out (d_out)
