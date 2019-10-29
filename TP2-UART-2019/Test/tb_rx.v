@@ -45,6 +45,8 @@ module rx_tb();
         
 
         // Test 1: Envío de trama correcta.
+        #160 bit_rx = 1'b1; //nada
+        #160 bit_rx = 1'b1; //nada
         #160 bit_rx = 1'b0; //bit inicio
         
         #160 bit_rx = 1'b1; // dato - 8 bits (1001 0110)
@@ -56,6 +58,8 @@ module rx_tb();
         #160 bit_rx = 1'b1;
         #160 bit_rx = 1'b0;
         
+        #160 bit_rx = 1'b1; //bits stop
+        #160 bit_rx = 1'b1; //bits stop
         #160 bit_rx = 1'b1; //bits stop
         #160 bit_rx = 1'b1; //bits stop
 
@@ -77,15 +81,15 @@ module rx_tb();
 
         
         // Test 3: Prueba reset.
-        #10000 rst = 1'b0; // Reset.
-        #10000 rst = 1'b1; // Desactivo el reset.
+        //#10000 rst = 1'b0; // Reset.
+        //#10000 rst = 1'b1; // Desactivo el reset.
         
         
-        #500000 $finish;
+        #4000 $finish;
     end
     
-    always #2.5 clock=~clock;  // Simulacion de clock.
-    always #5 stick=~stick;       // Simulacion de rate.
+    always #1 clock=~clock; // Simulacion de clock.
+    always #5 stick=~stick; // Simulacion de rate.
     
 //Modulo para pasarle los estimulos del banco de pruebas.
 uart_rx
@@ -97,10 +101,10 @@ uart_rx
     (
       .s_tick (stick),
       .rx (bit_rx),
-      .reset (rst),
+      .i_reset (rst),
       .i_clk (clock),
       .rx_done_tick (rx_done),
-      .data_out (d_out)
+      .o_data_out (d_out)
     );
 
 endmodule

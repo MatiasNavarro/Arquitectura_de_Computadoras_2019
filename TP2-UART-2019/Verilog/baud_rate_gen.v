@@ -34,7 +34,7 @@ module baud_rate_gen
     )
     (
     input   wire            i_clk,      // Clock input
-    input   wire            reset,      // Reset input
+    input   wire            i_reset,      // Reset input
     // input   wire    [15:0]  i_baudrate, // Value to divide the generator by
     output  wire            o_tick      // Each "BaudRate" pulses we create a tick pulse
     );
@@ -42,8 +42,8 @@ module baud_rate_gen
 reg [BAUDRATE_DIVISOR_BITS:0] baudRateReg; // Register used to count
 
 
-always @(posedge i_clk or negedge reset) begin
-    if (!reset) begin
+always @(posedge i_clk or negedge i_reset) begin
+    if (!i_reset) begin
         baudRateReg <= {BAUDRATE_DIVISOR_BITS{1'b0}};
     end else if (o_tick) begin
         baudRateReg <= {BAUDRATE_DIVISOR_BITS{1'b0}};

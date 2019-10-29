@@ -27,7 +27,7 @@ module uart_tx
    )
    (
     input   wire            i_clk, 
-    input   wire            reset,
+    input   wire            i_reset,
     input   wire            tx_start, 
     input   wire            s_tick,
     input   wire    [7:0]   din,
@@ -52,8 +52,8 @@ module uart_tx
 
    // body
    // FSMD state & data registers
-   always @(posedge i_clk, posedge reset)
-      if (reset)
+   always @(posedge i_clk, posedge i_reset)
+      if (i_reset)
          begin
             state_reg   <=  idle;
             s_reg       <=  0;

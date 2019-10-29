@@ -30,7 +30,7 @@ module uart_rx
     input   wire                    rx, 
     input   wire                    s_tick,
     output  reg                     rx_done_tick,
-    output  wire    [DBIT-1:0]      data_out
+    output  wire    [DBIT-1:0]      o_data_out
    );
 
    // symbolic state declaration
@@ -49,7 +49,7 @@ module uart_rx
    // body
    // FSMD state & data registers
    always @(posedge s_tick, posedge i_reset)
-      if (i_reset)
+      if (!i_reset)
          begin
             state_reg   <= idle;
             s_reg       <= 0;
@@ -117,6 +117,6 @@ module uart_rx
       endcase
    end
    // output
-   assign data_out = buffer;
+   assign o_data_out = buffer;
 
 endmodule

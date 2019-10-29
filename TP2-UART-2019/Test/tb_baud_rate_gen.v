@@ -58,7 +58,7 @@ module tb_baud_rate_gen();
     u_baud_rate_gen_01
     (
     .i_clk (i_clk_01),
-    .reset (reset_01),
+    .i_reset (reset_01),
     .o_tick (o_tick_01)
     );
 
