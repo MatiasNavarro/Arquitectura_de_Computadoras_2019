@@ -48,7 +48,7 @@ module uart_rx
 
    // body
    // FSMD state & data registers
-   always @(posedge s_tick, posedge i_reset)
+   always @(posedge i_clk, posedge i_reset)
       if (!i_reset)
          begin
             state_reg   <= idle;
@@ -66,7 +66,7 @@ module uart_rx
 
    // FSMD next-state logic 
    // Logica para el proximo estado
-   always @(*)
+   always @(posedge s_tick)
    begin
       state_next    = state_reg;
       rx_done_tick  = 1'b0;

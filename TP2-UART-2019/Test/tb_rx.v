@@ -46,7 +46,6 @@ module rx_tb();
 
         // Test 1: Envío de trama correcta.
         #160 bit_rx = 1'b1; //nada
-        #160 bit_rx = 1'b1; //nada
         #160 bit_rx = 1'b0; //bit inicio
         
         #160 bit_rx = 1'b1; // dato - 8 bits (1001 0110)
@@ -76,7 +75,6 @@ module rx_tb();
         #160 bit_rx = 1'b0;
         
         #160 bit_rx = 1'b1; //bits stop
-        #160 bit_rx = 1'b0; //bits stop mal.
 
 
         
