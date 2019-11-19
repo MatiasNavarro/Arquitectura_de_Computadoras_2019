@@ -35,10 +35,10 @@ module uart_rx
 
    // symbolic state declaration
    localparam [1:0]
-        idle    = 2'b00,    //Espero el bit de start
-        start   = 2'b01,    //Inicializa los registros, solo se ejecuta un ciclo
-        data    = 2'b10,    //Carga datos en el shift reg
-        stop    = 2'b11;    //Paso los datos a out, espero el bit de stop
+        IDLE    = 2'b00,    //Espero el bit de start
+        START   = 2'b01,    //Inicializa los registros, solo se ejecuta un ciclo
+        DATA    = 2'b10,    //Carga datos en el shift reg
+        STOP    = 2'b11;    //Paso los datos a out, espero el bit de stop
 
    // signal declaration
    reg  [1:0]       state_reg, state_next;
@@ -48,10 +48,10 @@ module uart_rx
 
    // body
    // FSMD state & data registers
-   always @(posedge i_clk, posedge i_reset)
+   always @(posedge i_clk)
       if (!i_reset)
          begin
-            state_reg   <= idle;
+            state_reg   <= IDLE;
             s_reg       <= 0;
             n_reg       <= 0;
             buffer      <= 0;
@@ -66,7 +66,7 @@ module uart_rx
 
    // FSMD next-state logic 
    // Logica para el proximo estado
-   always @(posedge s_tick)
+   always @(*)
    begin
       state_next    = state_reg;
       rx_done_tick  = 1'b0;
@@ -75,23 +75,23 @@ module uart_rx
       buffer_next   = buffer;
       
       case (state_reg)
-         idle:
+         IDLE:
             if (~rx)
                begin
-                  state_next    = start;
+                  state_next    = START;
                   s_next        = 0;
                end
-         start:
+         START:
             if (s_tick)
                if (s_reg==7)
                   begin
-                     state_next = data;
+                     state_next = DATA;
                      s_next     = 0;
                      n_next     = 0;
                   end
                else
                   s_next = s_reg + 1;
-         data:
+         DATA:
             if (s_tick)
                if (s_reg==15)
                   begin
@@ -99,17 +99,17 @@ module uart_rx
                      buffer_next    = {rx, buffer[7:1]};
                      
                      if (n_reg==(DBIT-1))
-                        state_next = stop ;
+                        state_next = STOP ;
                       else
                         n_next = n_reg + 1;
                    end
                else
                   s_next = s_reg + 1;
-         stop:
+         STOP:
             if (s_tick)
                if (s_reg==(SB_TICK-1))
                   begin
-                     state_next = idle;
+                     state_next = IDLE;
                      rx_done_tick =1'b1;
                   end
                else
