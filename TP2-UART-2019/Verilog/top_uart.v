@@ -30,7 +30,7 @@ module top_uart
                 BAUDRATE_DIVISOR = 10,      // baud rate divisor
                                             // BAUDRATE_DIVISOR = 50M/(16*baud_rate) ... 19,200BR=>163
                 BAUDRATE_DIVISOR_BITS = 8,  // # bits of BAUDRATE_DIVISOR
-                FIFO_W = 2,                  // # addr bits of FIFO
+                //FIFO_W = 2,                  // # addr bits of FIFO
                                             // # words in FIFO=2^FIFO_W
                 NB_OP = 6                   //Bit number for operation
    )
@@ -91,38 +91,62 @@ module top_uart
     u_uart_tx
       ( .i_clk          (i_clk), 
         .i_reset        (i_reset), 
-        .tx_start       (tx_start),
+        .tx_start       (rx_done_tick),
         .s_tick         (tick), 
-        .din            (tx_data_out),
+        .din            (rx_data_out),
         .tx_done_tick   (tx_done_tick), 
         .tx             (tx)
       );
-      
-    //MODULO INTERFAZ
-    interface_circuit #( .DBIT(DBIT), .NB_OP(NB_OP))
-    u_interface_circuit
-    (   //Input
-        .i_clk          (i_clk),
-        .i_reset        (i_reset),
-        .rx_done_tick   (rx_done_tick),
-        .rx_data_in     (rx_data_out),
-        .alu_data_in    (o_alu),
-        //Output
-        .tx_start       (tx_start),
-        .data_a         (data_a),
-        .data_b         (data_b),
-        .operation      (operation),   
-        .data_out       (tx_data_out)
-    );
+
+//    //MODULO RECEPTOR
+//    uart_rx #(.DBIT(DBIT), .SB_TICK(SB_TICK)) 
+//    u_uart_rx
+//      ( .i_clk          (i_clk), 
+//        .i_reset        (i_reset), 
+//        .rx             (rx), 
+//        .s_tick         (tick),
+//        .rx_done_tick   (rx_done_tick), 
+//        .o_data_out     (rx_data_out)
+//      );
     
-    //ALU
-    ALU #(.NB_DATA(DBIT), .NB_OP(NB_OP))
-    u_ALU
-    (   .i_data_a       (data_a),
-        .i_data_b       (data_b),
-        .i_operation    (operation),
-        .o_result       (o_alu)
-    );
+//    //MODULO TRANSMISOR 
+//    uart_tx 
+//    #(  .DBIT(DBIT),.SB_TICK(SB_TICK)) 
+//    u_uart_tx
+//      ( .i_clk          (i_clk), 
+//        .i_reset        (i_reset), 
+//        .tx_start       (tx_start),
+//        .s_tick         (tick), 
+//        .din            (tx_data_out),
+//        .tx_done_tick   (tx_done_tick), 
+//        .tx             (tx)
+//      );
+      
+//    //MODULO INTERFAZ
+//    interface_circuit #( .DBIT(DBIT), .NB_OP(NB_OP))
+//    u_interface_circuit
+//    (   //Input
+//        .i_clk          (i_clk),
+//        .i_reset        (i_reset),
+//        .rx_done_tick   (rx_done_tick),
+//        .rx_data_in     (rx_data_out),
+//        .alu_data_in    (o_alu),
+//        //Output
+//        .tx_start       (tx_start),
+//        .data_a         (data_a),
+//        .data_b         (data_b),
+//        .operation      (operation),   
+//        .data_out       (tx_data_out)
+//    );
+    
+//    //ALU
+//    ALU #(.NB_DATA(DBIT), .NB_OP(NB_OP))
+//    u_ALU
+//    (   .i_data_a       (data_a),
+//        .i_data_b       (data_b),
+//        .i_operation    (operation),
+//        .o_result       (o_alu)
+//    );
        
     
     assign tx_start = ~tx_empty;
