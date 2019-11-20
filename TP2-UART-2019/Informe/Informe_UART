@@ -59,12 +59,12 @@
 \renewcommand{\tablename}{Tabla}
 \large
 
-\title{Implementación de ALU en HDL}
-
+\title{Arquitectura de Computadoras \\
+\large Trabajo Páctico Nº2 - UART}
 \author{Aagaard Martin - Navarro Matias\\ Universidad Nacional de Córdoba \bigskip
   \bigskip}
 
-\date{11 de septiembre de 2019}
+\date{31 de octubre de 2019}
 
 
 \maketitle % Compila la carátula
@@ -72,19 +72,69 @@
 \newpage
 
 \section{Introducción}
-En toda implementacion de software hay algunos componentes de hardware sumamente necesarios para su funcionamiento. En el siguiente informe se describirá el diseño, la implementacion y el testing de uno de estos elementos: ALU. \\
-La  ``ALU'' (Unidad Aritmetica Logica) es un circuito combinacional digital que calcula operaciones aritmeticas asi como operaciones logicas entre argumentos.
+En el siguiente trabajo, se realizó la implementación en Verilog de un módulo UART. Dicho módulo se conecta a la ALU desarrollada anteriormente en esta cátedra. El sistema se completa con una PC, a partir de la cual se envían los datos y operandos, para que el módulo ALU los procese y el resultado sea devuelto a la PC.
 
 \section{Implementación del practico}
-Entre los dispositivos disponibles para la Implementación de la ALU se selecciono la placa de desarrollo Basys 3. La principal razón de la selección fue que esta placa es el único modelo disponible y que soporta la interfaz de desarrollo Vivado. La FPGA sobre la que se trabajara es la Artix-7 de Xilinx.
+Entre los dispositivos disponibles para la Implementación del UART se seleccionó la placa de desarrollo Basys 3. La principal razón de la selección fue que esta placa es el único modelo disponible y que soporta la interfaz de desarrollo Vivado. La FPGA sobre la que se trabajara es la Artix-7 de Xilinx.
 
-\subsection{Desarrollo del módulo ALU}
-Este módulo contiene el desarrollo de las funcionalidades de la ALU, las cuales consisten en un set de operaciones sobre dos registros, y un selector sobre estas que define la salida del módulo.
+\section{Desarrollo}
+\subsection{Diagrama de bloques}
+\begin{figure}[H] 
+	\centering
+	\includegraphics[scale=0.6]{figure/diagrama-UART.png}
+	\caption{\textit{Diagrama de bloques implementado}}
+\end{figure}
 
-Es un módulo puramente combinacional, razón por la cual no contiene entrada de \textit{clock} y sus salidas dependen directamente de los cambios en sus entradas. 
+\subsection{Desarrollo del trabajo}
+Se definió un módulo Top, que contiene:
+\begin{itemize}
+    \item Modulo UART, compuesto por:
+    \begin{itemize}
+        \item Baud Rate Generator
+        \item Transmisor (TX)
+        \item Receptor (RX)
+    \end{itemize}
+    \item Circuito Interfaz
+    \item ALU
+\end{itemize}
+
+\subsection{UART}
+\subsubsection{Baud Rate Generator}Este módulo es utilizado para coordinar el muestreo de la señal recibida. Genera un tick 16 veces por Baud Rate. A partir de la entrada de clock (conociendo su frecuencia), y la velocidad de transmisión de la UART (en ese caso, 9600 baudios), genera ticks que permiten al módulo Rx trabajar con al señal de entrada.
 
 
-La ALU cuenta con tres entradas y una salida, con un ancho de palabra parametrizable y con valores por defecto de 8 bits. 
+\subsubsection{Receptor (RX)}
+\begin{figure}[H] 
+	\centering
+	\includegraphics[scale=0.6]{figure/estados_RX.png}
+	\caption{\textit{Diagrama de estados del receptor}}
+\end{figure}
+
+Es una máquina de estados que modifica su comportamiento en función de sus entradas Rx (línea de comunicación) y tick (salida del Baud Rate Generator). 
+
+Se encuentra en estado IDLE hasta que la entrada sea un 0 lógico, lo que marca el inicio del bit de start. Luego pasa al estado START, que espera 7 ticks hasta situarse en el centro del bit de start (que dura 16 ticks), lo que sincroniza el módulo con el transmisor. Una vez listo, se pasa al estado DATA, en el que toma muestras del canal Rx cada 16 ticks, que marcan el centro de cada bit recibido. El paso siguiente es pasar al estado STOP, donde se lee el único bit de stop, y finalmente se pasa al estado IDLE para comenzar el ciclo nuevamente. Al finalizar la recepción de un valor, emite un pulso en una señal de fin (rx\_done\_tick).
+
+\subsubsection{Transmisor (TX)}
+\begin{figure}[H] 
+	\centering
+	\includegraphics[scale=0.6]{figure/estados_TX.png}
+	\caption{\textit{Diagrama de estados del transmisor}}
+\end{figure}
+Este módulo es muy similar al anterior. Posee los mismos estados, y también utiliza la señal proveniente del Baud Rate Generator para actualizar su salida (Tx) acorde a la información que se desea transmitir. Al finalizar la transmisión emite un pulso en una señal de fin (tx\_done\_tick).
+
+Comienza en el estado IDLE, en el que envía por Tx un 1 lógico (canal inactivo). Al recibir la señal tx\_start pasa al estado START, en el que se envía un 0 lógico por el canal durante 16 ticks del Baud Rate Generator. Acto seguido se pasa al estado DATA, en el que se envía por 16 ticks cada bit del byte a transmitir, comenzando por el menos significativo. Cuando la cantidad de bits enviados sea 8 (toda la información disponible), se pasa al estado STOP, en el que se envia un bit de stop por 16 ticks del Generator. Finalmente se pasa al estado IDLE nuevamente, a la espera de más bits para transmitir.
+
+
+\subsubsection{Circuito Interfaz}
+\begin{figure}[H] 
+	\centering
+	\includegraphics[scale=0.6]{figure/estados_IC.png}
+	\caption{\textit{Diagrama de estados del circuito interfaz}}
+\end{figure}
+Permite comunicar la ALU con el módulo UART. Recibe los bytes de Rx, los almacena en tres registros (dos para los operandos, uno para el operador), y una vez tiene todos los valores, obtiene el resultado de la ALU. Seguidamente comunica al módulo Tx que el valor está listo, y lo envía mediante un bus de 8 bits.
+
+\newpage
+\subsubsection{ALU}
+El módulo ALU es el desarrollado en el primer práctico. Es puramente combinacional, con dos entradas para operandos, una entrada para el operador y una salida con el resultado de la operación.
 
 \begin{figure}[H] 
 	\centering
@@ -92,63 +142,21 @@ La ALU cuenta con tres entradas y una salida, con un ancho de palabra parametriz
 	\caption{\textit{Estructura RTL del módulo ALU obtenida de la herramienta Verilog}}
 \end{figure}
 
-\subsection{Simulaciones del módulo}
-Para comprobar el correcto funcionamiento del módulo, se desarrollaron varios test desde la herramienta, donde se puede ver la respuesta de las señales a diferentes estímulos.
 
-\begin{itemize}
-	\item Simulación de la operación de suma: Se simula incrementando los operandos A y B en cada ciclo de clock para comprobar varios resultados. 
-	
-	\begin{figure}[H] 
-		\centering
-		\includegraphics[scale=0.6]{figure/test-suma.PNG}
-		\caption{\textit{Simulación de la operación de suma}}
-	\end{figure}
-	\item Simulación de operación AND: Se incrementa el operando A y decrementa B en el test en cada ciclo de clock para obtener diferentes resultados
-	
-	\begin{figure}[H] 
-		\centering
-		\includegraphics[scale=0.6]{figure/test-and.PNG}
-		\caption{\textit{Simulación de la operación AND}}
-	\end{figure}
-	\item Simulación de operación de desplazamiento: Se desplaza a A tantas veces como indique B, en este caso se guarda la salida de x en A para simular un registro de desplazamientos
-	
-	\begin{figure}[H] 
-		\centering
-		\includegraphics[scale=0.6]{figure/test-despl.PNG}
-		\caption{\textit{Simulación de la operación de desplazamiento}}
-	\end{figure}
+\section{Simulación de los módulos}
+\section{Interface PC}
 
-\end{itemize}
-
-
-\subsection{Implementación en FPGA}
-Para la implementación se instancia el módulo ALU dentro de un módulo top, sobre el cual se declaran como entradas y salidas los pines de la FPGA a utilizar. 
-
-Para mapear los pines de la FPGA con las entradas y salidas del módulo, se importo un recurso llamado \textbf{\textit{constraints}}, el cual consiste en un archivo con extensión xdc correspondiente a la placa de desarrollo a utilizar. En el archivo de \textbf{\textit{constraints}} se encuentran todas las lineas comentadas y se le deben sacar los comentarios a las que se van a utilizar como E/S en el módulo top. En nuestro proyecto de utilizaron las siguientes E/S:
-\begin{itemize}
-	\item i\_clk (Clock 100 MHz)
-	\item i\_sw[7:0] para entradas
-	\item i\_btn [2:0] para seleccionar las entradas
-\end{itemize}
-
-Para evitar latches en este módulo se trabajó con una señal de clock, la cual es encargada de sincronizar las entradas al módulo ALU y la carga de los registros sobre los cuales esta va operar. 
-
-\begin{figure}[H] 
-	\centering
-	\includegraphics[scale=0.6]{figure/rtl-top.png}
-	\caption{\textit{Estructura RTL del módulo top obtenida de la herramienta Verilog}}
-\end{figure}
+\newpage
 \section{Conclusión}
-Mediante un desarrollo sencillo de una ALU, se pudo comprender el principio de funcionamiento de una FPGA. Una vez terminado el práctico, a través de la herramienta Verilog se obtuvieron las especificaciones de la utilización del la FPGA en términos de LUT y FF como se introdujo en clase 
+Una vez terminado el práctico, a través de la herramienta Vivado se
+obtuvieron las especificaciones en la utilización de los recursos de la FPGA y en la potencia que consume dicho circuito instanciado. Además, en este práctico se afianzaron los conceptos en cuanto al lenguaje de descripción de hardware Verilog.
+
 
 \begin{figure}[H] 
 	\centering
-	\includegraphics[scale=0.7]{figure/utilizacion.PNG}
+	\includegraphics[scale=0.7]{figure/utilizacion.png}
 	\caption{\textit{Utilización de la FPGA}}
 \end{figure}
 
-Se pude ver que la utilización de los puertos I/O es un poco grande, esto se debe a que cuando se tomaron estos parámetros en el proyecto se encontraba instanciado también un display de 7 segmentos.
-
 \end{document}
-
 
