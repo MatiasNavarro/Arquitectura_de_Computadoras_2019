@@ -48,7 +48,7 @@ module rx_tb();
         #160 bit_rx = 1'b1; //nada
         #160 bit_rx = 1'b0; //bit inicio
         
-        #160 bit_rx = 1'b1; // dato - 8 bits (1001 0110)
+        #160 bit_rx = 1'b1; // dato - 8 bits (0110 1001)
         #160 bit_rx = 1'b0; // 160 viene dado porque cada 5 instantes de tiempo cambia el estado del rate
         #160 bit_rx = 1'b0; // o sea, cada 10 instantes de tiempo hay un nuevo tick
         #160 bit_rx = 1'b1; // entonces 16 * 10 = 160
@@ -87,7 +87,10 @@ module rx_tb();
     end
     
     always #1 clock=~clock; // Simulacion de clock.
-    always #5 stick=~stick; // Simulacion de rate.
+    always begin
+        #9 stick=~stick;
+        #1 stick=~stick;
+    end
     
 //Modulo para pasarle los estimulos del banco de pruebas.
 uart_rx

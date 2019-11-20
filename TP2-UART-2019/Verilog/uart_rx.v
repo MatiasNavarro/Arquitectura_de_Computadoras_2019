@@ -66,7 +66,7 @@ module uart_rx
 
    // FSMD next-state logic 
    // Logica para el proximo estado
-   always @(posedge s_tick)
+   always @(*)
    begin
       state_next    = state_reg;
       rx_done_tick  = 1'b0;
