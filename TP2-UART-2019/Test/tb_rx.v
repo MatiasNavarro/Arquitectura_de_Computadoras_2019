@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module rx_tb();
+module tb_rx();
     //Parametros
     parameter DBIT_TEST     = 8;
     parameter SB_TICK_TEST  = 16;

@@ -38,15 +38,15 @@ module top_uart
    //INPUTS
     input wire              i_clk, 
     input wire              i_reset,
-    input wire              rd_uart, 
-    input wire              wr_uart, 
-    input wire              rx,
-    input wire  [DBIT-1:0]  w_data,
+//    input wire              rd_uart, 
+//    input wire              wr_uart, 
+    input wire              i_rx,
+//    input wire  [DBIT-1:0]  w_data,
    //OUTPUTS
-    output wire             tx_full, 
-    output wire             rx_empty, 
-    output wire             tx,
-    output wire [DBIT-1:0]  r_data
+//    output wire             tx_full, 
+//    output wire             rx_empty, 
+    output wire             o_tx
+//    output wire [DBIT-1:0]  r_data
    );
 
    // signal declaration
@@ -65,38 +65,44 @@ module top_uart
 
    
    //BAUD RATE GENERATOR
-    baud_rate_gen #(.BAUDRATE_DIVISOR(BAUDRATE_DIVISOR), 
-    .BAUDRATE_DIVISOR_BITS(BAUDRATE_DIVISOR_BITS))
-    u_baud_rate 
-    (
-    .i_clk      (i_clk),
-    .i_reset    (i_reset),
-    .o_tick     (tick)      
+    baud_rate_gen #(
+        .BAUDRATE_DIVISOR       (BAUDRATE_DIVISOR),
+        .BAUDRATE_DIVISOR_BITS  (BAUDRATE_DIVISOR_BITS)
+    )
+    u_baud_rate (
+        .i_clk          (i_clk),
+        .i_reset        (i_reset),
+        .o_tick         (tick)      
     );
 
     //MODULO RECEPTOR
-    uart_rx #(.DBIT(DBIT), .SB_TICK(SB_TICK)) 
-    u_uart_rx
-      ( .i_clk          (i_clk), 
+    uart_rx #(
+        .DBIT           (DBIT),
+        .SB_TICK        (SB_TICK)
+    ) 
+    u_uart_rx (
+        .i_clk          (i_clk), 
         .i_reset        (i_reset), 
-        .rx             (rx), 
+        .rx             (i_rx), 
         .s_tick         (tick),
         .rx_done_tick   (rx_done_tick), 
         .o_data_out     (rx_data_out)
       );
     
     //MODULO TRANSMISOR 
-    uart_tx 
-    #(  .DBIT(DBIT),.SB_TICK(SB_TICK)) 
-    u_uart_tx
-      ( .i_clk          (i_clk), 
+    uart_tx #(
+        .DBIT           (DBIT),
+        .SB_TICK        (SB_TICK)
+    ) 
+    u_uart_tx (
+        .i_clk          (i_clk), 
         .i_reset        (i_reset), 
         .tx_start       (rx_done_tick),
         .s_tick         (tick), 
         .din            (rx_data_out),
         .tx_done_tick   (tx_done_tick), 
-        .tx             (tx)
-      );
+        .tx             (o_tx)
+    );
 
 //    //MODULO RECEPTOR
 //    uart_rx #(.DBIT(DBIT), .SB_TICK(SB_TICK)) 
@@ -119,7 +125,7 @@ module top_uart
 //        .s_tick         (tick), 
 //        .din            (tx_data_out),
 //        .tx_done_tick   (tx_done_tick), 
-//        .tx             (tx)
+//        .tx             (o_tx)
 //      );
       
 //    //MODULO INTERFAZ

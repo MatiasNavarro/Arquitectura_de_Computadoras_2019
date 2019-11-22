@@ -53,7 +53,7 @@ module uart_tx
    // body
    // FSMD state & data registers
    always @(posedge i_clk, posedge i_reset)
-      if (i_reset)
+      if (!i_reset)
          begin
             state_reg   <=  idle;
             s_reg       <=  0;
