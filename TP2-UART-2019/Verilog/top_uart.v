@@ -38,15 +38,9 @@ module top_uart
    //INPUTS
     input wire              i_clk, 
     input wire              i_reset,
-//    input wire              rd_uart, 
-//    input wire              wr_uart, 
     input wire              i_rx,
-//    input wire  [DBIT-1:0]  w_data,
    //OUTPUTS
-//    output wire             tx_full, 
-//    output wire             rx_empty, 
     output wire             o_tx
-//    output wire [DBIT-1:0]  r_data
    );
 
    // signal declaration
@@ -75,86 +69,98 @@ module top_uart
         .o_tick         (tick)      
     );
 
-    //MODULO RECEPTOR
-    uart_rx #(
-        .DBIT           (DBIT),
-        .SB_TICK        (SB_TICK)
-    ) 
-    u_uart_rx (
-        .i_clk          (i_clk), 
-        .i_reset        (i_reset), 
-        .rx             (i_rx), 
-        .s_tick         (tick),
-        .rx_done_tick   (rx_done_tick), 
-        .o_data_out     (rx_data_out)
-      );
-    
-    //MODULO TRANSMISOR 
-    uart_tx #(
-        .DBIT           (DBIT),
-        .SB_TICK        (SB_TICK)
-    ) 
-    u_uart_tx (
-        .i_clk          (i_clk), 
-        .i_reset        (i_reset), 
-        .tx_start       (rx_done_tick),
-        .s_tick         (tick), 
-        .din            (rx_data_out),
-        .tx_done_tick   (tx_done_tick), 
-        .tx             (o_tx)
-    );
-
+// // TEST RX conectado a TX
+//
 //    //MODULO RECEPTOR
-//    uart_rx #(.DBIT(DBIT), .SB_TICK(SB_TICK)) 
-//    u_uart_rx
-//      ( .i_clk          (i_clk), 
+//    uart_rx #(
+//        .DBIT           (DBIT),
+//        .SB_TICK        (SB_TICK)
+//    ) 
+//    u_uart_rx (
+//        .i_clk          (i_clk), 
 //        .i_reset        (i_reset), 
-//        .rx             (rx), 
+//        .rx             (i_rx), 
 //        .s_tick         (tick),
 //        .rx_done_tick   (rx_done_tick), 
 //        .o_data_out     (rx_data_out)
 //      );
-    
 //    //MODULO TRANSMISOR 
-//    uart_tx 
-//    #(  .DBIT(DBIT),.SB_TICK(SB_TICK)) 
-//    u_uart_tx
-//      ( .i_clk          (i_clk), 
+//    uart_tx #(
+//        .DBIT           (DBIT),
+//        .SB_TICK        (SB_TICK)
+//    ) 
+//    u_uart_tx (
+//        .i_clk          (i_clk), 
 //        .i_reset        (i_reset), 
-//        .tx_start       (tx_start),
+//        .tx_start       (rx_done_tick),
 //        .s_tick         (tick), 
-//        .din            (tx_data_out),
+//        .din            (rx_data_out),
 //        .tx_done_tick   (tx_done_tick), 
 //        .tx             (o_tx)
-//      );
-      
-//    //MODULO INTERFAZ
-//    interface_circuit #( .DBIT(DBIT), .NB_OP(NB_OP))
-//    u_interface_circuit
-//    (   //Input
-//        .i_clk          (i_clk),
-//        .i_reset        (i_reset),
-//        .rx_done_tick   (rx_done_tick),
-//        .rx_data_in     (rx_data_out),
-//        .alu_data_in    (o_alu),
-//        //Output
-//        .tx_start       (tx_start),
-//        .data_a         (data_a),
-//        .data_b         (data_b),
-//        .operation      (operation),   
-//        .data_out       (tx_data_out)
 //    );
+
+    //MODULO RECEPTOR
+    uart_rx #(
+        .DBIT(DBIT),
+        .SB_TICK(SB_TICK)
+    ) 
+    u_uart_rx
+      ( .i_clk          (i_clk),
+        .i_reset        (i_reset),
+        .rx             (i_rx), 
+        .s_tick         (tick),
+        .rx_done_tick   (rx_done_tick),
+        .o_data_out     (rx_data_out)
+      );
     
-//    //ALU
-//    ALU #(.NB_DATA(DBIT), .NB_OP(NB_OP))
-//    u_ALU
-//    (   .i_data_a       (data_a),
-//        .i_data_b       (data_b),
-//        .i_operation    (operation),
-//        .o_result       (o_alu)
-//    );
+    //MODULO TRANSMISOR 
+    uart_tx  #(
+        .DBIT(DBIT),
+        .SB_TICK(SB_TICK)
+    ) 
+    u_uart_tx
+      ( .i_clk          (i_clk), 
+        .i_reset        (i_reset), 
+        .tx_start       (tx_start),
+        .s_tick         (tick), 
+        .din            (tx_data_out),
+        .tx_done_tick   (tx_done_tick), 
+        .tx             (o_tx)
+      );
+      
+    //MODULO INTERFAZ
+    interface_circuit #(
+        .DBIT(DBIT),
+        .NB_OP(NB_OP)
+    )
+    u_interface_circuit
+    (   //Input
+        .i_clk            (i_clk),
+        .i_reset          (i_reset),
+        .i_rx_done_tick   (rx_done_tick),
+        .i_rx_data_in     (rx_data_out),
+        .i_alu_data_in    (o_alu),
+        //Output
+        .o_data_a         (data_a),
+        .o_data_b         (data_b),
+        .o_operation      (operation),  
+        .o_tx_start       (tx_start), 
+        .o_data_out       (tx_data_out)
+    );
+    
+    //ALU
+    ALU #(
+        .NB_DATA(DBIT),
+        .NB_OP(NB_OP)
+    )
+    u_ALU
+    (   .i_data_a       (data_a),
+        .i_data_b       (data_b),
+        .i_operation    (operation),
+        .o_result       (o_alu)
+    );
        
     
-    assign tx_start = ~tx_empty;
+    // assign tx_start = ~tx_empty;
 
 endmodule

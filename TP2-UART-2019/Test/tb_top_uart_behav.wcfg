@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_top_uart_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_top_uart" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="1258000000001fs"></ZoomEndTime>
+      <Cursor1Time time="1614000000000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="175"></NameColumnWidth>
+      <ValueColumnWidth column_width="146"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="24" />
+   <wvobject type="logic" fp_name="/tb_top_uart/i_clk_01">
+      <obj_property name="ElementShortName">i_clk_01</obj_property>
+      <obj_property name="ObjectShortName">i_clk_01</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_top_uart/i_reset_01">
+      <obj_property name="ElementShortName">i_reset_01</obj_property>
+      <obj_property name="ObjectShortName">i_reset_01</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_top_uart/i_rx_01">
+      <obj_property name="ElementShortName">i_rx_01</obj_property>
+      <obj_property name="ObjectShortName">i_rx_01</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_top_uart/o_tx_01">
+      <obj_property name="ElementShortName">o_tx_01</obj_property>
+      <obj_property name="ObjectShortName">o_tx_01</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_top_uart/top_uart_01/u_uart_rx/i_clk">
+      <obj_property name="ElementShortName">i_clk</obj_property>
+      <obj_property name="ObjectShortName">i_clk</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_top_uart/top_uart_01/u_uart_rx/rx">
+      <obj_property name="ElementShortName">rx</obj_property>
+      <obj_property name="ObjectShortName">rx</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_top_uart/top_uart_01/u_uart_rx/s_tick">
+      <obj_property name="ElementShortName">s_tick</obj_property>
+      <obj_property name="ObjectShortName">s_tick</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_top_uart/top_uart_01/u_uart_rx/rx_done_tick">
+      <obj_property name="ElementShortName">rx_done_tick</obj_property>
+      <obj_property name="ObjectShortName">rx_done_tick</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_uart/top_uart_01/u_uart_rx/o_data_out">
+      <obj_property name="ElementShortName">o_data_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">o_data_out[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_uart/top_uart_01/u_uart_rx/state_reg">
+      <obj_property name="ElementShortName">state_reg[1:0]</obj_property>
+      <obj_property name="ObjectShortName">state_reg[1:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_uart/top_uart_01/u_uart_rx/s_reg">
+      <obj_property name="ElementShortName">s_reg[3:0]</obj_property>
+      <obj_property name="ObjectShortName">s_reg[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_uart/top_uart_01/u_uart_rx/n_reg">
+      <obj_property name="ElementShortName">n_reg[2:0]</obj_property>
+      <obj_property name="ObjectShortName">n_reg[2:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_uart/top_uart_01/u_uart_rx/buffer">
+      <obj_property name="ElementShortName">buffer[7:0]</obj_property>
+      <obj_property name="ObjectShortName">buffer[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_top_uart/top_uart_01/u_uart_tx/i_clk">
+      <obj_property name="ElementShortName">i_clk</obj_property>
+      <obj_property name="ObjectShortName">i_clk</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_top_uart/top_uart_01/u_uart_tx/tx_start">
+      <obj_property name="ElementShortName">tx_start</obj_property>
+      <obj_property name="ObjectShortName">tx_start</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_top_uart/top_uart_01/u_uart_tx/s_tick">
+      <obj_property name="ElementShortName">s_tick</obj_property>
+      <obj_property name="ObjectShortName">s_tick</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_uart/top_uart_01/u_uart_tx/din">
+      <obj_property name="ElementShortName">din[7:0]</obj_property>
+      <obj_property name="ObjectShortName">din[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_top_uart/top_uart_01/u_uart_tx/tx_done_tick">
+      <obj_property name="ElementShortName">tx_done_tick</obj_property>
+      <obj_property name="ObjectShortName">tx_done_tick</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_top_uart/top_uart_01/u_uart_tx/tx">
+      <obj_property name="ElementShortName">tx</obj_property>
+      <obj_property name="ObjectShortName">tx</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_uart/top_uart_01/u_uart_tx/state_reg">
+      <obj_property name="ElementShortName">state_reg[1:0]</obj_property>
+      <obj_property name="ObjectShortName">state_reg[1:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_uart/top_uart_01/u_uart_tx/s_reg">
+      <obj_property name="ElementShortName">s_reg[3:0]</obj_property>
+      <obj_property name="ObjectShortName">s_reg[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_uart/top_uart_01/u_uart_tx/n_reg">
+      <obj_property name="ElementShortName">n_reg[2:0]</obj_property>
+      <obj_property name="ObjectShortName">n_reg[2:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_uart/top_uart_01/u_uart_tx/b_reg">
+      <obj_property name="ElementShortName">b_reg[7:0]</obj_property>
+      <obj_property name="ObjectShortName">b_reg[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_top_uart/top_uart_01/u_uart_tx/tx_reg">
+      <obj_property name="ElementShortName">tx_reg</obj_property>
+      <obj_property name="ObjectShortName">tx_reg</obj_property>
+   </wvobject>
+</wave_config>
