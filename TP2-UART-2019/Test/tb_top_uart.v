@@ -168,8 +168,8 @@ module tb_top_uart();
     top_uart_01 (
         .i_clk      (i_clk_01),
         .i_reset    (i_reset_01),
-        .i_rx       (i_rx_01),
-        .o_tx         (o_tx_01)
+        .RsRx       (i_rx_01),
+        .RsTx       (o_tx_01)
         );
 
 endmodule
