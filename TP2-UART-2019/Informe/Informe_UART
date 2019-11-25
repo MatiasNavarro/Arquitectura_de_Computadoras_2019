@@ -195,6 +195,13 @@ Se comprobaron que el modulo sea capaz de realizar correctamente las operaciones
 \section{Interface PC}
 Para probar el funcionamiento de todo el proyecto, se programó un script en Python que se comunica con la FPGA mediante conexión USB, utilizando la librería PySerial. El script espera dos operandos y un operador, y una vez tenga los tres valores los transmite a la placa, mostrando el resultado en pantalla.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figure/scriptPython.png}
+    \caption{\textit{Prueba de funcionamiento en Python}}
+    \label{fig:scriptPython}
+\end{figure}
+
 \newpage
 \section{Conclusión}
 Una vez terminado el práctico, a través de la herramienta Vivado se
@@ -205,7 +212,7 @@ Se logro exitosamente realizar una comunicación anacrónica en serie entre la c
 
 \begin{figure}[H] 
 	\centering
-	\includegraphics[scale=1]{figure/utilizacion-UART.png}
+	\includegraphics{figure/utilizacion-UART.png}
 	\caption{\textit{Utilización de la FPGA}}
 \end{figure}
 
