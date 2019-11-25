@@ -64,7 +64,7 @@ def getOperador():
 
 import serial
 
-ser = serial.Serial('COM6')
+ser = serial.Serial('/dev/ttyUSB1')
 
 print (ser.name)
 

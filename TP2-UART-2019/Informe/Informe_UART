@@ -150,7 +150,7 @@ Permite comunicar la ALU con el módulo UART. Recibe los bytes de Rx, los almace
 \subsubsection{ALU}
 El módulo ALU es el desarrollado en el primer práctico. Es puramente combinacional, con dos entradas para operandos, una entrada para el operador y una salida con el resultado de la operación.
 
-\begin{figure}[H] 
+\begin{figure}[h] 
 	\centering
 	\includegraphics[scale=0.6]{figure/rtl-alu.png}
 	\caption{\textit{Estructura RTL del módulo ALU obtenida de la herramienta Verilog}}
@@ -162,9 +162,22 @@ Se realizaron las siguientes simulaciones para comprobar el correcto funcionamie
 
 \subsection{Top\_UART}
 Se comprueba el reset y que el sistema devuelva el resultado correcto cuando se ingresan operandos y códigos de operación determinados.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{figure/top_uart.png}
+    \caption{\textit{Simulación del top\_UART}}
+    \label{fig:tb_top}
+\end{figure}
 
 \subsection{Baud Rate Generator}
 Se comprueba la generación de los ticks con el intervalo correcto con respeto a los parámetros de entrada.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figure/tb_brg.png}
+    \caption{\textit{Simulación del módulo Baud Rate Generator}}
+    \label{fig:tb_brg}
+\end{figure}
 
 \subsection{Receptor (RX)}
 Se envían bits y se comprueba el pasaje entre los estados del módulo y las salidas en cada uno de dichos estados. Se envían tramas correctas e incorrectas.
@@ -192,7 +205,7 @@ Se logro exitosamente realizar una comunicación anacrónica en serie entre la c
 
 \begin{figure}[H] 
 	\centering
-	\includegraphics[scale=0.7]{figure/utilizacion.png}
+	\includegraphics[scale=1]{figure/utilizacion-UART.png}
 	\caption{\textit{Utilización de la FPGA}}
 \end{figure}
 
