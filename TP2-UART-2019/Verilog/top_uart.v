@@ -72,7 +72,7 @@ module top_uart
     );
 
 // // TEST RX conectado a TX
-//
+
 //    //MODULO RECEPTOR
 //    uart_rx #(
 //        .DBIT           (DBIT),
@@ -81,7 +81,7 @@ module top_uart
 //    u_uart_rx (
 //        .i_clk          (i_clk), 
 //        .i_reset        (i_reset), 
-//        .rx             (i_rx), 
+//        .rx             (RsRx), 
 //        .s_tick         (tick),
 //        .rx_done_tick   (rx_done_tick), 
 //        .o_data_out     (rx_data_out)
@@ -162,7 +162,5 @@ module top_uart
         .o_result       (o_alu)
     );
        
-    
-    // assign tx_start = ~tx_empty;
 
 endmodule

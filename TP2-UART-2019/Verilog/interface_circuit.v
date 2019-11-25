@@ -51,24 +51,21 @@ module interface_circuit
             o_operation   <= 0;
             counter_in    <= 0;
             o_tx_start    <= 1'b0;
-        end 
-	end
-	
-	always @* begin		 	
-        if (i_rx_done_tick) begin
-            case (counter_in)
-                2'b 00: o_data_a     = i_rx_data_in;
-                2'b 01: o_data_b     = i_rx_data_in;
-                2'b 10: o_operation  = i_rx_data_in;
-            endcase		
-            counter_in = counter_in + 1'b1;		
-        end
-    
-        if (counter_in == 2'b11) begin //Si el contador llega a 11 vuelve al estado inicial i.e counter_in = 0 
-            counter_in = 0;	
-            o_tx_start   = 1'b1;
         end else begin
-            o_tx_start = 1'b0;
+            if (i_rx_done_tick) begin
+                case (counter_in)
+                    2'b 00: o_data_a     = i_rx_data_in;
+                    2'b 01: o_data_b     = i_rx_data_in;
+                    2'b 10: o_operation  = i_rx_data_in;
+                endcase		
+                counter_in = counter_in + 1'b1;		
+            end
+            if (counter_in == 2'b11) begin //Si el contador llega a 11 vuelve al estado inicial i.e counter_in = 0 
+                counter_in = 0;	
+                o_tx_start   = 1'b1;
+            end else begin
+                o_tx_start = 1'b0;
+            end
         end
-    end
+	end
 endmodule
