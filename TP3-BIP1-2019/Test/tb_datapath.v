@@ -47,33 +47,78 @@ module tb_datapath();
     
     
     initial    begin
-    #10
+    #1
+    i_clk_01    = 0;
     i_SelA_01   = 2'b00;
     i_SelB_01   = 1'b0;
     i_op_01     = 1'b0;
     i_WrAcc_01  = 1'b0;
-
+    i_operand_01        = 0;
+    i_data_memory_01    = 0;
+    
+    i_rst_01    = 1'b0;
+    
     #10 i_rst_01 = 1'b1; // Desactivo la accion del reset.
-    
+                        //Estado inicial (No deberia hacer nada)
+
+
     // Test: Prueba reset.
-    #5000 i_rst_01 = 1'b0;  // Reset.
-    #10   i_rst_01 = 1'b1;      // Desactivo el reset.
+    #10 i_rst_01    = 1'b0;        // Reset.
+    #10   i_rst_01  = 1'b1;      // Desactivo el reset.
     
     
-    #10 i_WrAcc_01 = 1;
-    #10 i_SelA_01 = 0;
-    #10 i_SelB_01 = 0;
-    #10 i_op_01 = 2; //Load variable.
+    //LDI
+    #100
+    i_SelA_01   = 2'b01;
+    i_WrAcc_01  = 1'b1;
+    i_op_01     = 1'b1;
+    i_operand_01        = 1;
+    i_data_memory_01    = 2;
     
-    #100 i_rst_01 = 1'b0; // Reset.
-    #10  i_rst_01 = 1'b1; // Desactivo el reset.
     
-    #100000 $finish;
+    
+    //ADD
+    #100
+    i_SelA_01   = 2'b10;
+    i_SelB_01   = 1'b0;
+    i_op_01     = 1'b0;
+    i_WrAcc_01  = 1'b1;
+    i_operand_01        = 3;
+    i_data_memory_01    = 4;
+    
+    
+    //ADDI
+    #100
+    i_SelA_01   = 2'b10;
+    i_SelB_01   = 1'b1;
+    i_op_01     = 1'b0;
+    i_WrAcc_01  = 1'b1;
+    i_operand_01        = 5;
+    i_data_memory_01    = 6;
+    
+    
+    //SUB
+    #100
+    i_SelA_01   = 2'b10;
+    i_SelB_01   = 1'b0;
+    i_op_01     = 1'b1;
+    i_WrAcc_01  = 1'b1;
+    i_operand_01        = 7;
+    i_data_memory_01    = 8;
+    
+    //SUBI
+    #100
+    i_SelA_01   = 2'b10;
+    i_SelB_01   = 1'b1;
+    i_op_01     = 1'b1;
+    i_WrAcc_01  = 1'b1;
+    i_operand_01        = 9;
+    i_data_memory_01    = 10;
+    
+    #10 $finish;
     end
     
-    always #2.5 i_clk_01 = ~i_clk_01;  // Simulacion de clock.
-    
-    
+    always #2.5 i_clk_01 = ~i_clk_01;  // Simulacion de clock
     
     //Modulo para pasarle los estimulos del banco de pruebas.
     datapath
