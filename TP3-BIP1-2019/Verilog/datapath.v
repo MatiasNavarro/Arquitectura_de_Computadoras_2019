@@ -21,22 +21,23 @@
 
 module datapath
 #(
-    parameter   NB_DATA     = 15,
+    parameter   NB_DATA     = 16,
                 NB_OPERAND  = 11,
-                NB_EXT      = 5
+                NB_ADDR     = 11,
+                NB_OPCODE   = 5
 )
 (
     //Inputs
     input                       i_clk,
-    input                       i_reset,
-    input   [1:0]               i_selA,
-    input                       i_selB,
+    input                       i_rst,
+    input   [1:0]               i_SelA,
+    input                       i_SelB,
     input                       i_WrAcc,
-    input                       i_Op,
-    input   [NB_OPERAND-1:0]    i_Operand,
+    input                       i_op,
+    input   [NB_OPERAND-1:0]    i_operand,
     input   [NB_DATA-1:0]       i_data_memory,
     //Outputs
-    output  [NB_OPERAND-1:0]    o_Addr,
+    output  [NB_ADDR-1:0]       o_addr,
     output  [NB_DATA-1:0]       o_data_memory
 );
 
@@ -48,12 +49,12 @@ module datapath
 
     //Signal Extension 
     always @(*) begin
-        signal_extension = {{NB_EXT{i_Operand[NB_OPERAND-1]}},i_Operand}; //Extension del MSB del i_Operand
+        signal_extension = {{NB_OPCODE{i_operand[NB_OPERAND-1]}},i_operand}; //Extension del MSB del i_operand
     end
 
     //mux_A
     always @(*)begin
-        case(i_selA)
+        case(i_SelA)
             2'b00:     mux_a_out = i_data_memory;
             2'b01:     mux_a_out = signal_extension;
             2'b10:     mux_a_out = op_out;
@@ -63,9 +64,9 @@ module datapath
 
     //mux_B
     always @(*) begin
-        case(i_selB)
-            1'b0:   i_data_memory;
-            1'b1:   signal_extension;
+        case(i_SelB)
+            1'b0:   mux_b_out <= i_data_memory;
+            1'b1:   mux_b_out <= signal_extension;
         endcase
     end
 
@@ -83,13 +84,13 @@ module datapath
 
     //Operacion
     always @(*) begin
-        case(i_Op)
+        case(i_op)
             1'b0:   op_out = acc - mux_b_out;
             1'b1:   op_out = acc + mux_b_out;
         endcase
     end
 
-    assign o_Addr           = i_Operand;
+    assign o_addr           = i_operand;
     assign o_data_memory    = acc; 
 
 endmodule
