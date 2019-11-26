@@ -26,10 +26,7 @@ module uart   #( //PARAMETROS
                 SB_TICK = 16,               // # ticks for stop bits, 16/24/32
                                             // for 1/1.5/2 stop bits
                 BAUDRATE_DIVISOR = 651,      // baud rate divisor
-                                            // BAUDRATE_DIVISOR = 50M/(16*baud_rate) ... 19,200BR=>163
                 BAUDRATE_DIVISOR_BITS = 10,  // # bits of BAUDRATE_DIVISOR
-                //FIFO_W = 2,                  // # addr bits of FIFO
-                                            // # words in FIFO=2^FIFO_W
                 NB_OP = 6                   //Bit number for operation
    )
    (
