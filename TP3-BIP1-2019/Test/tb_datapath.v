@@ -70,6 +70,7 @@ module tb_datapath();
     //LDI
     #100
     i_SelA_01   = 2'b01;
+    i_SelB_01   = 1'b0;
     i_WrAcc_01  = 1'b1;
     i_op_01     = 1'b1;
     i_operand_01        = 1;
@@ -108,12 +109,17 @@ module tb_datapath();
     
     //SUBI
     #100
-    i_SelA_01   = 2'b10;
+    i_SelA_01   = 2'b00;
     i_SelB_01   = 1'b1;
     i_op_01     = 1'b1;
     i_WrAcc_01  = 1'b1;
     i_operand_01        = 9;
     i_data_memory_01    = 10;
+    
+    // Test: Prueba reset.
+    #10 i_rst_01    = 1'b0;        // Reset.
+    #10   i_rst_01  = 1'b1;      // Desactivo el reset.
+    
     
     #10 $finish;
     end

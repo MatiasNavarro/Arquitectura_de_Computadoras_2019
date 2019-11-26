@@ -85,8 +85,8 @@ module datapath
     //Operacion
     always @(*) begin
         case(i_op)
-            1'b0:   op_out = acc - mux_b_out;
-            1'b1:   op_out = acc + mux_b_out;
+            1'b0:   op_out = acc + mux_b_out;
+            1'b1:   op_out = acc - mux_b_out;
         endcase
     end
 
