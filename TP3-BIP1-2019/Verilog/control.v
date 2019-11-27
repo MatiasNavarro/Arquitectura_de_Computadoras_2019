@@ -24,7 +24,7 @@ module control
     #( parameter    NB_INSTRUC      = 16,
                     NB_OPCODE       = 5,
                     NB_OPERAND      = 11,
-                    NB_ADRR         = 11
+                    NB_ADDR         = 11
     )
     (
         // INPUTS
@@ -33,7 +33,7 @@ module control
         input wire [NB_INSTRUC - 1 : 0]    i_instruc,
         // OUTPUTS
         output wire [NB_OPERAND - 1 : 0]    o_operand,
-        output wire [NB_ADRR -1 : 0]        o_addr,
+        output wire [NB_ADDR -1 : 0]        o_addr,
         // Instruction decoder OUTPUTS
         output wire [1 : 0]                 o_SelA,
         output wire                         o_SelB,
@@ -46,7 +46,7 @@ module control
     wire [NB_OPCODE - 1 : 0] opcode;
     wire WrPC;
 
-    reg [NB_ADRR - 1 : 0] pc;
+    reg [NB_ADDR - 1 : 0] pc;
 
     assign opcode = i_instruc[NB_INSTRUC - 1 -: NB_OPCODE];
     assign o_operand[NB_OPERAND - 1 : 0] = i_instruc[NB_OPERAND - 1 : 0];
@@ -55,7 +55,7 @@ module control
 
     always @(posedge i_clk) begin
         if (!i_rst) begin
-            pc <= {NB_ADRR{1'b0}};
+            pc <= {NB_ADDR{1'b0}};
         end
         else if (WrPC) begin
             pc <= pc + 1'b1;
