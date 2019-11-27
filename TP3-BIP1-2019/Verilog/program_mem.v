@@ -27,7 +27,7 @@
 module program_mem #(
   parameter RAM_WIDTH = 16,                       // Specify RAM data width
   parameter RAM_DEPTH = 2048,                     // Specify RAM depth (number of entries)
-  parameter RAM_PERFORMANCE = "HIGH_PERFORMANCE", // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
+  parameter RAM_PERFORMANCE = "LOW_LATENCY",      // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
   parameter INIT_FILE = ""                        // Specify name/location of RAM initialization file if using one (leave blank if not)
 ) (
   input [clogb2(RAM_DEPTH-1)-1:0] i_addr,  // Address bus, width determined from RAM_DEPTH
@@ -62,7 +62,7 @@ module program_mem #(
     end
   endgenerate
 
-  always @(posedge i_clk)
+  always @(negedge i_clk)
     if (ena)
       if (wea)
         BRAM[i_addr] <= dina;

@@ -31,22 +31,22 @@ module top_bip1
                 //PROGRAM MEMORY
                 RAM_WIDTH_PROGRAM       = 16,
                 RAM_DEPTH_PROGRAM       = 2048,
-                RAM_PERFORMANCE_PROGRAM = "HIGH_PERFORMANCE",
+                RAM_PERFORMANCE_PROGRAM = "LOW_LATENCY",
                 INIT_FILE_PROGRAM       = "",
                 
                 //DATA MEMORY
                 RAM_WIDTH_DATA          = 16,
                 RAM_DEPTH_DATA          = 1024, 
                 RAM_PERFORMANCE_DATA    = "LOW_LATENCY",
-                INIT_FILE_DATA          = "" ,
+                INIT_FILE_DATA          = "" 
                                 
-                //UART
-                DBIT = 8,                   // # data bits
-                SB_TICK = 16,               // # ticks for stop bits, 16/24/32
-                                            // for 1/1.5/2 stop bits
-                BAUDRATE_DIVISOR = 651,      // baud rate divisor
-                BAUDRATE_DIVISOR_BITS = 10,  // # bits of BAUDRATE_DIVISOR
-                NB_OP = 6                   //Bit number for operation
+//                //UART
+//                DBIT = 8,                   // # data bits
+//                SB_TICK = 16,               // # ticks for stop bits, 16/24/32
+//                                            // for 1/1.5/2 stop bits
+//                BAUDRATE_DIVISOR = 651,      // baud rate divisor
+//                BAUDRATE_DIVISOR_BITS = 10,  // # bits of BAUDRATE_DIVISOR
+//                NB_OP = 6                   //Bit number for operation
       )
       (
         //inputs
@@ -70,8 +70,8 @@ module top_bip1
         //Wire Program Memory
         //Wire Data Memory
         //Wire UART
-        wire    i_uart;
-        wire    o_uart;
+//        wire    i_uart;
+//        wire    o_uart;
         
         
         //CPU
@@ -128,22 +128,22 @@ module top_bip1
             .o_data     (out_data_memory)
         );
         
-        //UART
-        uart #(
-            .DBIT                   (DBIT),
-            .SB_TICK                (SB_TICK),
-            .BAUDRATE_DIVISOR       (BAUDRATE_DIVISOR),
-            .BAUDRATE_DIVISOR_BITS  (BAUDRATE_DIVISOR_BITS),
-            .NB_OP                  (NB_OP)
-        )
-        u_uart
-        (
-            .i_clk  (i_clk),
-            .i_rst  (i_rst),
-            .RsRx   (i_uart),
-            .RsTx   (o_uart)            
-        );
+//        //UART
+//        uart #(
+//            .DBIT                   (DBIT),
+//            .SB_TICK                (SB_TICK),
+//            .BAUDRATE_DIVISOR       (BAUDRATE_DIVISOR),
+//            .BAUDRATE_DIVISOR_BITS  (BAUDRATE_DIVISOR_BITS),
+//            .NB_OP                  (NB_OP)
+//        )
+//        u_uart
+//        (
+//            .i_clk  (i_clk),
+//            .i_rst  (i_rst),
+//            .RsRx   (i_uart),
+//            .RsTx   (o_uart)            
+//        );
         
-        assign RsTx = o_uart;
+//        assign RsTx = o_uart;
     
 endmodule

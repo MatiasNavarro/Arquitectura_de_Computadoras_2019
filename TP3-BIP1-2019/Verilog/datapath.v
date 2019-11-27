@@ -1,4 +1,23 @@
 `timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 11/25/2019 09:50:59 PM
+// Design Name: 
+// Module Name: datapath
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
 
 module datapath
 #(
@@ -52,7 +71,7 @@ module datapath
     end
 
     //ACC
-    always @(posedge i_clk) begin
+    always @(negedge i_clk) begin
         if(!i_rst)
             acc <= {(NB_DATA-1){1'b0}};
         else begin
