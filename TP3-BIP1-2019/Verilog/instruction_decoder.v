@@ -25,16 +25,16 @@ module instruction_decoder #(
     )
     (
         // INPUTS
-        input           i_rst,
-        input           i_opcode,
+        input wire                      i_rst,
+        input wire [NB_OPCODE - 1 : 0]  i_opcode,
         // OUTPUTS
-        output          o_WrPC,
-        output [1 : 0]  o_SelA,
-        output          o_SelB,
-        output          o_WrAcc,
-        output          o_op,       //operation
-        output          o_WrRam,
-        output          o_RdRam
+        output reg         o_WrPC,
+        output reg [1 : 0] o_SelA,
+        output reg         o_SelB,
+        output reg         o_WrAcc,
+        output reg         o_op,       //operation
+        output reg         o_WrRam,
+        output reg         o_RdRam
     );
 
     localparam [NB_OPCODE - 1 : 0]
@@ -49,13 +49,14 @@ module instruction_decoder #(
 
     always @(*) begin
 
+        // SET VALORES POR DEFECTO
+        // o_WrPC = 1 por defecto asi escribe el PC+1
         if (!i_rst) begin
             o_WrPC = 1'b0;
         end
         else begin
             o_WrPC = 1'b1;
         end
-
         o_SelA = 2'b00;
         o_SelB = 1'b0;
         o_op = 1'b0;
@@ -64,37 +65,50 @@ module instruction_decoder #(
         o_RdRam = 1'b0;
 
         case(i_opcode)
-            HLT:
+            HLT: begin
                 o_WrPC = 1'b0;
-            STO:
+            end
+            STO: begin
                 o_WrRam = 1'b1;
-            LD:
+            end
+            LD: begin
+                // o_SelA = 2'b00;
                 o_WrAcc = 1'b1;
-            LDI:
-                o_WrAcc = 1'b1;
+                o_RdRam = 1'b1;
+            end
+            LDI: begin
                 o_SelA = 2'b01;
-            ADD:
+                o_WrAcc = 1'b1;
+            end
+            ADD: begin
                 o_SelA = 2'b10;
                 o_SelB = 1'b0;
+                // o_op = 1'b0;
+                o_WrAcc = 1'b1;
                 o_RdRam = 1'b1;
-                o_WrAcc = 1'b1;
-            ADDI:
-                o_WrAcc = 1'b1;
+            end
+            ADDI: begin
                 o_SelA = 2'b10;
                 o_SelB = 1'b1;
-            SUB:
+                // o_op = 1'b0;
+                o_WrAcc = 1'b1;
+            end
+            SUB: begin
                 o_SelA = 2'b10;
                 o_SelB = 1'b0;
-                o_RdRam = 1'b1;
-                o_WrAcc = 1'b1;
                 o_op = 1'b1;
-            SUBI:
                 o_WrAcc = 1'b1;
+                o_RdRam = 1'b1;
+            end
+            SUBI: begin
                 o_SelA = 2'b10;
                 o_SelB = 1'b1;
                 o_op = 1'b1;
-            default:
+                o_WrAcc = 1'b1;
+            end
+            default: begin
                 o_WrPC = 1'b0;
+            end
         endcase
     end
 

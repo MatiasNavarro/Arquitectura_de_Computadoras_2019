@@ -28,19 +28,19 @@ module control
     )
     (
         // INPUTS
-        input                           i_clk,
-        input                           i_rst,
-        input   [NB_INSTRUC - 1 : 0]    i_instruc,
+        input wire                         i_clk,
+        input wire                         i_rst,
+        input wire [NB_INSTRUC - 1 : 0]    i_instruc,
         // OUTPUTS
-        output  [NB_OPERAND - 1 : 0]    o_operand,
-        output  [NB_ADRR -1 : 0]        o_addr,
+        output wire [NB_OPERAND - 1 : 0]    o_operand,
+        output wire [NB_ADRR -1 : 0]        o_addr,
         // Instruction decoder OUTPUTS
-        output  [1 : 0]                 o_SelA,
-        output                          o_SelB,
-        output                          o_WrAcc,
-        output                          o_op,       //operation
-        output                          o_WrRam,
-        output                          o_RdRam
+        output wire [1 : 0]                 o_SelA,
+        output wire                         o_SelB,
+        output wire                         o_WrAcc,
+        output wire                         o_op,       //operation
+        output wire                         o_WrRam,
+        output wire                         o_RdRam
     );
 
     wire [NB_OPCODE - 1 : 0] opcode;
@@ -48,7 +48,7 @@ module control
 
     reg [NB_ADRR - 1 : 0] pc;
 
-    assign opcode[NB_OPCODE - 1 : 0] = i_instruc[NB_OPCODE - 1 -: NB_OPCODE];
+    assign opcode = i_instruc[NB_INSTRUC - 1 -: NB_OPCODE];
     assign o_operand[NB_OPERAND - 1 : 0] = i_instruc[NB_OPERAND - 1 : 0];
 
     // Program Counter
