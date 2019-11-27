@@ -33,7 +33,7 @@ module CPU
         .NB_OPERAND (NB_OPERAND),
         .NB_ADDR    (NB_ADDR)
     )
-    tb_control (
+    u_control (
         // INPUTS
         .i_clk      (i_clk),
         .i_rst      (i_rst),
@@ -52,11 +52,12 @@ module CPU
     //Modulo para pasarle los estimulos del banco de pruebas.
     datapath #(
         .NB_DATA    (NB_DATA),
+        .NB_OPCODE  (NB_OPCODE),
         .NB_OPERAND (NB_OPERAND),
-        .NB_ADDR    (NB_ADDR),
-        .NB_OPCODE  (NB_OPCODE)
+        .NB_ADDR    (NB_ADDR)
+        
     )
-    tb_datapath (
+    u_datapath (
         .i_clk          (i_clk),
         .i_rst          (i_rst),
         .i_SelA         (SelA),
