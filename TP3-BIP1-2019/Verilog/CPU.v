@@ -1,24 +1,4 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 11/26/2019 10:12:19 PM
-// Design Name: 
-// Module Name: CPU
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
-
 
 module CPU
     #( parameter    NB_INSTRUC      = 16,
@@ -34,7 +14,6 @@ module CPU
         input wire [NB_INSTRUC - 1 : 0]     i_instruc,
         input wire [NB_DATA - 1 : 0]        i_data_memory,
         // OUTPUTS
-        output wire [NB_OPERAND - 1 : 0]    o_operand,
         output wire [NB_ADDR -1 : 0]        o_addr_program_mem,
         output wire [NB_ADDR - 1 : 0]       o_addr_data_mem,
         output wire [NB_DATA - 1 : 0]       o_data_memory,
