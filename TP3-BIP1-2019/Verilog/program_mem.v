@@ -53,7 +53,7 @@ module program_mem #(
   generate
     if (INIT_FILE != "") begin: use_init_file           //Inicializa la memoria con un archivo
       initial
-        $readmemh(INIT_FILE, BRAM, 0, RAM_DEPTH-1);
+        $readmemb(INIT_FILE, BRAM, 0, RAM_DEPTH-1);
     end else begin: init_bram_to_zero                   //Inicializa la memoria en cero
       integer ram_index;
       initial

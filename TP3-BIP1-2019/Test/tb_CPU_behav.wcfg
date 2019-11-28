@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="6333333fs"></ZoomStartTime>
-      <ZoomEndTime time="44333334fs"></ZoomEndTime>
-      <Cursor1Time time="35000000fs"></Cursor1Time>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="38000001fs"></ZoomEndTime>
+      <Cursor1Time time="13000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="215"></NameColumnWidth>
-      <ValueColumnWidth column_width="78"></ValueColumnWidth>
+      <ValueColumnWidth column_width="74"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="18" />
+   <WVObjectSize size="20" />
    <wvobject type="logic" fp_name="/tb_CPU/i_clk">
       <obj_property name="ElementShortName">i_clk</obj_property>
       <obj_property name="ObjectShortName">i_clk</obj_property>
@@ -76,7 +76,13 @@
       <obj_property name="ElementShortName">o_RdRam</obj_property>
       <obj_property name="ObjectShortName">o_RdRam</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb_CPU/tb_CPU/tb_control/opcode">
+   <wvobject type="array" fp_name="/tb_CPU/tb_CPU/u_datapath/acc">
+      <obj_property name="ElementShortName">acc[15:0]</obj_property>
+      <obj_property name="ObjectShortName">acc[15:0]</obj_property>
+      <obj_property name="CustomSignalColor">#00FF7F</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_CPU/tb_CPU/u_control/opcode">
       <obj_property name="ElementShortName">opcode[4:0]</obj_property>
       <obj_property name="ObjectShortName">opcode[4:0]</obj_property>
       <obj_property name="CustomSignalColor">#FFFF00</obj_property>
@@ -112,11 +118,12 @@
       <obj_property name="CustomSignalColor">#FF0080</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb_CPU/tb_CPU/tb_datapath/acc">
-      <obj_property name="ElementShortName">acc[15:0]</obj_property>
-      <obj_property name="ObjectShortName">acc[15:0]</obj_property>
-      <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   <wvobject type="logic" fp_name="/tb_CPU/tb_CPU/u_control/WrPC">
+      <obj_property name="ElementShortName">WrPC</obj_property>
+      <obj_property name="ObjectShortName">WrPC</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_CPU/tb_CPU/u_control/pc">
+      <obj_property name="ElementShortName">pc[10:0]</obj_property>
+      <obj_property name="ObjectShortName">pc[10:0]</obj_property>
    </wvobject>
 </wave_config>
