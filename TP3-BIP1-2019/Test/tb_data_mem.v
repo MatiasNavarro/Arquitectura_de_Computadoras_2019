@@ -43,33 +43,59 @@ module tb_data_mem();
         wea     = 1'b0;
         i_addr  = 0;
         i_data  = 0;
+
+        //Leo el primer dato
+        #2 i_addr  = 11'b00000000000;
+        #2 i_addr  = 11'b00000000001;
+        #2 i_addr  = 11'b00000000010;
+        #2 i_addr  = 11'b00000000011;
+        #2 i_addr  = 11'b00000000100;
+        #2 i_addr  = 11'b00000000101;
+        #2 i_addr  = 11'b00000000110;
+        #2 i_addr  = 11'b00000000111;
+        #2 i_addr  = 11'b00000001000;
+        #2 i_addr  = 11'b00000001001;
+        #2 i_addr  = 11'b00000001010;
+        #2 i_addr  = 11'b00000001011;
+        #2 i_addr  = 11'b00000001100;
+        #2 i_addr  = 11'b00000001101;
+        #2 i_addr  = 11'b00000001110;
+        #2 i_addr  = 11'b00000001111;
         
-        #100
-        i_data  = 16'h000f;         //Dato a guardar
+
+        #2
+        i_addr  = 11'b00000000000;
+        i_data  = 16'h0fff;         //Dato a guardar
         wea     = 1;                //Ahora escribo el dato 
-        #10 
+        #2
         wea     = 0;                //Wr = off
         
-        #100
-        i_addr  = 11'b00000000010;  //Cambio la direccion de memoria
-        i_data  = 16'h00ff;         //Dato a guardar
+        #2
+        i_addr  = 11'b00000000001;  //Cambio la direccion de memoria
+        i_data  = 16'h0f0f;         //Dato a guardar
         wea     = 1;                //Ahora escribo el dato
-        #10
+        #2
         wea     = 0;                //Wr = off
         
-        #100
-        i_addr  = 11'b00000000000;  //Leo el primer dato
-        #100
-        i_addr  = 11'b00000000010;  //Leo el segundo dato
+        #2
+        i_addr  = 11'b00000000010;  //Cambio la direccion de memoria
+        i_data  = 16'h0f05;         //Dato a guardar
+        wea     = 1;                //Ahora escribo el dato
+        #2
+        wea     = 0;                //Wr = off
         
-            
+        #2 i_addr  = 11'b00000000000;
+        #2 i_addr  = 11'b00000000001;
+        #2 i_addr  = 11'b00000000010;
+        #2 i_addr  = 11'b00000000011;
+        #2 i_addr  = 11'b00000000100;
         
-        #100 $finish;
+        #1 $finish;
         
         
     end
     
-    always #2.5 i_clk = ~i_clk;                     //Simulacion del clock
+    always #1 i_clk = ~i_clk;                     //Simulacion del clock
 
     data_mem #(
         .RAM_WIDTH          (RAM_WIDTH),

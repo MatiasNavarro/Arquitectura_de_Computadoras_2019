@@ -66,7 +66,6 @@ module top_bip1
         wire    [NB_DATA-1:0]       in_data_memory;
         wire    [NB_DATA-1:0]       out_data_memory;
         //Wire CPU 
-        wire    [NB_DATA - 1 : 0]   i_data_memory;
         //Wire Program Memory
         //Wire Data Memory
         //Wire UART
