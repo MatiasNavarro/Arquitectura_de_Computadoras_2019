@@ -1,24 +1,4 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 11/25/2019 09:40:54 PM
-// Design Name: 
-// Module Name: top_bip1
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
-
 
 module top_bip1
     #(parameter //CPU
@@ -32,13 +12,13 @@ module top_bip1
                 RAM_WIDTH_PROGRAM       = 16,
                 RAM_DEPTH_PROGRAM       = 2048,
                 RAM_PERFORMANCE_PROGRAM = "LOW_LATENCY",
-                INIT_FILE_PROGRAM       = "",
+                INIT_FILE_PROGRAM       = "/home/martin/git/Arquitectura_de_Computadoras_2019/TP3-BIP1-2019/Test/init_ram_program.mem",
                 
                 //DATA MEMORY
                 RAM_WIDTH_DATA          = 16,
                 RAM_DEPTH_DATA          = 1024, 
                 RAM_PERFORMANCE_DATA    = "LOW_LATENCY",
-                INIT_FILE_DATA          = "" 
+                INIT_FILE_DATA          = "/home/martin/git/Arquitectura_de_Computadoras_2019/TP3-BIP1-2019/Test/init_ram_data.mem" 
                                 
 //                //UART
 //                DBIT = 8,                   // # data bits
@@ -53,8 +33,9 @@ module top_bip1
         input   i_clk,
         input   i_rst,
         //Uart
-        input   RsRx,
-        output  RsTx
+//        input   RsRx,
+//        output  RsTx,
+        output wire [NB_DATA - 1 : 0] o_led
       );
         
         //Wire CPU - Memory
@@ -72,6 +53,8 @@ module top_bip1
 //        wire    i_uart;
 //        wire    o_uart;
         
+        assign o_led [8 - 1 : 0] = in_data_memory [8-1:0];
+        assign o_led [NB_DATA - 1 : 8] = addr_program_mem [8-1:0];
         
         //CPU
         CPU #(

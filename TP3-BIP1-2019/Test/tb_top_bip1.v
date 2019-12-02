@@ -31,12 +31,12 @@ module tb_top_bip1();
     parameter RAM_WIDTH_PROGRAM       = 16;
     parameter RAM_DEPTH_PROGRAM       = 2048;
     parameter RAM_PERFORMANCE_PROGRAM = "LOW_LATENCY";
-    parameter INIT_FILE_PROGRAM       = "/home/martinaagaard/git/Arquitectura_de_Computadoras_2019/TP3-BIP1-2019/Test/init_ram_program.mem";
+    parameter INIT_FILE_PROGRAM       = "/home/martin/git/Arquitectura_de_Computadoras_2019/TP3-BIP1-2019/Test/init_ram_program.mem";
     // DATA MEMORY
     parameter RAM_WIDTH_DATA          = 16;
     parameter RAM_DEPTH_DATA          = 1024; 
     parameter RAM_PERFORMANCE_DATA    = "LOW_LATENCY";
-    parameter INIT_FILE_DATA          = "/home/martinaagaard/git/Arquitectura_de_Computadoras_2019/TP3-BIP1-2019/Test/init_ram_data.mem";
+    parameter INIT_FILE_DATA          = "/home/martin/git/Arquitectura_de_Computadoras_2019/TP3-BIP1-2019/Test/init_ram_data.mem";
 
     //inputs
     reg i_clk;
