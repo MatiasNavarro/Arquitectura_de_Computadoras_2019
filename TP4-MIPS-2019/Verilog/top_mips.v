@@ -40,11 +40,8 @@ module top_mips
     assign o_led [8 - 1 : 0] = in_data_memory [8-1:0];
     assign o_led [NB_DATA - 1 : 8] = addr_program_mem [8-1:0];
 
-    //CPU
     seg_instruction_fetch #(
         .NB_INSTRUC (NB_INSTRUC),
-        .NB_OPCODE  (NB_OPCODE),
-        .NB_OPERAND (NB_OPERAND),
         .NB_ADDR    (NB_ADDR),
         .NB_DATA    (NB_DATA),
         .RAM_WIDTH_PROGRAM 			(RAM_WIDTH_PROGRAM),
@@ -57,14 +54,11 @@ module top_mips
         //Input
         .i_clk              (i_clk),
         .i_rst              (i_rst),
-        .i_instruc          (instruc),
-        .i_data_memory      (out_data_memory),
+        .i_PC_branch        (i_PC_branch),
+        .i_PCSrc            (i_PCSrc),
         //Output
-        .o_addr_program_mem (addr_program_mem),
-        .o_addr_data_mem    (addr_data_mem),
-        .o_data_memory      (in_data_memory),
-        .o_WrRam            (WrRam),
-        .o_RdRam            (RdRam)
+        .o_instruction      (o_instruction),
+        .o_PC               (o_PC)
     );
 
     seg_execute #(
