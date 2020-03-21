@@ -1,66 +1,78 @@
 `timescale 1ns / 1ps
 
 module control
-    #( parameter    NB_INSTRUC      = 16,
-                    NB_OPCODE       = 5,
-                    NB_OPERAND      = 11,
-                    NB_ADDR         = 11
-    )
+    #(
+        parameter NB_OPCODE     = 6,
+        parameter NB_ALUOP      = 2
+     )
     (
-        // INPUTS
-        input wire                         i_clk,
-        input wire                         i_rst,
-        input wire [NB_INSTRUC - 1 : 0]    i_instruc,
-        // OUTPUTS
-        output wire [NB_OPERAND - 1 : 0]    o_operand,
-        output wire [NB_ADDR -1 : 0]        o_addr,
-        // Instruction decoder OUTPUTS
-        output wire [1 : 0]                 o_SelA,
-        output wire                         o_SelB,
-        output wire                         o_WrAcc,
-        output wire                         o_op,       //operation
-        output wire                         o_WrRam,
-        output wire                         o_RdRam
+        //Inputs
+        input                   i_clk,
+        input                   i_rst,
+        input   [NB_OPCODE-1:0] i_opcode,
+        //Outputs
+        output reg                 o_RegDst,
+        output reg                 o_Branch,
+        output reg                 o_MemRead,
+        output reg                 o_MemtoReg,
+        output reg [NB_ALUOP-1:0]  o_ALUOp,
+        output reg                 o_MemWrite,
+        output reg                 o_ALUSrc,
+        output reg                 o_RegWrite
     );
-
-    wire [NB_OPCODE - 1 : 0] opcode;
-    wire WrPC;
-
-    reg [NB_ADDR - 1 : 0] pc;
-
-    assign opcode = i_instruc[NB_INSTRUC - 1 -: NB_OPCODE];
-    assign o_operand[NB_OPERAND - 1 : 0] = i_instruc[NB_OPERAND - 1 : 0];
-
-    // Program Counter
-
-    always @(posedge i_clk) begin
-        if (!i_rst) begin
-            pc <= {NB_ADDR{1'b0}};
-        end
-        else if (WrPC) begin
-            pc <= pc + 1'b1;
-        end
+    
+    always@(*)
+    begin
+        case(i_opcode)
+            6'b 000000: // R-Fotmat
+            begin
+                o_RegDst      = 1;
+                o_ALUSrc      = 0;
+                o_MemtoReg    = 0;
+                o_RegWrite    = 1;
+                o_MemRead     = 0;
+                o_MemWrite    = 0;
+                o_Branch      = 0;
+                o_ALUOp       = 2'b10;
+             end
+                
+            6'b 100011: //LW
+            begin
+                o_RegDst      = 0;
+                o_ALUSrc      = 1;
+                o_MemtoReg    = 1;
+                o_RegWrite    = 1;
+                o_MemRead     = 1;
+                o_MemWrite    = 0;
+                o_Branch      = 0;
+                o_ALUOp       = 2'b00;
+            end
+                            
+            6'b 101011: //SW
+            begin
+                o_RegDst      = 0;
+                o_ALUSrc      = 1;
+                o_MemtoReg    = 0;
+                o_RegWrite    = 0;
+                o_MemRead     = 0;
+                o_MemWrite    = 1;
+                o_Branch      = 0;
+                o_ALUOp       = 2'b00;
+            end
+                            
+            6'b 000100: //BEQ
+            begin
+                o_RegDst      = 0;
+                o_ALUSrc      = 0;
+                o_MemtoReg    = 0;
+                o_RegWrite    = 0;
+                o_MemRead     = 0;
+                o_MemWrite    = 0;
+                o_Branch      = 1;
+                o_ALUOp       = 2'b01;
+            end
+            
+        endcase
     end
-
-    assign o_addr = pc;
-
-    // MODULO - Instruction decoder
-
-    instruction_decoder #(
-        .NB_OPCODE  (NB_OPCODE)
-    )
-    u_instruction_decoder (
-        // INPUTS
-        .i_rst      (i_rst),
-        .i_opcode   (opcode),
-        // OUTPUTS
-        .o_WrPC     (WrPC),
-        .o_SelA     (o_SelA),
-        .o_SelB     (o_SelB),
-        .o_WrAcc    (o_WrAcc),
-        .o_op       (o_op),
-        .o_WrRam    (o_WrRam),
-        .o_RdRam    (o_RdRam)
-    );
 
 endmodule
