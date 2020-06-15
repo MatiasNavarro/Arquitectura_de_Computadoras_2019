@@ -9,7 +9,7 @@ module tb_seg_instruction_fetch();
     parameter RAM_WIDTH_PROGRAM       = 32;
     parameter RAM_DEPTH_PROGRAM       = 2048;
     parameter RAM_PERFORMANCE_PROGRAM = "LOW_LATENCY";
-    parameter INIT_FILE_PROGRAM       = "/home/martin/git/Arquitectura_de_Computadoras_2019/TP4-MIPS-2019/Test/init_mem_instruction_fetch.mem";
+    parameter INIT_FILE_PROGRAM       = "C:\\Users\\astar\\git\\Arquitectura_de_Computadoras_2019\\TP4-MIPS-2019\\Test\\init_mem_instruction_fetch.mem";
     
     // INPUTS
     reg                          i_clk;
