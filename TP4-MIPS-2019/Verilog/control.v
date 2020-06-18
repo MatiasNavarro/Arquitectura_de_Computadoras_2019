@@ -2,77 +2,89 @@
 
 module control
     #(
+        parameter NB_EXC_BUS    = 3,
+        parameter NB_MEM_BUS    = 3,
         parameter NB_OPCODE     = 6,
-        parameter NB_ALUOP      = 2
+        parameter NB_ALU_CODE   = 4,
+        parameter NB_ALUOP      = 2,
+        parameter NB_WB_BUS     = 2
      )
     (
         //Inputs
-        input                   i_clk,
-        input                   i_rst,
-        input   [NB_OPCODE-1:0] i_opcode,
-        //Outputs
-        output reg                 o_RegDst,
-        output reg                 o_Branch,
-        output reg                 o_MemRead,
-        output reg                 o_MemtoReg,
-        output reg [NB_ALUOP-1:0]  o_ALUOp,
-        output reg                 o_MemWrite,
-        output reg                 o_ALUSrc,
-        output reg                 o_RegWrite
+        input                           i_rst,
+        input       [NB_OPCODE-1:0]     i_opcode,
+        input       [NB_OPCODE-1:0]     i_funct,
+        //Outputs 
+        //Organiza las salidas en buses, para mayor prolijidad 
+        output reg  [NB_WB_BUS-1:0]     o_wb_bus,   // [ RegWrite, MemtoReg]
+        output reg  [NB_MEM_BUS-1:0]    o_mem_bus,  // [ SB, SH, LB, LH, Unsigned, Branch, MemRead, MemWrite ]
+        output reg  [NB_EXC_BUS-1:0]    o_exc_bus,  // [ Jump&Link, JALOnly, RegDst, ALUSrc[1:0] , jump, jump_register, ALUCode [3:0] ]
+        output reg  [NB_ALU_CODE-1:0]   o_ALUCode
     );
+    
+    reg     [NB_ALUOP-1:0]      ALUOp;
+    wire    [NB_ALU_CODE-1:0]   ALUCode;
+    
+    ALU_Control #(
+        .NB_OPCODE      (NB_OPCODE),
+        .NB_ALU_CODE    (NB_ALU_CODE),
+        .NB_ALUOP       (NB_ALUOP)
+    )
+    u_ALU_Control(
+        .i_funct    (i_funct),
+        .i_ALUOp    (ALUOp),
+        .o_ALUCode  (ALUCode)
+    );
+    
+     
     
     always@(*)
     begin
-        case(i_opcode)
-            6'b 000000: // R-Fotmat
-            begin
-                o_RegDst      = 1;
-                o_ALUSrc      = 0;
-                o_MemtoReg    = 0;
-                o_RegWrite    = 1;
-                o_MemRead     = 0;
-                o_MemWrite    = 0;
-                o_Branch      = 0;
-                o_ALUOp       = 2'b10;
-             end
-                
-            6'b 100011: //LW
-            begin
-                o_RegDst      = 0;
-                o_ALUSrc      = 1;
-                o_MemtoReg    = 1;
-                o_RegWrite    = 1;
-                o_MemRead     = 1;
-                o_MemWrite    = 0;
-                o_Branch      = 0;
-                o_ALUOp       = 2'b00;
-            end
-                            
-            6'b 101011: //SW
-            begin
-                o_RegDst      = 0;
-                o_ALUSrc      = 1;
-                o_MemtoReg    = 0;
-                o_RegWrite    = 0;
-                o_MemRead     = 0;
-                o_MemWrite    = 1;
-                o_Branch      = 0;
-                o_ALUOp       = 2'b00;
-            end
-                            
-            6'b 000100: //BEQ
-            begin
-                o_RegDst      = 0;
-                o_ALUSrc      = 0;
-                o_MemtoReg    = 0;
-                o_RegWrite    = 0;
-                o_MemRead     = 0;
-                o_MemWrite    = 0;
-                o_Branch      = 1;
-                o_ALUOp       = 2'b01;
-            end
+        if(!i_rst) 
+        begin
+            ALUOp       = 2'b00;
+            o_wb_bus    = 2'b00;
+            o_mem_bus   = 3'b000;
+            o_exc_bus   = 3'b000;
+        end
+        else
+        begin
+            case(i_opcode)
+                6'b 000000: // R-Type
+                begin
+                    ALUOp       = 2'b10;
+                    o_wb_bus    = 2'b10;
+                    o_mem_bus   = 3'b000;
+                    o_exc_bus   = 3'b100;
+                 end
+                    
+                6'b 100011: //LW (I-Type)
+                begin
+                    ALUOp       = 2'b00;
+                    o_wb_bus    = 2'b11;
+                    o_mem_bus   = 3'b010;
+                    o_exc_bus   = 3'b001;
+                end
+                                
+                6'b 101011: //SW (I-Type)
+                begin
+                    ALUOp       = 2'b00;
+                    o_wb_bus    = 2'b00;
+                    o_mem_bus   = 3'b001;
+                    o_exc_bus   = 3'b001;
+                end
+                                
+                6'b 000100: //BEQ (J-Type) 
+                begin
+                    ALUOp       = 2'b01;
+                    o_wb_bus    = 2'b00;
+                    o_mem_bus   = 3'b100;
+                    o_exc_bus   = 3'b000;
+                end
+            endcase
             
-        endcase
+            o_ALUCode = ALUCode;
+        end
     end
 
 endmodule

@@ -40,7 +40,7 @@ module registers
     
     always@(posedge i_clk)
     begin
-        if(~i_rst)
+        if(!i_rst)
         begin
             o_read_data_1 <= {NB_DATA{1'b0}};
             o_read_data_2 <= {NB_DATA{1'b0}};
