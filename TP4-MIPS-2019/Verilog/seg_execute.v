@@ -18,15 +18,15 @@ module seg_execute
         input wire [NB_DATA - 1 : 0]        i_read_data_1,
         input wire [NB_DATA - 1 : 0]        i_read_data_2,
         input wire [NB_ADDR - 1 : 0]        i_instruction_15_0,
-        input wire [NB_DATA - 1 : 0]        i_instruction_20_16,
-        input wire [NB_DATA - 1 : 0]        i_instruction_15_11,
+        input wire [20 - 16 : 0]            i_instruction_20_16,
+        input wire [15 - 11 : 0]            i_instruction_15_11,
         input wire [NB_CTRL_WB + NB_CTRL_M + NB_CTRL_EX - 1 : 0] i_control,
         // OUTPUTS
         output wire [NB_ADDR - 1 : 0]       o_PC,
         output wire [NB_DATA - 1 : 0]       o_ALU_result,
         output wire                         o_ALU_zero,
         output wire [NB_DATA - 1 : 0]       o_read_data_2,
-        output reg  [NB_DATA - 1 : 0]       o_instruction_20_16_o_15_11,
+        output reg  [20 - 16 : 0]           o_instruction_20_16_o_15_11,
         output wire [NB_CTRL_WB + NB_CTRL_M - 1 : 0] o_control
     );
 
@@ -51,9 +51,9 @@ module seg_execute
     end
 
     assign o_PC = reg_PC;
-    assign RegDst           = i_control[NB_CTRL_WB + NB_CTRL_M + NB_CTRL_EX - (NB_CTRL_EX)];
-    assign ALUOp            = i_control[NB_CTRL_WB + NB_CTRL_M + NB_CTRL_EX - (NB_CTRL_EX + 1) +: NB_OP - 1];
-    assign ALUSrc           = i_control[NB_CTRL_WB + NB_CTRL_M + NB_CTRL_EX - (NB_CTRL_EX + 1 + NB_OP)];
+    assign RegDst           = i_control[NB_CTRL_WB + NB_CTRL_M];
+    assign ALUOp            = i_control[NB_CTRL_WB + NB_CTRL_M + 2 : NB_CTRL_WB + NB_CTRL_M + 1];
+    assign ALUSrc           = i_control[NB_CTRL_WB + NB_CTRL_M +  1 + NB_OP];
     assign funct            = i_instruction_15_0[NB_FUNC - 1 : 0];
     assign o_read_data_2    = i_read_data_2;
     assign o_control        = i_control[NB_CTRL_WB + NB_CTRL_M - 1 : 0];

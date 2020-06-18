@@ -2,7 +2,7 @@
 
 module tb_seg_execute_alu();
   
-    localparam NB_DATA     = 10;
+    localparam NB_DATA     = 5;
     localparam NB_ALUCTL   = 4;
 
     // INPUTS
@@ -35,7 +35,7 @@ module tb_seg_execute_alu();
     end
 
     always begin
-    #10
+    #1
         i_data_a = $random;
         i_data_b = $random;
     end
