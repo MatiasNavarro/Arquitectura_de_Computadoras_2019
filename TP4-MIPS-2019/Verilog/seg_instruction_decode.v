@@ -5,6 +5,7 @@ module seg_instruction_decode
         parameter NB_INSTRUC    = 32,
         parameter NB_DATA       = 32,
         parameter NB_REG        = 32,
+        parameter NB_ADDRESS    = 16,
         parameter NB_EXC_BUS    = 3,
         parameter NB_MEM_BUS    = 3,
         parameter NB_OPCODE     = 6,
@@ -29,30 +30,64 @@ module seg_instruction_decode
     wire [NB_ADDR-1:0]      read_register_1;
     wire [NB_ADDR-1:0]      read_register_2;
     wire [NB_ADDR-1:0]      write_register;
-    //wire [NB_DATA-1:0]      write_data;
+    wire [NB_REG-1:0]       addr_ext;
     
     //Outputs
     wire [NB_DATA-1:0]      read_data_1;
     wire [NB_DATA-1:0]      read_data_2;
     
     
-    //Control Wires
+    //Control bus
     wire    [NB_WB_BUS-1:0]     wb_bus; 
     wire    [NB_MEM_BUS-1:0]    mem_bus;
     wire    [NB_EXC_BUS-1:0]    exc_bus;
-//    wire                    RegWrite;
-//    wire                    RegDst;
-//    wire                    Branch;
-//    wire                    MemRead;
-//    wire                    MemtoReg;
-//    wire                    MemWrite;
-//    wire                    ALUSrc;
-//    wire [NB_ALUOP-1:0]     ALUOp;
-//    wire [NB_OPCODE-1:0]    opcode;
+    //Instruction 
+    wire    [NB_OPCODE-1:0]     opcode;
+    wire    [NB_ADDR-1:0]       rs;
+    wire    [NB_ADDR-1:0]       rt;
+    wire    [NB_ADDR-1:0]       rd;
+    wire    [NB_ADDR-1:0]       shamt;
+    wire    [NB_OPCODE-1:0]     funct;
+    wire    [NB_ADDRESS-1:0]    address;        
+    //Control wires
+    wire                        RegWrite;
+    wire                        RegDst;
+    wire                        Branch;
+    wire                        MemRead;
+    wire                        MemtoReg;
+    wire                        MemWrite;
+    wire                        ALUSrc;
+    //wire    [NB_ALUOP-1:0]      ALUOp;
+    
+    
+    //Control wires
+    //WbBus
+    assign RegWrite = wb_bus[1];
+    assign MemtoReg = wb_bus[0];
+    //MemBus
+    assign Branch   = mem_bus[2];
+    assign MemRead  = mem_bus[1];
+    assign MemWrite = mem_bus[0];
+    //ExcBus
+    assign RegDst   = exc_bus[2];
+    assign ALUSrc   = exc_bus[1:0];
+    //Instruction
+    assign opcode   = i_instruc[31:26];
+    assign rs       = i_instruc[25:21];
+    assign rt       = i_instruc[20:16];
+    assign rd       = i_instruc[15:11];
+    assign shamt    = i_instruc[10:6];
+    assign funct    = i_instruc[5:0];
+    assign address  = i_instruc[15:0];
+    
+    
 
-    assign write_register   = (exc_bus[2]) ? i_instruc[20:16] : i_instruc[15:11]; //RegDst = 0 -> 20-16 | RegDst = 1 -> 15-11
+    assign write_register   = (RegDst) ? rt : rd; //RegDst = 0 -> 20-16 | RegDst = 1 -> 15-11
+    //Outputs ID
     assign o_read_data_1    = read_data_1;
     assign o_read_data_2    = read_data_2;
+    //Extension de signo
+    assign addr_ext         = {{NB_ADDRESS{address[15]}}, address[15:0]};
 
     
     control #(
@@ -64,8 +99,8 @@ module seg_instruction_decode
         .NB_WB_BUS      (NB_WB_BUS)
         )
     u_control(
-        .i_opcode       (i_instruc[(NB_INSTRUC-1):(NB_INSTRUC-NB_OPCODE)]),
-        .i_funct        (i_instruc[(NB_OPCODE-1):0]),
+        .i_opcode       (opcode),
+        .i_funct        (funct),
         .o_wb_bus       (wb_bus),
         .o_mem_bus      (mem_bus),
         .o_exc_bus      (exc_bus)
@@ -79,9 +114,9 @@ module seg_instruction_decode
     u_registers(
         .i_clk              (i_clk),
         .i_rst              (i_rst),
-        .i_RegWrite         (wb_bus[1]),
-        .i_read_register_1  (i_instruc[25:21]),
-        .i_read_register_2  (i_instruc[20:16]),
+        .i_RegWrite         (RegWrite),
+        .i_read_register_1  (rs),
+        .i_read_register_2  (rt),
         .i_write_register   (write_register),
         .i_write_data       (i_write_data),
         .o_read_data_1      (read_data_1),

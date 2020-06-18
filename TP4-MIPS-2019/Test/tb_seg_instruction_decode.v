@@ -47,13 +47,13 @@ wire [NB_DATA_01 - 1 : 0] o_read_data_2_01;
 initial begin
     i_clk_01 = 1'b0;
     i_rst_01 = 1'b0;
-    i_write_data_01 = 32'h0000000a;
+    i_write_data_01 = 32'h0000abcd;
     
     #5 i_rst_01 = 1'b1;
     
     #20 i_instruc_01 = 32'h01094020;    //R-Type
-    #20 i_instruc_01 = 32'h8c094020;    //LW
-    #20 i_instruc_01 = 32'hac080005;    //SW
+    #20 i_instruc_01 = 32'h8c034020;    //LW
+    #20 i_instruc_01 = 32'hac040005;    //SW
     #20 i_instruc_01 = 32'h10080005;    //J-Type
     
     #10 $finish;
