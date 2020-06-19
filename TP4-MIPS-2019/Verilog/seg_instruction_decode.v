@@ -16,21 +16,30 @@ module seg_instruction_decode
     )
     (
         //Entradas 
-        input                   i_clk,
-        input                   i_rst,
-        input [NB_INSTRUC-1:0]  i_instruc,
-        input [NB_DATA-1:0]     i_write_data,
+        input wire                      i_clk,
+        input wire                      i_rst,
+        input wire [NB_INSTRUC-1:0]     i_instruc,
+        input wire [NB_DATA-1:0]        i_write_data,
         
         //Salidas
-        output [NB_DATA-1:0]    o_read_data_1,
-        output [NB_DATA-1:0]    o_read_data_2   
+        output wire [NB_DATA-1:0]       o_read_data_1,
+        output wire [NB_DATA-1:0]       o_read_data_2,
+        output wire [NB_DATA-1:0]       o_addr_ext,
+        
+        //Control outputs 
+        output wire                     o_Branch,
+        output wire                     o_MemRead,
+        output wire                     o_MemtoReg,
+        output wire                     o_MemWrite,
+        output wire                     o_ALUSrc,
+        output wire [NB_ALU_CODE-1:0]   o_ALUCode
     );
 
     //Register Wires 
     wire [NB_ADDR-1:0]      read_register_1;
     wire [NB_ADDR-1:0]      read_register_2;
     wire [NB_ADDR-1:0]      write_register;
-    wire [NB_REG-1:0]       addr_ext;
+    //wire [NB_REG-1:0]       addr_ext;
     
     //Outputs
     wire [NB_DATA-1:0]      read_data_1;
@@ -87,7 +96,14 @@ module seg_instruction_decode
     assign o_read_data_1    = read_data_1;
     assign o_read_data_2    = read_data_2;
     //Extension de signo
-    assign addr_ext         = {{NB_ADDRESS{address[15]}}, address[15:0]};
+    assign o_addr_ext         = {{NB_ADDRESS{address[15]}}, address[15:0]};
+    //Control outputs 
+    assign o_Branch     = Branch;
+    assign o_MemRead    = MemRead;
+    assign o_MemtoReg   = MemtoReg;
+    assign o_MemWrite   = MemWrite;
+    assign o_ALUSrc     = ALUSrc;
+    //assign o_ALUCode    = ALUCode;
 
     
     control #(
@@ -103,7 +119,8 @@ module seg_instruction_decode
         .i_funct        (funct),
         .o_wb_bus       (wb_bus),
         .o_mem_bus      (mem_bus),
-        .o_exc_bus      (exc_bus)
+        .o_exc_bus      (exc_bus),
+        .o_ALUCode      (o_ALUCode)
     );
     
     registers #(
