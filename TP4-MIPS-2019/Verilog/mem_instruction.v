@@ -1,26 +1,23 @@
 `timescale 1ns / 1ps
 
 module mem_instruction #(
-  parameter RAM_WIDTH = 16,                       // Specify RAM data width
+  parameter RAM_WIDTH = 32,                       // Specify RAM data width
   parameter RAM_DEPTH = 2048,                     // Specify RAM depth (number of entries)
   parameter RAM_PERFORMANCE = "LOW_LATENCY",      // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
   parameter INIT_FILE = ""                        // Specify name/location of RAM initialization file if using one (leave blank if not)
 ) (
-  input [clogb2(RAM_DEPTH-1)-1:0] i_addr,  // Address bus, width determined from RAM_DEPTH
-  //input [RAM_WIDTH-1:0] dina,           // RAM input data
-  input i_clk,                           // Clock
-//  input wea,                            // Write enable
-//  input ena,                            // RAM Enable, for additional power savings, disable port when not in use
-//  input rsta,                           // Output reset (does not affect memory contents)
-//  input regcea,                         // Output register enable
-  output [RAM_WIDTH-1:0] o_data          // RAM output data
+  //input [clogb2(RAM_DEPTH-1)-1:0] i_addr, // Address bus, width determined from RAM_DEPTH
+  //Entradas
+  input [RAM_WIDTH-1:0]     i_addr,
+  input [RAM_WIDTH-1:0]     i_dina,     // RAM input data
+  input                     i_clk,      // Clock
+  input                     i_wea,      // Write enable
+  input                     i_ena,      // RAM Enable, for additional power savings, disable port when not in use
+  input                     i_rsta,     // Output reset (does not affect memory contents)
+  input                     i_regcea,   // Output register enable
+  //Salidas
+  output [RAM_WIDTH-1:0]    o_data      // RAM output data
 );
-  
-  wire [RAM_WIDTH-1:0] dina = 0;         // RAM input data
-  wire wea      = 0;                    // Write enable
-  wire ena      = 1;                    // RAM Enable, for additional power savings, disable port when not in use
-  wire rsta     = 0;                    // Output reset (does not affect memory contents)
-  wire regcea   = 1;                   // Output register enable
   
   reg [RAM_WIDTH-1:0] BRAM [RAM_DEPTH-1:0];
   reg [RAM_WIDTH-1:0] ram_data = {RAM_WIDTH{1'b0}};
@@ -39,9 +36,9 @@ module mem_instruction #(
   endgenerate
 
   always @(negedge i_clk)
-    if (ena)
-      if (wea)
-        BRAM[i_addr] <= dina;
+    if (i_ena)
+      if (i_wea)
+        BRAM[i_addr] <= i_dina;
       else
         ram_data <= BRAM[i_addr];
 
@@ -59,9 +56,9 @@ module mem_instruction #(
       reg [RAM_WIDTH-1:0] douta_reg = {RAM_WIDTH{1'b0}};
 
       always @(posedge i_clk)
-        if (rsta)
+        if (i_rsta)
           douta_reg <= {RAM_WIDTH{1'b0}};
-        else if (regcea)
+        else if (i_regcea)
           douta_reg <= ram_data;
 
       assign o_data = douta_reg;

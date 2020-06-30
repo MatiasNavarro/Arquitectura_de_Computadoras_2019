@@ -1,81 +1,97 @@
 `timescale 1ns / 1ps
 
 module seg_execute
-    #( parameter    NB_ADDR         = 32,
-                    NB_DATA         = 32,
-                    NB_OP           = 2,
-                    NB_ALUCTL       = 4,
-                    NB_FUNC         = 6,
-                    NB_CTRL_WB      = 2,
-                    NB_CTRL_M       = 3,
-                    NB_CTRL_EX      = 4
+    #( parameter    LEN             = 32,
+       parameter    NB_ALUOP        = 2,
+       parameter    NB_ALUCTL       = 4,
+       parameter    NB_ADDR         = 5,
+       parameter    NB_FUNC         = 6,
+       parameter    NB_CTRL_WB      = 2,
+       parameter    NB_CTRL_M       = 3,
+       parameter    NB_CTRL_EX      = 3
     )
     (
         // INPUTS
         input wire                          i_clk,
         input wire                          i_rst,
-        input wire [NB_ADDR - 1 : 0]        i_PC,
-        input wire [NB_DATA - 1 : 0]        i_read_data_1,
-        input wire [NB_DATA - 1 : 0]        i_read_data_2,
-        input wire [NB_ADDR - 1 : 0]        i_instruction_15_0,
-        input wire [20 - 16 : 0]            i_instruction_20_16,
-        input wire [15 - 11 : 0]            i_instruction_15_11,
-        input wire [NB_CTRL_WB + NB_CTRL_M + NB_CTRL_EX - 1 : 0] i_control,
+        input wire [LEN - 1 : 0]            i_PC,
+        input wire [LEN - 1 : 0]            i_read_data_1,
+        input wire [LEN - 1 : 0]            i_read_data_2,
+        input wire [LEN - 1 : 0]            i_addr_ext,     //instruction[15:0] extendida a 32 bits
+        input wire [NB_ADDR - 1 : 0]        i_rt,           //instruction[20:16]
+        input wire [NB_ADDR - 1 : 0]        i_rd,           //instruction[15:11]
+        //Control input
+        input wire [NB_CTRL_WB - 1 : 0]     i_ctrl_wb_bus,
+        input wire [NB_CTRL_M - 1 :  0]     i_ctrl_mem_bus,
+        input wire [NB_CTRL_EX - 1 : 0]     i_ctrl_exc_bus,
         // OUTPUTS
-        output wire [NB_ADDR - 1 : 0]       o_PC,
-        output wire [NB_DATA - 1 : 0]       o_ALU_result,
+        output wire [LEN - 1 : 0]           o_PC_branch,        //Branch o Jump
+        output wire [LEN - 1 : 0]           o_ALU_result,       //Address (Data Memory)
+        output wire [LEN - 1 : 0]           o_write_data,
+        output wire [NB_ADDR - 1 : 0]       o_write_register,
         output wire                         o_ALU_zero,
-        output wire [NB_DATA - 1 : 0]       o_read_data_2,
-        output reg  [20 - 16 : 0]           o_instruction_20_16_o_15_11,
-        output wire [NB_CTRL_WB + NB_CTRL_M - 1 : 0] o_control
+        //Control outputs
+        output wire [NB_CTRL_WB - 1 : 0]    o_ctrl_wb_bus,
+        output wire [NB_CTRL_M - 1 : 0]     o_ctrl_mem_bus
     );
 
     // Control wires
-    wire RegDst;
-    wire [NB_OP - 1 : 0] ALUOp;
-    wire ALUSrc;
+    wire        [NB_ALUOP - 1 : 0]  ALUOp;
+    wire                            ALUSrc;
+    wire                            ALUzero;
     // Program Counter Register
-    reg [NB_ADDR - 1 : 0] reg_PC;
+    reg         [LEN - 1 : 0]       reg_PC;
     // ALU Registers
-    reg signed [NB_DATA - 1 : 0] data_b;
-    wire [NB_ALUCTL - 1 : 0] ALUctl;
-    wire [NB_FUNC - 1 : 0] funct;
+    reg signed  [LEN - 1 : 0]       data_b;
+    wire        [NB_ALUCTL - 1 : 0] ALUctl;
+    wire        [NB_FUNC - 1 : 0]   funct;
+    wire        [LEN - 1 : 0]       ALU_result;
+    
 
+    assign funct            = i_addr_ext[NB_FUNC-1:0];
+
+    //Execute bits
+    assign ALUSrc           = i_ctrl_exc_bus[3];
+    assign ALUOp            = i_ctrl_exc_bus[2:1];
+    assign RegDst           = i_ctrl_exc_bus[0];
+
+    
+    //Outputs 
+    assign o_PC             = reg_PC;
+    assign o_ALU_zero       = ALUzero;
+    assign o_ALU_result     = ALU_result;
+    assign o_write_data     = i_read_data_2;
+
+    //Control bus
+    assign o_ctrl_wb_bus    = i_ctrl_wb_bus;
+    assign o_ctrl_mem_bus   = i_ctrl_mem_bus;
+
+    
     // Program Counter Logic
     always @(posedge i_clk) begin
         if (!i_rst) begin
-            reg_PC <= {NB_ADDR{1'b0}};
-        end else begin
-            reg_PC <= i_PC + (i_instruction_15_0 << 2);
+            reg_PC <= {LEN{1'b0}};
+        end 
+        else 
+        begin
+            reg_PC <= i_add_PC + (i_addr_ext << 2);
         end
     end
-
-    assign o_PC = reg_PC;
-    assign RegDst           = i_control[NB_CTRL_WB + NB_CTRL_M];
-    assign ALUOp            = i_control[NB_CTRL_WB + NB_CTRL_M + 2 : NB_CTRL_WB + NB_CTRL_M + 1];
-    assign ALUSrc           = i_control[NB_CTRL_WB + NB_CTRL_M +  1 + NB_OP];
-    assign funct            = i_instruction_15_0[NB_FUNC - 1 : 0];
-    assign o_read_data_2    = i_read_data_2;
-    assign o_control        = i_control[NB_CTRL_WB + NB_CTRL_M - 1 : 0];
     
-    always @(*) begin
-        if (!ALUSrc) begin
-            data_b = i_read_data_2;
-        end else begin
-            data_b = i_instruction_15_0[NB_DATA - 1 : 0];
-        end
-        if (!RegDst) begin
-            o_instruction_20_16_o_15_11 = i_instruction_20_16;
-        end else begin
-            o_instruction_20_16_o_15_11 = i_instruction_15_11;
-        end
+    
+    always @(*) 
+    begin
+        //MUX ALUSrc
+        data_b = (ALUSrc) ? i_addr_ext : i_read_data_2 ;    //ALUSrc = 1 (i_addr_ext) ALUSrc = 0 (i_read_data_2) 
+        //MUX RegDst
+        o_write_register   = (RegDst) ? i_rt : i_rd;        //RegDst = 0 -> 20-16 | RegDst = 1 -> 15-11
     end
     
     // ALU
     seg_execute_alu_control 
     #(
         .NB_ALUCTL (NB_ALUCTL),
-        .NB_OP     (NB_OP),
+        .NB_OP     (NB_ALUOP),
         .NB_FUNC   (NB_FUNC)
     )
     u_seg_execute_alu_control(
@@ -86,7 +102,7 @@ module seg_execute
     
     seg_execute_alu
     #(
-        .NB_DATA    (NB_DATA),
+        .LEN        (LEN),
         .NB_ALUCTL  (NB_ALUCTL)
     )
     u_seg_execute_alu(

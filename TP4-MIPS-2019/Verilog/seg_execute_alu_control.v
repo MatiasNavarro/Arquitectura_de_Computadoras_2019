@@ -7,18 +7,18 @@ module seg_execute_alu_control
         NB_FUNC     = 6
     )
     (
-        input wire [NB_FUNC - 1: 0]    i_funct,
-        input wire [NB_OP - 1: 0]      i_ALUOp,
-        output reg [NB_ALUCTL - 1: 0]  o_ALUctl
+        input   wire    [NB_FUNC - 1: 0]    i_funct,
+        input   wire    [NB_OP - 1: 0]      i_ALUOp,
+        output  reg     [NB_ALUCTL - 1: 0]  o_ALUctl
     );
 
-    assign o_zero = (o_ALUctl == 0);
+//    assign o_zero = (o_ALUctl == 0);
 
     always @(*) begin
         casez (i_ALUOp)
             2'b00: o_ALUctl = 4'b0010;
             2'b?1: o_ALUctl = 4'b0110;
-            2'b1?: begin
+            2'b1?: begin    //R-Type
                 casez (i_funct)
                     6'b??0000: o_ALUctl = 4'b0010;
                     6'b??0010: o_ALUctl = 4'b0110;

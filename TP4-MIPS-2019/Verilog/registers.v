@@ -2,9 +2,9 @@
 
 module registers
     #(
-        parameter NB_DATA               = 32,
-        parameter NB_REG                = 32,
-        parameter NB_ADDR               = 5
+        parameter LEN       = 32,
+        parameter NB_REG    = 32,
+        parameter NB_ADDR   = 5
     )
     (
         //Inputs
@@ -14,13 +14,13 @@ module registers
         input       [NB_ADDR-1:0]   i_read_register_1,
         input       [NB_ADDR-1:0]   i_read_register_2,
         input       [NB_ADDR-1:0]   i_write_register,
-        input       [NB_DATA-1:0]   i_write_data,
+        input       [LEN-1:0]       i_write_data,
         //Outputs
-        output  reg [NB_DATA-1:0]   o_read_data_1,
-        output  reg [NB_DATA-1:0]   o_read_data_2        
+        output  reg [LEN-1:0]       o_read_data_1,
+        output  reg [LEN-1:0]       o_read_data_2        
     );
     
-    reg [NB_DATA-1:0] register [NB_REG-1:0];
+    reg [LEN-1:0] register [NB_REG-1:0];
     
     generate
         integer ram_index;
@@ -29,26 +29,29 @@ module registers
             register[ram_index] = ram_index;
     endgenerate
     
-    always@(negedge i_clk)
-    begin
-        if(i_rst)
-        begin
-            if(i_RegWrite)
-                register[i_write_register] <= i_write_data;
-        end
-    end
-    
-    always@(posedge i_clk)
+    always@(negedge i_clk) //Lectura de registros
     begin
         if(!i_rst)
         begin
-            o_read_data_1 <= {NB_DATA{1'b0}};
-            o_read_data_2 <= {NB_DATA{1'b0}};
+            o_read_data_1 <= {LEN{1'b0}};
+            o_read_data_2 <= {LEN{1'b0}};
         end
         else
         begin
             o_read_data_1 <= register[i_read_register_1];
             o_read_data_2 <= register[i_read_register_2];
+        end
+    end    
+    
+    always@(posedge i_clk) //Escrituras de registros
+    begin
+        if(!i_rst)
+        begin
+            register[i_write_register] <= register[i_write_register];
+        end
+        begin
+            if(i_RegWrite)
+                register[i_write_register] <= i_write_data;
         end
     end
     
