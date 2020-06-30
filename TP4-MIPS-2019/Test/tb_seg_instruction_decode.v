@@ -23,9 +23,9 @@
 module tb_seg_instruction_decode();
 //Todo puerto de salida del modulo es un cable.
 //Todo puerto de estimulo o generacion de entrada es un registro.
-parameter NB_INSTRUC_01     = 32;
-parameter NB_DATA_01        = 32;
+parameter LEN_01            = 32;
 parameter NB_REG_01         = 32;
+parameter NB_ADDRESS_01     = 16;
 parameter NB_EXC_BUS_01     = 3;
 parameter NB_MEM_BUS_01     = 3;
 parameter NB_OPCODE_01      = 6;
@@ -37,12 +37,21 @@ parameter NB_ALUOP_01       = 2;
 //Inputs
 reg i_clk_01;
 reg i_rst_01;
-reg [NB_INSTRUC_01 - 1 : 0] i_instruc_01;
-reg [NB_DATA_01 - 1 : 0]    i_write_data_01;
+reg [LEN_01 - 1 : 0] i_instruc_01;
+reg [LEN_01 - 1 : 0] i_write_data_01;
 
 //Outputs
-wire [NB_DATA_01 - 1 : 0] o_read_data_1_01;
-wire [NB_DATA_01 - 1 : 0] o_read_data_2_01;
+wire [LEN_01 - 1 : 0] o_read_data_1_01;
+wire [LEN_01 - 1 : 0] o_read_data_2_01;
+wire [LEN_01 - 1 : 0] o_addr_ext_01;
+
+//Control Outpus 
+wire [NB_WB_BUS_01 - 1 : 0]     o_wb_bus_01;
+wire [NB_MEM_BUS_01 - 1 : 0]    o_mem_bus_01;
+wire [NB_EXC_BUS_01 - 1 : 0]    o_exc_bus_01;
+wire [NB_ALUOP_01 - 1 : 0]      o_alu_op_01;
+wire [NB_OPCODE_01 - 1 : 0]     o_funct_01;
+
 
 initial begin
     i_clk_01 = 1'b0;
@@ -66,7 +75,7 @@ always #2.5 i_clk_01 = ~i_clk_01;
 
 seg_instruction_decode
 #(
-    .NB_INSTRUC     (NB_INSTRUC_01),
+    .LEN            (LEN_01),
     .NB_EXC_BUS     (NB_EXC_BUS_01),
     .NB_MEM_BUS     (NB_MEM_BUS_01),
     .NB_OPCODE      (NB_OPCODE_01),
@@ -81,7 +90,13 @@ u_seg_instruction_decode_01
     .i_instruc      (i_instruc_01),
     .i_write_data   (i_write_data_01),
     .o_read_data_1  (o_read_data_1_01),
-    .o_read_data_2  (o_read_data_2_01)
+    .o_read_data_2  (o_read_data_2_01),
+    .o_addr_ext     (o_addr_ext_01),
+    .o_wb_bus       (o_wb_bus_01),
+    .o_mem_bus      (o_mem_bus_01),
+    .o_exc_bus      (o_exc_bus_01),
+    .o_alu_op       (o_alu_op_01),
+    .o_funct        (o_funct_01)
 );
 
 endmodule
