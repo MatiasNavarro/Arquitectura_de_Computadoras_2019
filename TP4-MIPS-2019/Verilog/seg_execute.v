@@ -17,20 +17,20 @@ module seg_execute
         input wire [LEN - 1 : 0]            i_PC,
         input wire [LEN - 1 : 0]            i_read_data_1,
         input wire [LEN - 1 : 0]            i_read_data_2,
-        input wire [LEN - 1 : 0]            i_addr_ext,     //instruction[15:0] extendida a 32 bits
-        input wire [NB_ADDR - 1 : 0]        i_rt,           //instruction[20:16]
-        input wire [NB_ADDR - 1 : 0]        i_rd,           //instruction[15:11]
-        //Control input
+        input wire [LEN - 1 : 0]            i_addr_ext,         // instruction[15:0] extendida a 32 bits
+        input wire [NB_ADDR - 1 : 0]        i_rt,               // instruction[20:16]
+        input wire [NB_ADDR - 1 : 0]        i_rd,               // instruction[15:11]
+        // Control input
         input wire [NB_CTRL_WB - 1 : 0]     i_ctrl_wb_bus,
         input wire [NB_CTRL_M - 1 :  0]     i_ctrl_mem_bus,
         input wire [NB_CTRL_EX - 1 : 0]     i_ctrl_exc_bus,
         // OUTPUTS
-        output wire [LEN - 1 : 0]           o_PC_branch,        //Branch o Jump
-        output wire [LEN - 1 : 0]           o_ALU_result,       //Address (Data Memory)
+        output wire [LEN - 1 : 0]           o_PC_branch,        // Branch o Jump
+        output wire [LEN - 1 : 0]           o_ALU_result,       // Address (Data Memory)
         output wire [LEN - 1 : 0]           o_write_data,
-        output wire [NB_ADDR - 1 : 0]       o_write_register,
+        output reg  [NB_ADDR - 1 : 0]       o_write_register,
         output wire                         o_ALU_zero,
-        //Control outputs
+        // Control outputs
         output wire [NB_CTRL_WB - 1 : 0]    o_ctrl_wb_bus,
         output wire [NB_CTRL_M - 1 : 0]     o_ctrl_mem_bus
     );
@@ -47,44 +47,34 @@ module seg_execute
     wire        [NB_FUNC - 1 : 0]   funct;
     wire        [LEN - 1 : 0]       ALU_result;
     
-
     assign funct            = i_addr_ext[NB_FUNC-1:0];
-
-    //Execute bits
+    // Execute bits
     assign ALUSrc           = i_ctrl_exc_bus[3];
     assign ALUOp            = i_ctrl_exc_bus[2:1];
     assign RegDst           = i_ctrl_exc_bus[0];
-
-    
-    //Outputs 
+    // Outputs 
     assign o_PC             = reg_PC;
     assign o_ALU_zero       = ALUzero;
     assign o_ALU_result     = ALU_result;
     assign o_write_data     = i_read_data_2;
-
-    //Control bus
+    // Control bus
     assign o_ctrl_wb_bus    = i_ctrl_wb_bus;
     assign o_ctrl_mem_bus   = i_ctrl_mem_bus;
-
     
     // Program Counter Logic
     always @(posedge i_clk) begin
         if (!i_rst) begin
             reg_PC <= {LEN{1'b0}};
-        end 
-        else 
-        begin
-            reg_PC <= i_add_PC + (i_addr_ext << 2);
+        end else begin
+            reg_PC <= i_PC + (i_addr_ext << 2);
         end
     end
     
-    
-    always @(*) 
-    begin
-        //MUX ALUSrc
-        data_b = (ALUSrc) ? i_addr_ext : i_read_data_2 ;    //ALUSrc = 1 (i_addr_ext) ALUSrc = 0 (i_read_data_2) 
-        //MUX RegDst
-        o_write_register   = (RegDst) ? i_rt : i_rd;        //RegDst = 0 -> 20-16 | RegDst = 1 -> 15-11
+    always @(*) begin
+        // MUX ALUSrc
+        data_b = (ALUSrc) ? i_addr_ext : i_read_data_2 ;    // ALUSrc = 1 (i_addr_ext) ALUSrc = 0 (i_read_data_2) 
+        // MUX RegDst
+        o_write_register = (RegDst) ? i_rt : i_rd;          // RegDst = 0 -> 20-16 | RegDst = 1 -> 15-11
     end
     
     // ALU
