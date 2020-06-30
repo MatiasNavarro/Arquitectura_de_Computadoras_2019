@@ -30,7 +30,7 @@ module seg_memory_access
         output wire [LEN - 1 : 0]       o_address,
         output wire [NB_ADDR-1:0]       o_write_register,
         //Control outputs 
-        input wire  [NB_CTRL_WB-1:0]    o_ctrl_wb_bus
+        output wire [NB_CTRL_WB-1:0]    o_ctrl_wb_bus
     );
     
     //Memory wires

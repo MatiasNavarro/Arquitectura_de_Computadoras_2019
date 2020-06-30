@@ -7,7 +7,7 @@ module seg_instruction_decode
         parameter NB_ADDRESS    = 16,
         parameter NB_OPCODE     = 6,
         parameter NB_ADDR       = 5,
-        parameter NB_CTRL_EX    = 3,
+        parameter NB_CTRL_EX    = 4,
         parameter NB_CTRL_M     = 3,
         parameter NB_CTRL_WB    = 2        
     )

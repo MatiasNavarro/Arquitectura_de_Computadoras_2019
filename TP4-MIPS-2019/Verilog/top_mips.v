@@ -1,30 +1,30 @@
 `timescale 1ns / 1ps
 
 module top_mips
-    #( parameter    //CPU
-                    LEN             = 32,
-                    NB_ADDRESS      = 16,
-                    NB_OPCODE       = 6,
-                    NB_OPERAND      = 11,
-                    NB_ADDR         = 5,
-                    NB_ALUOP        = 2,
+    #(              //CPU
+       parameter    LEN             = 32,
+       parameter    NB_ADDRESS      = 16,
+       parameter    NB_OPCODE       = 6,
+       parameter    NB_OPERAND      = 11,
+       parameter    NB_ADDR         = 5,
+       parameter    NB_ALUOP        = 2,
        parameter    NB_FUNC         = 6,
        parameter    NB_ALUCTL       = 4,             
-       parameter    NB_EXC_BUS      = 3,
-       parameter    NB_MEM_BUS      = 3,
-       parameter    NB_WB_BUS       = 2,
+       parameter    NB_CTRL_EX      = 4,
+       parameter    NB_CTRL_M       = 3,
+       parameter    NB_CTRL_WB      = 2,
                     
                     //PROGRAM MEMORY
-                    RAM_WIDTH_PROGRAM       = 32,
-                    RAM_DEPTH_PROGRAM       = 2048,
-                    RAM_PERFORMANCE_PROGRAM = "LOW_LATENCY",
-                    INIT_FILE_PROGRAM       = "",
+       parameter    RAM_WIDTH_PROGRAM       = 32,
+       parameter    RAM_DEPTH_PROGRAM       = 2048,
+       parameter    RAM_PERFORMANCE_PROGRAM = "LOW_LATENCY",
+       parameter    INIT_FILE_PROGRAM       = "",
                     
                     //DATA MEMORY
-                    RAM_WIDTH_DATA          = 32,
-                    RAM_DEPTH_DATA          = 1024, 
-                    RAM_PERFORMANCE_DATA    = "LOW_LATENCY",
-                    INIT_FILE_DATA          = "" 
+       parameter    RAM_WIDTH_DATA          = 32,
+       parameter    RAM_DEPTH_DATA          = 1024, 
+       parameter    RAM_PERFORMANCE_DATA    = "LOW_LATENCY",
+       parameter    INIT_FILE_DATA          = "" 
     )
     (
         //inputs
@@ -35,42 +35,62 @@ module top_mips
     );
 
     //Wire CPU - Memory
-    wire [NB_ADDR-1:0]  addr_program_mem;
-    wire [LEN-1:0]      instruc;
-    wire [NB_ADDR-1:0]  addr_data_mem;
-    wire [LEN-1:0]      in_data_memory;
-    wire [LEN-1:0]      out_data_memory;
-    wire [LEN-1:0]      o_alu;
+    wire [NB_ADDR-1:0]      addr_program_mem;
+    wire [LEN-1:0]          instruc;
+    wire [NB_ADDR-1:0]      addr_data_mem;
+    wire [LEN-1:0]          in_data_memory;
+    wire [LEN-1:0]          out_data_memory;
+    wire [LEN-1:0]          o_alu;
     
     //Control wires
-    wire [NB_WB_BUS-1:0]    wb_bus;   // [ RegWrite, MemtoReg]
-    wire [NB_MEM_BUS-1:0]   mem_bus;  // [ SB, SH, LB, LH, Unsigned, Branch, MemRead, MemWrite ]
-    wire [NB_EXC_BUS-1:0]   exc_bus;  // [ Jump&Link, JALOnly, RegDst, ALUSrc[1:0] , jump, jump_register, ALUCode [3:0] 
+    wire [NB_CTRL_WB-1:0]   wb_bus;   // [ RegWrite, MemtoReg]
+    wire [NB_CTRL_M-1:0]    mem_bus;  // [ SB, SH, LB, LH, Unsigned, Branch, MemRead, MemWrite ]
+    wire [NB_CTRL_EX-1:0]   exc_bus;  // [ Jump&Link, JALOnly, RegDst, ALUSrc[1:0] , jump, jump_register, ALUCode [3:0] 
     wire [NB_ALUOP-1:0]     alu_op;
     
     //Instruction fetch I/O wires
     wire [LEN-1:0]          PC_branch;      //PC -> Add PC + (shiftleft << 2)
     wire                    PCSrc;          //Selector del MUX de PC
     wire [LEN-1:0]          instruction;    //Instruccion de 32 bits
-    wire [LEN-1:0]          PC_id_ex;       //Program Counter
+    wire [LEN-1:0]          PC_if_id;       //Program Counter
     
     //Instruction decode I/O wires
-    wire [LEN-1:0]          id_read_data_1; //Salida de ID 
-    wire [LEN-1:0]          id_read_data_2; //Salida de ID
-    wire [LEN-1:0]          id_address_ext; //Salida de ID
-    wire [NB_OPCODE-1:0]    funct;          
-    
+    wire [LEN-1:0]          read_data_1_id_ex; //Salida de ID 
+    wire [LEN-1:0]          read_data_2_id_ex; //Salida de ID
+    wire [LEN-1:0]          address_ext_id_ex; //Salida de ID
+    wire [LEN-1:0]          PC_id_ex;
+    wire [NB_ADDR-1:0]      rt_id_ex;
+    wire [NB_ADDR-1:0]      rd_id_ex;
+        //Control outputs     
+    wire [NB_CTRL_WB-1:0]   ctrl_wb_bus_id_ex;
+    wire [NB_CTRL_M-1:0]    ctrl_mem_bus_id_ex;
+    wire [NB_CTRL_EX-1:0]   ctrl_exc_bus_id_ex;
     
     //Execute I/O wires
-    //wire [LEN-1:0]          PC_branch;         //PC -> Add PC + (shiftleft << 2)
-    wire [LEN-1:0]          ALU_result;    
+    wire [LEN-1:0]          PC_branch_ex_mem;         //PC -> Add PC + (shiftleft << 2)
+    wire [LEN-1:0]          ALU_result_ex_mem;    
+    wire [LEN-1:0]          write_data_ex_mem;
+    wire [NB_ADDR-1:0]      write_register_exc_mem;
     wire                    ALU_zero;
-    
+        //Control outputs
+    wire [NB_CTRL_WB-1:0]   ctrl_wb_bus_ex_mem;
+    wire [NB_CTRL_M-1:0]    ctrl_mem_bus_ex_mem;
+
     //Data Memory I/O wires
-    wire [LEN-1:0]          dm_read_data;
+    wire                    PCSrc_exc_if;
+    wire [LEN-1:0]          PC_branch_mem_if;
+    wire [LEN-1:0]          read_data_mem_wb; //Salida de ID
+    wire [LEN-1:0]          address_mem_wb; //Salida de ID
+    wire [NB_ADDR-1:0]      write_register_mem_wb;
+        //Control outputs     
+    wire [NB_CTRL_WB-1:0]   ctrl_wb_bus_mem_wb;
+
     
     //Write Back I/O wires 
-    wire [LEN-1:0]          write_data_md;
+    wire                    RegWrite_wb_id;
+    wire [NB_ADDR-1:0]      write_register_wb_id;
+    wire [LEN-1:0]          write_data_wb_id;
+    
 
 
     // -----------------------------------------------
@@ -88,11 +108,11 @@ module top_mips
         //Input
         .i_clk              (i_clk),
         .i_rst              (i_rst),
-        .i_PC_branch        (PC_branch),
-        .i_PCSrc            (PCSrc),
+        .i_PC_branch        (PC_branch_mem_if),
+        .i_PCSrc            (PCSrc_exc_if),
         //Output
         .o_instruction      (instruction),
-        .o_PC               (PC)
+        .o_PC               (PC_if_id)
     );
     
     // -----------------------------------------------
@@ -101,11 +121,12 @@ module top_mips
     seg_instruction_decode #(
         .NB_INSTRUC                 (LEN),
         .NB_REG                     (LEN),
-        .NB_EXC_BUS                 (NB_EXC_BUS),
-        .NB_MEM_BUS                 (NB_MEM_BUS),
+        .NB_ADDRESS                 (NB_ADDRESS),
         .NB_OPCODE                  (NB_OPCODE),
         .NB_ADDR                    (NB_ADDR),
-        .NB_WB_BUS                  (NB_WB_BUS),
+        .NB_CTRL_EX                 (NB_CTRL_EX),
+        .NB_CTRL_M                 (NB_CTRL_M),
+        .NB_CTRL_WB                  (NB_CTRL_WB),
         .NB_ALUOP 			        (NB_ALUOP)
     )
     u_seg_instruction_decode
@@ -113,20 +134,22 @@ module top_mips
         //Input
         .i_clk              (i_clk),
         .i_rst              (i_rst),
-        .i_instruc          (instruc),
-        .i_regdst
-        .i_write_data       (write_data_md),
+        .i_PC               (PC_if_id),
+        .i_instruc          (instruction),
+        .i_write_reg        (write_register_wb_id),
+        .i_write_data       (write_data_wb_id),
+        .i_RegWrite         (RegWrite_wb_id),
         //Outputs
-        .o_read_data_1      (id_read_data_1),
-        .o_read_data_2      (id_read_data_2),
-        .o_addr_ext         (id_address_ext),
-        .o_wb_bus           (wb_bus),
-        .o_mem_bus          (mem_bus),
-        .o_exc_bus          (exc_bus),
-        .o_alu_op           (alu_op),
-        .o_funct            (funct)
-        
-        
+        .o_PC               (PC_id_ex),
+        .o_read_data_1      (read_data_1_id_ex),
+        .o_read_data_2      (read_data_2_id_ex),
+        .o_addr_ext         (address_ext_id_ex),
+        .o_rt               (rt_id_ex),
+        .o_rd               (rd_id_ex),
+        //Control outputs
+        .o_ctrl_wb_bus      (ctrl_wb_bus_id_ex),
+        .o_ctrl_mem_bus     (ctrl_mem_bus_id_ex),
+        .o_ctrl_exc_bus     (ctrl_exc_bus_id_ex)
     );
     
     // -----------------------------------------------
@@ -136,36 +159,36 @@ module top_mips
         .LEN            (LEN),
         .NB_ALUOP       (NB_ALUOP),
         .NB_ALUCTL      (NB_ALUCTL),
+        .NB_ADDR        (NB_ADDR),
         .NB_FUNC        (NB_FUNC),
-        .NB_WB_BUS      (NB_WB_BUS),
-        .NB_MEM_BUS     (NB_MEM_BUS),
-        .NB_EXC_BUS     (NB_EXC_BUS)
+        .NB_CTRL_WB     (NB_CTRL_WB),
+        .NB_CTRL_M      (NB_CTRL_M),
+        .NB_CTRL_EX     (NB_CTRL_EX)
     )
     u_seg_execute
     (
         //Input
         .i_clk              (i_clk),
         .i_rst              (i_rst),
-        .i_add_PC           (PC),
-        .i_addr_ext         (id_address_ext),
-        .i_read_data_1      (id_read_data_1),
-        .i_read_data_2      (id_read_data_2),
-        .i_wb_bus           (wb_bus),
-        .i_mem_bus          (mem_bus),
-        .i_exc_bus          (exc_bus),
-        .i_alu_op           (alu_op),
-        .i_funct            (funct),
-//        .i_instruction_15_0              (i_instruction_15_0),
-//        .i_instruction_20_16              (i_instruction_20_16),
-//        .i_instruction_15_11              (i_instruction_15_11),
-//        .i_control              (i_control),
+        .i_add_PC           (PC_id_ex),
+        .i_read_data_1      (read_data_1_id_ex),
+        .i_read_data_2      (read_data_2_id_ex),
+        .i_addr_ext         (address_ext_id_ex),
+        .i_rt               (rt_id_ex),
+        .i_rd               (rd_id_ex),
+        //Control inputs    
+        .i_ctrl_wb_bus      (ctrl_wb_bus_id_ex),
+        .i_ctrl_mem_bus     (ctrl_mem_bus_id_ex),
+        .i_ctrl_exc_bus     (ctrl_exc_bus_id_ex),
         //Output
-        .o_PC               (PC_branch),
-        .o_ALU_result       (ALU_result),
-        .o_ALU_zero         (ALU_zero)
-//        .o_read_data_2      (o_read_data_2),
-//        .o_instruction_20_16_o_15_11          (o_instruction_20_16_o_15_11),
-//        .o_control          (o_control)
+        .o_PC_branch        (PC_branch_ex_mem),
+        .o_ALU_result       (ALU_result_ex_mem),
+        .o_write_data       (write_data_ex_mem),
+        .o_write_register   (write_register_exc_mem),
+        .o_ALU_zero         (ALU_zero),
+        //Control outputs
+        .o_ctrl_wb_bus      (ctrl_wb_bus_ex_mem),
+        .o_ctrl_mem_bus     (ctrl_mem_bus_ex_mem)
     );
 
     // -----------------------------------------------
@@ -173,8 +196,11 @@ module top_mips
     //------------------------------------------------
     seg_memory_access #(
         .LEN                    (LEN),
-        .NB_WB_BUS              (NB_WB_BUS),
-        .NB_MEM_BUS             (NB_MEM_BUS),
+        .NB_ADDR                (NB_ADDR),
+        .NB_CTRL_WB             (NB_CTRL_WB),
+        .NB_CTRL_M              (NB_CTRL_M),
+        
+        //DATA MEMORY
         .RAM_WIDTH_DATA         (RAM_WIDTH_DATA),
         .RAM_DEPTH_DATA         (RAM_DEPTH_DATA),
         .RAM_PERFORMANCE_DATA   (RAM_PERFORMANCE_DATA),
@@ -185,19 +211,21 @@ module top_mips
         //Input
         .i_clk              (i_clk),
         .i_rst              (i_rst),
-        .i_address          (ALU_result),
-        .i_write_data       (id_read_data_2),
+        .i_PC_branch        (PC_branch_ex_mem),
+        .i_ALU_result       (ALU_result_ex_mem),
+        .i_write_data       (write_data_ex_mem),
+        .i_write_register   (write_register_exc_mem),
         .i_ALU_zero         (ALU_zero),
-        .i_wb_bus           (wb_bus),
-        .i_mem_bus          (mem_bus),
- //     .i_instruction_20_16_o_15_11      (i_instruction_20_16_o_15_11),
-//      .i_control          (i_control),
+        .i_ctrl_wb_bus      (ctrl_wb_bus_ex_mem),
+        .i_ctrl_mem_bus     (ctrl_mem_bus_ex_mem),
         //Output
-        .o_PCSrc            (PCSrc),
-        .o_read_data        (dm_read_data)
-//        .o_address          (o_address)
-//        .o_instruction_20_16_o_15_11      (o_instruction_20_16_o_15_11),
-//        .o_control          (o_control)
+        .o_PCSrc            (PCSrc_exc_if),
+        .o_PC_branch        (PC_branch_mem_if),
+        .o_read_data        (read_data_mem_wb),
+        .o_address          (address_mem_wb),
+        .o_write_register   (write_register_mem_wb),
+        //Control outputs
+        .o_ctrl_wb_bus      (ctrl_wb_bus_mem_wb)
     );
 
     // -----------------------------------------------
@@ -206,18 +234,21 @@ module top_mips
     seg_write_back #(
         .LEN            (LEN),
         .NB_NB_ADDR     (NB_ADDR),
-        .NB_WB_BUS      (NB_WB_BUS)
+        .NB_CTRL_WB     (NB_CTRL_WB)
     )
     u_seg_write_back
     (
         //Input
         .i_clk              (i_clk),
-        .i_data_mem         (dm_read_data),
-        .i_data_alu         (ALU_result),
-        .i_wb_bus           (wb_bus),
+        .i_read_data        (read_data_mem_wb),
+        .i_address          (address_mem_wb),
+        .i_write_register    (write_register_mem_wb),
+        //Control inputs
+        .i_ctrl_wb_bus      (ctrl_wb_bus_mem_wb),
         //Output
-        .o_regdst
-        .o_write_data       (write_data_md)
+        .o_RegWrite         (RegWrite_wb_id),
+        .o_write_data       (write_data_wb_id),
+        .o_write_register   (write_register_wb_id)
     );
     
 endmodule

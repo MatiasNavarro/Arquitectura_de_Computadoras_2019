@@ -8,7 +8,7 @@ module seg_execute
        parameter    NB_FUNC         = 6,
        parameter    NB_CTRL_WB      = 2,
        parameter    NB_CTRL_M       = 3,
-       parameter    NB_CTRL_EX      = 3
+       parameter    NB_CTRL_EX      = 4
     )
     (
         // INPUTS
