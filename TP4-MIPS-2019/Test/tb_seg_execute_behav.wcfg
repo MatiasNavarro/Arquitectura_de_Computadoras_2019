@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="246784fs"></ZoomStartTime>
-      <ZoomEndTime time="326085fs"></ZoomEndTime>
-      <Cursor1Time time="300000fs"></Cursor1Time>
+      <ZoomStartTime time="363500fs"></ZoomStartTime>
+      <ZoomEndTime time="395301fs"></ZoomEndTime>
+      <Cursor1Time time="390000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="173"></NameColumnWidth>
-      <ValueColumnWidth column_width="69"></ValueColumnWidth>
+      <ValueColumnWidth column_width="65"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="23" />
+   <WVObjectSize size="26" />
    <wvobject fp_name="/tb_seg_execute/i_clk" type="logic">
       <obj_property name="ElementShortName">i_clk</obj_property>
       <obj_property name="ObjectShortName">i_clk</obj_property>
@@ -28,24 +28,38 @@
       <obj_property name="ElementShortName">i_rst</obj_property>
       <obj_property name="ObjectShortName">i_rst</obj_property>
    </wvobject>
+   <wvobject fp_name="/tb_seg_execute/instruction" type="array">
+      <obj_property name="ElementShortName">instruction[31:0]</obj_property>
+      <obj_property name="ObjectShortName">instruction[31:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FF0080</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_execute/i_rt" type="array">
+      <obj_property name="ElementShortName">i_rt[4:0]</obj_property>
+      <obj_property name="ObjectShortName">i_rt[4:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_execute/i_rd" type="array">
+      <obj_property name="ElementShortName">i_rd[4:0]</obj_property>
+      <obj_property name="ObjectShortName">i_rd[4:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
    <wvobject fp_name="/tb_seg_execute/u_seg_execute/funct" type="array">
       <obj_property name="ElementShortName">funct[5:0]</obj_property>
       <obj_property name="ObjectShortName">funct[5:0]</obj_property>
       <obj_property name="Radix">BINARYRADIX</obj_property>
-      <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
+      <obj_property name="CustomSignalColor">#FF0080</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_seg_execute/i_instruction_15_0" type="array">
-      <obj_property name="ElementShortName">i_instruction_15_0[31:0]</obj_property>
-      <obj_property name="ObjectShortName">i_instruction_15_0[31:0]</obj_property>
-      <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_seg_execute/i_control" type="array">
-      <obj_property name="ElementShortName">i_control[8:0]</obj_property>
-      <obj_property name="ObjectShortName">i_control[8:0]</obj_property>
-      <obj_property name="CustomSignalColor">#FFFF00</obj_property>
+   <wvobject fp_name="/tb_seg_execute/i_ctrl_exc_bus" type="array">
+      <obj_property name="ElementShortName">i_ctrl_exc_bus[3:0]</obj_property>
+      <obj_property name="ObjectShortName">i_ctrl_exc_bus[3:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FFD700</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
       <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
@@ -79,13 +93,27 @@
       <obj_property name="ElementShortName">i_PC[31:0]</obj_property>
       <obj_property name="ObjectShortName">i_PC[31:0]</obj_property>
    </wvobject>
+   <wvobject fp_name="/tb_seg_execute/i_addr_ext" type="array">
+      <obj_property name="ElementShortName">i_addr_ext[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i_addr_ext[31:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
    <wvobject fp_name="/tb_seg_execute/u_seg_execute/reg_PC" type="array">
       <obj_property name="ElementShortName">reg_PC[31:0]</obj_property>
       <obj_property name="ObjectShortName">reg_PC[31:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_seg_execute/o_PC" type="array">
-      <obj_property name="ElementShortName">o_PC[31:0]</obj_property>
-      <obj_property name="ObjectShortName">o_PC[31:0]</obj_property>
+   <wvobject fp_name="/tb_seg_execute/o_PC_branch" type="array">
+      <obj_property name="ElementShortName">o_PC_branch[31:0]</obj_property>
+      <obj_property name="ObjectShortName">o_PC_branch[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_execute/i_read_data_2" type="array">
+      <obj_property name="ElementShortName">i_read_data_2[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i_read_data_2[31:0]</obj_property>
+      <obj_property name="CustomSignalColor">#008080</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_seg_execute/i_read_data_1" type="array">
       <obj_property name="ElementShortName">i_read_data_1[31:0]</obj_property>
@@ -93,13 +121,9 @@
       <obj_property name="CustomSignalColor">#00FFFF</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
       <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_seg_execute/i_read_data_2" type="array">
-      <obj_property name="ElementShortName">i_read_data_2[31:0]</obj_property>
-      <obj_property name="ObjectShortName">i_read_data_2[31:0]</obj_property>
-      <obj_property name="CustomSignalColor">#00FFFF</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      <obj_property name="radix_realType">SIGNEDFIXEDPOINTRADIX</obj_property>
+      <obj_property name="radix_fractionWidth">0</obj_property>
+      <obj_property name="radix_otherWidth">0</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_seg_execute/u_seg_execute/data_b" type="array">
       <obj_property name="ElementShortName">data_b[31:0]</obj_property>
@@ -121,36 +145,30 @@
       <obj_property name="CustomSignalColor">#00FFFF</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_seg_execute/o_read_data_2" type="array">
-      <obj_property name="ElementShortName">o_read_data_2[31:0]</obj_property>
-      <obj_property name="ObjectShortName">o_read_data_2[31:0]</obj_property>
-      <obj_property name="CustomSignalColor">#00FFFF</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
+   <wvobject fp_name="/tb_seg_execute/o_write_data" type="array">
+      <obj_property name="ElementShortName">o_write_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">o_write_data[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_seg_execute/i_instruction_15_11" type="array">
-      <obj_property name="ElementShortName">i_instruction_15_11[4:0]</obj_property>
-      <obj_property name="ObjectShortName">i_instruction_15_11[4:0]</obj_property>
-      <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
+   <wvobject fp_name="/tb_seg_execute/o_write_register" type="array">
+      <obj_property name="ElementShortName">o_write_register[4:0]</obj_property>
+      <obj_property name="ObjectShortName">o_write_register[4:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_seg_execute/i_instruction_20_16" type="array">
-      <obj_property name="ElementShortName">i_instruction_20_16[4:0]</obj_property>
-      <obj_property name="ObjectShortName">i_instruction_20_16[4:0]</obj_property>
-      <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
+   <wvobject fp_name="/tb_seg_execute/i_ctrl_wb_bus" type="array">
+      <obj_property name="ElementShortName">i_ctrl_wb_bus[1:0]</obj_property>
+      <obj_property name="ObjectShortName">i_ctrl_wb_bus[1:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_seg_execute/o_instruction_20_16_o_15_11" type="array">
-      <obj_property name="ElementShortName">o_instruction_20_16_o_15_11[4:0]</obj_property>
-      <obj_property name="ObjectShortName">o_instruction_20_16_o_15_11[4:0]</obj_property>
-      <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
+   <wvobject fp_name="/tb_seg_execute/i_ctrl_mem_bus" type="array">
+      <obj_property name="ElementShortName">i_ctrl_mem_bus[2:0]</obj_property>
+      <obj_property name="ObjectShortName">i_ctrl_mem_bus[2:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_seg_execute/o_control" type="array">
-      <obj_property name="ElementShortName">o_control[4:0]</obj_property>
-      <obj_property name="ObjectShortName">o_control[4:0]</obj_property>
+   <wvobject fp_name="/tb_seg_execute/o_ctrl_wb_bus" type="array">
+      <obj_property name="ElementShortName">o_ctrl_wb_bus[1:0]</obj_property>
+      <obj_property name="ObjectShortName">o_ctrl_wb_bus[1:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_seg_execute/instruction" type="array">
-      <obj_property name="ElementShortName">instruction[31:0]</obj_property>
-      <obj_property name="ObjectShortName">instruction[31:0]</obj_property>
+   <wvobject fp_name="/tb_seg_execute/o_ctrl_mem_bus" type="array">
+      <obj_property name="ElementShortName">o_ctrl_mem_bus[2:0]</obj_property>
+      <obj_property name="ObjectShortName">o_ctrl_mem_bus[2:0]</obj_property>
    </wvobject>
 </wave_config>

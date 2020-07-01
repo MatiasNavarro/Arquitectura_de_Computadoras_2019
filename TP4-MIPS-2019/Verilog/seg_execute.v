@@ -53,7 +53,7 @@ module seg_execute
     assign ALUOp            = i_ctrl_exc_bus[2:1];
     assign RegDst           = i_ctrl_exc_bus[0];
     // Outputs 
-    assign o_PC             = reg_PC;
+    assign o_PC_branch      = reg_PC;
     assign o_ALU_zero       = ALUzero;
     assign o_ALU_result     = ALU_result;
     assign o_write_data     = i_read_data_2;

@@ -2,7 +2,7 @@
 
 module tb_seg_execute_alu_control();
 
-    localparam NB_DATA   = 10;
+    localparam LEN       = 10;
     localparam NB_ALUCTL = 4;
     localparam NB_OP     = 2;
     localparam NB_FUNC   = 6;
@@ -14,10 +14,10 @@ module tb_seg_execute_alu_control();
     wire [NB_ALUCTL - 1: 0]  o_ALUctl;
 
     // INPUTS
-    reg  [NB_DATA - 1: 0]    i_data_a;
-    reg  [NB_DATA - 1: 0]    i_data_b;
+    reg  [LEN - 1: 0]    i_data_a;
+    reg  [LEN - 1: 0]    i_data_b;
     // OUTPUTS
-    wire [NB_DATA - 1: 0]    o_ALUOut;
+    wire [LEN - 1: 0]    o_ALUOut;
     wire                     o_zero;
 
     initial begin
@@ -79,7 +79,7 @@ module tb_seg_execute_alu_control();
 
     seg_execute_alu 
     #(
-        .NB_DATA   (NB_DATA   ),
+        .LEN       (LEN       ),
         .NB_ALUCTL (NB_ALUCTL )
     )
     u_seg_execute_alu(
