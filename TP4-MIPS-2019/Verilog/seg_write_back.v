@@ -7,10 +7,8 @@ module seg_write_back
     )
     (
         // INPUTS
-//        input wire [NB_DATA-1 : 0]  i_address,
-        input wire                  i_clk,
         input wire [LEN-1 : 0]      i_read_data,
-        input wire [LEN-1 : 0]      i_address,
+        input wire [LEN-1 : 0]      i_ALU_result,
         input wire [NB_ADDR-1:0]    i_write_register,
         //Control Inputs
         input wire [NB_CTRL_WB-1:0] i_ctrl_wb_bus,       //[RegWrite, MemtoReg]
@@ -22,7 +20,7 @@ module seg_write_back
     );
     
     //Control wires
-    wire    MemtoReg;
+    wire   MemtoReg;
 
     //Control bits    
     assign o_RegWrite       = i_ctrl_wb_bus[1];
@@ -30,6 +28,6 @@ module seg_write_back
 
     assign o_write_register = i_write_register;
 
-    assign o_write_data     = (MemtoReg) ? i_data_mem : i_alu_mem; //MUX 
+    assign o_write_data     = (MemtoReg) ? i_read_data : i_ALU_result; //MUX 
 
 endmodule

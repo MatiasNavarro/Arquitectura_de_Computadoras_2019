@@ -25,7 +25,7 @@ module seg_instruction_decode
         output wire [LEN-1:0]           o_PC,
         output wire [LEN-1:0]           o_read_data_1,
         output wire [LEN-1:0]           o_read_data_2,
-        output reg  [LEN-1:0]           o_addr_ext,
+        output wire [LEN-1:0]           o_addr_ext,
         output wire [NB_ADDR-1:0]       o_rt,           //instruction[20:16]
         output wire [NB_ADDR-1:0]       o_rd,           //instruction[15:11]
         
@@ -51,16 +51,14 @@ module seg_instruction_decode
     
     //Extension de signo
     assign o_addr_ext   = {{NB_ADDRESS{address[15]}}, address[15:0]};
-
     
     control #(
         .NB_OPCODE      (NB_OPCODE),
         .NB_CTRL_EX     (NB_CTRL_EX),
         .NB_CTRL_M      (NB_CTRL_M), 
         .NB_CTRL_WB     (NB_CTRL_WB)
-        )
+    )
     u_control(
-        .i_clk          (i_clk),
         .i_rst          (i_rst),
         .i_opcode       (opcode),
         .o_ctrl_exc_bus (o_ctrl_exc_bus),
@@ -69,7 +67,7 @@ module seg_instruction_decode
     );
     
     registers #(
-        .NB_DATA    (LEN),
+        .LEN        (LEN),
         .NB_REG     (NB_REG), 
         .NB_ADDR    (NB_ADDR)
     )
@@ -77,7 +75,7 @@ module seg_instruction_decode
         .i_clk              (i_clk),
         .i_rst              (i_rst),
         .i_RegWrite         (i_RegWrite),
-        .i_read_register_1  (o_rs),
+        .i_read_register_1  (rs),
         .i_read_register_2  (o_rt),
         .i_write_register   (i_write_reg),
         .i_write_data       (i_write_data),

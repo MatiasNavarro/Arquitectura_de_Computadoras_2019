@@ -1,71 +1,54 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 25.06.2020 18:33:44
-// Design Name: 
-// Module Name: tb_seg_write_back
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
-
 
 module tb_seg_write_back();
-    parameter   LEN_01          = 32;
-    parameter   NB_ADDR_01      = 5;
-    parameter   NB_WB_BUS_01    = 2;
+    parameter   LEN          = 32;
+    parameter   NB_ADDR      = 5;
+    parameter   NB_CTRL_WB   = 2;
     
-    reg                     i_clk_01;
-    reg [LEN_01-1:0]        i_data_mem_01;
-    reg [LEN_01-1:0]        i_alu_mem_01;
-    reg [NB_WB_BUS_01-1:0]  i_wb_bus_01;
+    // INPUTS
+    reg [LEN-1 : 0]      i_read_data;
+    reg [LEN-1 : 0]      i_ALU_result;
+    reg [NB_ADDR-1:0]    i_write_register;
+    //Control Inputs
+    reg [NB_CTRL_WB-1:0] i_ctrl_wb_bus;       //[RegWrite, MemtoReg]
     
-    wire [LEN_01-1:0]       o_write_data_01;
+    // OUTPUTS
+    wire                 o_RegWrite;
+    wire [LEN -1 : 0]    o_write_data;
+    wire [NB_ADDR-1:0]   o_write_register;
     
-    initial
-    begin
-        #0
-        i_clk_01        = 0;
-        i_data_mem_01   = 0;
-        i_alu_mem_01    = 0;
-        i_wb_bus_01     = 0;
+    initial begin
+        i_read_data = 0;
+        i_ALU_result = 0;
+        i_ctrl_wb_bus = 0;
+        i_write_register = 0;
         
         #10
-        i_data_mem_01   = 5'b00011;
-        i_alu_mem_01    = 5'b11100;
-        i_wb_bus_01     = 2'b01;
+        i_read_data = 5'b00011;
+        i_ALU_result = 5'b11100;
+        i_ctrl_wb_bus = 2'b01;
         
         #10
-        i_wb_bus_01     = 2'b00;
+        i_ctrl_wb_bus = 2'b00;
         
-        #10 $finish;        
+        #10 $finish;   
     end
     
-    always #2.5 i_clk_01 = ~i_clk_01;
-    
     //Modulo para pasarle los estimulos del banco de pruebas.
-    seg_write_back
+    seg_write_back 
     #(
-        .LEN            (LEN_01),
-        .NB_ADDR        (NB_ADDR_01),
-        .NB_WB_BUS      (NB_WB_BUS_01)
+        .LEN        (LEN        ),
+        .NB_ADDR    (NB_ADDR    ),
+        .NB_CTRL_WB (NB_CTRL_WB )
     )
-    u_seg_write_back_01
-    (
-        .i_clk          (i_clk_01),
-        .i_data_mem     (i_data_mem_01),
-        .i_alu_mem      (i_alu_mem_01),
-        .i_wb_bus       (i_wb_bus_01),
-        .o_write_data   (o_write_data_01)
+    u_seg_write_back(
+    	.i_read_data      (i_read_data      ),
+        .i_ALU_result     (i_ALU_result     ),
+        .i_write_register (i_write_register ),
+        .i_ctrl_wb_bus    (i_ctrl_wb_bus    ),
+        .o_RegWrite       (o_RegWrite       ),
+        .o_write_data     (o_write_data     ),
+        .o_write_register (o_write_register )
     );
+    
 endmodule

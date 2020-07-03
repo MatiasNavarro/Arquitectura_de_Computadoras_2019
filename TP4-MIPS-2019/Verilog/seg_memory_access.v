@@ -33,20 +33,18 @@ module seg_memory_access
         output wire [NB_CTRL_WB-1:0]    o_ctrl_wb_bus
     );
     
-    //Memory wires
-    wire    rsta;
-    wire    regcea;
     
     //Control mem 
-    wire    MemWrite;
-    wire    MemRead;
-    wire    Branch;
+    wire MemWrite;
+    wire MemRead;
+    wire Branch;
+    assign Branch   = i_ctrl_mem_bus[2];
+    assign MemRead  = i_ctrl_mem_bus[1];
+    assign MemWrite = i_ctrl_mem_bus[0];
     
-    assign Branch   = i_mem_bus[2];
-    assign MemRead  = i_mem_bus[1];
-    assign MemWrite = i_mem_bus[0];
-    
-    //Memory control
+    //Memory control wires
+    wire rsta;
+    wire regcea;
     assign rsta     = 0;
     assign regcea   = 0;
     
@@ -69,7 +67,7 @@ module seg_memory_access
     )
     u_data_mem
     (
-        .i_addr     (i_address),
+        .i_addr     (i_ALU_result),
         .i_data     (i_write_data),
         .i_clk      (i_clk),
         .i_wea      (MemWrite),

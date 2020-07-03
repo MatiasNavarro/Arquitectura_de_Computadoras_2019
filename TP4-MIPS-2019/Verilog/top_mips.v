@@ -97,14 +97,13 @@ module top_mips
     // Instruction Fetch (IF) 
     //------------------------------------------------
     seg_instruction_fetch #(
-        .NB_INSTRUC                 (LEN),
+        .LEN                        (LEN),
         .RAM_WIDTH_PROGRAM 			(RAM_WIDTH_PROGRAM),
         .RAM_DEPTH_PROGRAM 			(RAM_DEPTH_PROGRAM),
         .RAM_PERFORMANCE_PROGRAM 	(RAM_PERFORMANCE_PROGRAM),
         .INIT_FILE_PROGRAM 			(INIT_FILE_PROGRAM)
     )
-    u_seg_instruction_fetch
-    (
+    u_seg_instruction_fetch (
         //Input
         .i_clk              (i_clk),
         .i_rst              (i_rst),
@@ -119,18 +118,16 @@ module top_mips
     // Instruction Decode (ID) 
     //------------------------------------------------
     seg_instruction_decode #(
-        .NB_INSTRUC                 (LEN),
-        .NB_REG                     (LEN),
-        .NB_ADDRESS                 (NB_ADDRESS),
-        .NB_OPCODE                  (NB_OPCODE),
-        .NB_ADDR                    (NB_ADDR),
-        .NB_CTRL_EX                 (NB_CTRL_EX),
-        .NB_CTRL_M                 (NB_CTRL_M),
-        .NB_CTRL_WB                  (NB_CTRL_WB),
-        .NB_ALUOP 			        (NB_ALUOP)
+        .LEN        (LEN),
+        .NB_REG     (LEN),
+        .NB_ADDRESS (NB_ADDRESS),
+        .NB_OPCODE  (NB_OPCODE),
+        .NB_ADDR    (NB_ADDR),
+        .NB_CTRL_EX (NB_CTRL_EX),
+        .NB_CTRL_M  (NB_CTRL_M),
+        .NB_CTRL_WB (NB_CTRL_WB)
     )
-    u_seg_instruction_decode
-    (
+    u_seg_instruction_decode (
         //Input
         .i_clk              (i_clk),
         .i_rst              (i_rst),
@@ -165,12 +162,11 @@ module top_mips
         .NB_CTRL_M      (NB_CTRL_M),
         .NB_CTRL_EX     (NB_CTRL_EX)
     )
-    u_seg_execute
-    (
+    u_seg_execute (
         //Input
         .i_clk              (i_clk),
         .i_rst              (i_rst),
-        .i_add_PC           (PC_id_ex),
+        .i_PC               (PC_id_ex),
         .i_read_data_1      (read_data_1_id_ex),
         .i_read_data_2      (read_data_2_id_ex),
         .i_addr_ext         (address_ext_id_ex),
@@ -233,16 +229,15 @@ module top_mips
     //------------------------------------------------
     seg_write_back #(
         .LEN            (LEN),
-        .NB_NB_ADDR     (NB_ADDR),
+        .NB_ADDR        (NB_ADDR),
         .NB_CTRL_WB     (NB_CTRL_WB)
     )
     u_seg_write_back
     (
         //Input
-        .i_clk              (i_clk),
         .i_read_data        (read_data_mem_wb),
-        .i_address          (address_mem_wb),
-        .i_write_register    (write_register_mem_wb),
+        .i_ALU_result       (address_mem_wb),
+        .i_write_register   (write_register_mem_wb),
         //Control inputs
         .i_ctrl_wb_bus      (ctrl_wb_bus_mem_wb),
         //Output
