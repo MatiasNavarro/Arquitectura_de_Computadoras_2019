@@ -7,7 +7,7 @@ module seg_instruction_decode
         parameter NB_ADDRESS    = 16,
         parameter NB_OPCODE     = 6,
         parameter NB_ADDR       = 5,
-        parameter NB_CTRL_EX    = 4,
+        parameter NB_CTRL_EX    = 5,
         parameter NB_CTRL_M     = 3,
         parameter NB_CTRL_WB    = 2        
     )
@@ -26,9 +26,11 @@ module seg_instruction_decode
         output wire [LEN-1:0]           o_read_data_1,
         output wire [LEN-1:0]           o_read_data_2,
         output wire [LEN-1:0]           o_addr_ext,
+        output wire [LEN-1:0]           o_dir_jump, 
         output wire [NB_ADDR-1:0]       o_rt,           //instruction[20:16]
         output wire [NB_ADDR-1:0]       o_rd,           //instruction[15:11]
-        
+        output wire                     o_jump,         //Jump signal        
+
         //Control outputs 
         output wire [NB_CTRL_WB-1:0]     o_ctrl_wb_bus,   // [ RegWrite, MemtoReg]
         output wire [NB_CTRL_M-1:0]      o_ctrl_mem_bus,  // [ SB, SH, LB, LH, Unsigned, Branch, MemRead, MemWrite ]
@@ -52,6 +54,10 @@ module seg_instruction_decode
     //Extension de signo
     assign o_addr_ext   = {{NB_ADDRESS{address[15]}}, address[15:0]};
     
+    assign o_PC         = i_PC;
+    assign o_jump       = o_ctrl_exc_bus[4];      //Jump signal
+    assign o_dir_jump   = {i_PC[31:28],{i_instruc[25:0],2'b00}};
+
     control #(
         .NB_OPCODE      (NB_OPCODE),
         .NB_CTRL_EX     (NB_CTRL_EX),

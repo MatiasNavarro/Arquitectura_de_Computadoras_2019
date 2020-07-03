@@ -39,19 +39,26 @@ module seg_instruction_fetch
     assign ena      = 1;
     assign rsta     = 0;
     assign regcea   = 1;
-
+    
+    //---------------------------------------
     // Program Counter Logic
+    //---------------------------------------
     always @(posedge i_clk) begin
         if (!i_rst) begin
             reg_PC <= {LEN{1'b0}};
         end
         else begin
-            if (!i_PCSrc) begin
+            if (!i_PCSrc) begin             //Primer MUX PC
                 reg_PC <= reg_PC + 1;
             end
             else begin
                 reg_PC <= i_PC_branch;
             end
+            
+            if(!i_jump)                     //Segundo MUX PC
+                reg_PC <= reg_PC;
+            else
+                reg_PC <= i_dir_jump; 
         end
     end
 

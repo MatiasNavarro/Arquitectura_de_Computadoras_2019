@@ -10,7 +10,7 @@ module top_mips
        parameter    NB_ALUOP        = 2,
        parameter    NB_FUNC         = 6,
        parameter    NB_ALUCTL       = 4,             
-       parameter    NB_CTRL_EX      = 4,
+       parameter    NB_CTRL_EX      = 5,
        parameter    NB_CTRL_M       = 3,
        parameter    NB_CTRL_WB      = 2,
                     
@@ -59,8 +59,11 @@ module top_mips
     wire [LEN-1:0]          read_data_2_id_ex; //Salida de ID
     wire [LEN-1:0]          address_ext_id_ex; //Salida de ID
     wire [LEN-1:0]          PC_id_ex;
+    wire [LEN-1:0]          dir_jump_id_if;
     wire [NB_ADDR-1:0]      rt_id_ex;
     wire [NB_ADDR-1:0]      rd_id_ex;
+    wire                    jump_id_if;
+
         //Control outputs     
     wire [NB_CTRL_WB-1:0]   ctrl_wb_bus_id_ex;
     wire [NB_CTRL_M-1:0]    ctrl_mem_bus_id_ex;
@@ -108,7 +111,9 @@ module top_mips
         .i_clk              (i_clk),
         .i_rst              (i_rst),
         .i_PC_branch        (PC_branch_mem_if),
+        .i_dir_jump         (dir_jump_id_if),
         .i_PCSrc            (PCSrc_exc_if),
+        .i_jump             (jump_id_if),
         //Output
         .o_instruction      (instruction),
         .o_PC               (PC_if_id)
@@ -141,8 +146,10 @@ module top_mips
         .o_read_data_1      (read_data_1_id_ex),
         .o_read_data_2      (read_data_2_id_ex),
         .o_addr_ext         (address_ext_id_ex),
+        .o_dir_jump         (dir_jump_id_if),
         .o_rt               (rt_id_ex),
         .o_rd               (rd_id_ex),
+        .o_jump             (jump_id_if),
         //Control outputs
         .o_ctrl_wb_bus      (ctrl_wb_bus_id_ex),
         .o_ctrl_mem_bus     (ctrl_mem_bus_id_ex),
