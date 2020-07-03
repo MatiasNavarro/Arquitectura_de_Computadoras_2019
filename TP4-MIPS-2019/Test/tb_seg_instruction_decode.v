@@ -24,8 +24,10 @@ module tb_seg_instruction_decode();
     wire [LEN-1:0]           o_read_data_1;
     wire [LEN-1:0]           o_read_data_2;
     wire  [LEN-1:0]          o_addr_ext;
+    wire [LEN-1:0]           o_dir_jump;
     wire [NB_ADDR-1:0]       o_rt;           //instruction[20:16]
     wire [NB_ADDR-1:0]       o_rd;           //instruction[15:11]
+    wire                     o_jump;
     //Control outputs 
     wire [NB_CTRL_WB-1:0]     o_ctrl_wb_bus;
     wire [NB_CTRL_M-1:0]      o_ctrl_mem_bus;
@@ -35,13 +37,21 @@ module tb_seg_instruction_decode();
         i_clk = 1'b0;
         i_rst = 1'b0;
         i_write_data = 32'h0000abcd;
-        
+        i_PC            = 6'b111100; i_PC[25:0] = $random; 
+//    i_instruc       = 32'b00000000;
+        i_write_reg     = 5'b00010;
+        i_RegWrite      = 1'b0;
+
         #5 i_rst = 1'b1;
         
         #20 i_instruc = 32'h01094020;    //R-Type
+            i_RegWrite          = 1'b1;        
         #20 i_instruc = 32'h8c034020;    //LW
+            i_RegWrite          = 1'b1;
         #20 i_instruc = 32'hac040005;    //SW
+            i_RegWrite          = 1'b0;
         #20 i_instruc = 32'h10080005;    //J-Type
+        #20 i_instruc[31-26] = 6'b000010 ; i_instruc[25:0] = $random;
         
         #10 $finish;
     end
@@ -71,8 +81,10 @@ module tb_seg_instruction_decode();
         .o_read_data_1  (o_read_data_1  ),
         .o_read_data_2  (o_read_data_2  ),
         .o_addr_ext     (o_addr_ext     ),
+        .o_dir_jump     (o_dir_jump     ),
         .o_rt           (o_rt           ),
         .o_rd           (o_rd           ),
+        .o_jump         (o_jump         ),
         .o_ctrl_wb_bus  (o_ctrl_wb_bus  ),
         .o_ctrl_mem_bus (o_ctrl_mem_bus ),
         .o_ctrl_exc_bus (o_ctrl_exc_bus )
