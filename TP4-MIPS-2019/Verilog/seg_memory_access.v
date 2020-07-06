@@ -43,8 +43,10 @@ module seg_memory_access
     assign MemWrite = i_ctrl_mem_bus[0];
     
     //Memory control wires
+    wire ena;
     wire rsta;
     wire regcea;
+    assign ena      = 1;
     assign rsta     = 0;
     assign regcea   = 0;
     
@@ -71,7 +73,7 @@ module seg_memory_access
         .i_data     (i_write_data),
         .i_clk      (i_clk),
         .i_wea      (MemWrite),
-        .i_ena      (MemRead),
+        .i_ena      (ena),
         .i_rsta     (rsta),
         .i_regcea   (regcea),
         .o_data     (o_read_data)

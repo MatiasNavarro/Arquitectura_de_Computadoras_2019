@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_seg_memory_access_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_seg_memory_access" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="42001fs"></ZoomEndTime>
+      <Cursor1Time time="42000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="173"></NameColumnWidth>
+      <ValueColumnWidth column_width="61"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="16" />
+   <wvobject fp_name="/tb_seg_memory_access/i_clk" type="logic">
+      <obj_property name="ElementShortName">i_clk</obj_property>
+      <obj_property name="ObjectShortName">i_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_memory_access/i_rst" type="logic">
+      <obj_property name="ElementShortName">i_rst</obj_property>
+      <obj_property name="ObjectShortName">i_rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_memory_access/i_PC_branch" type="array">
+      <obj_property name="ElementShortName">i_PC_branch[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i_PC_branch[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_memory_access/i_ALU_result" type="array">
+      <obj_property name="ElementShortName">i_ALU_result[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i_ALU_result[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_memory_access/i_write_data" type="array">
+      <obj_property name="ElementShortName">i_write_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i_write_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_memory_access/i_write_register" type="array">
+      <obj_property name="ElementShortName">i_write_register[4:0]</obj_property>
+      <obj_property name="ObjectShortName">i_write_register[4:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_memory_access/i_ALU_zero" type="logic">
+      <obj_property name="ElementShortName">i_ALU_zero</obj_property>
+      <obj_property name="ObjectShortName">i_ALU_zero</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_memory_access/i_ctrl_wb_bus" type="array">
+      <obj_property name="ElementShortName">i_ctrl_wb_bus[1:0]</obj_property>
+      <obj_property name="ObjectShortName">i_ctrl_wb_bus[1:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_memory_access/i_ctrl_mem_bus" type="array">
+      <obj_property name="ElementShortName">i_ctrl_mem_bus[2:0]</obj_property>
+      <obj_property name="ObjectShortName">i_ctrl_mem_bus[2:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_memory_access/o_PCSrc" type="logic">
+      <obj_property name="ElementShortName">o_PCSrc</obj_property>
+      <obj_property name="ObjectShortName">o_PCSrc</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_memory_access/o_PC_branch" type="array">
+      <obj_property name="ElementShortName">o_PC_branch[31:0]</obj_property>
+      <obj_property name="ObjectShortName">o_PC_branch[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_memory_access/o_read_data" type="array">
+      <obj_property name="ElementShortName">o_read_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">o_read_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_memory_access/o_address" type="array">
+      <obj_property name="ElementShortName">o_address[31:0]</obj_property>
+      <obj_property name="ObjectShortName">o_address[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_memory_access/o_write_register" type="array">
+      <obj_property name="ElementShortName">o_write_register[4:0]</obj_property>
+      <obj_property name="ObjectShortName">o_write_register[4:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_memory_access/o_ctrl_wb_bus" type="array">
+      <obj_property name="ElementShortName">o_ctrl_wb_bus[1:0]</obj_property>
+      <obj_property name="ObjectShortName">o_ctrl_wb_bus[1:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_memory_access/u_seg_memory_access/u_data_mem/BRAM" type="array">
+      <obj_property name="ElementShortName">BRAM[20:0][31:0]</obj_property>
+      <obj_property name="ObjectShortName">BRAM[20:0][31:0]</obj_property>
+   </wvobject>
+</wave_config>
