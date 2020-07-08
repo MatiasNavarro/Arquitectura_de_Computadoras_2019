@@ -14,7 +14,9 @@ module seg_instruction_fetch
         input wire                          i_clk,
         input wire                          i_rst,
         input wire  [LEN - 1 : 0]           i_PC_branch, //Branch o Jump
+        input wire  [LEN - 1 : 0]           i_PC_dir_jump,
         input wire                          i_PCSrc,
+        input wire                          i_jump,
         // OUTPUTS
         output wire [LEN - 1 : 0]           o_instruction,
         output wire [LEN - 1 : 0]           o_PC
@@ -58,7 +60,7 @@ module seg_instruction_fetch
             if(!i_jump)                     //Segundo MUX PC
                 reg_PC <= reg_PC;
             else
-                reg_PC <= i_dir_jump; 
+                reg_PC <= i_PC_dir_jump;
         end
     end
 

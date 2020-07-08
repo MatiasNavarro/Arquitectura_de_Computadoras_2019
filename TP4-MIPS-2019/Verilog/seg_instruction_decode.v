@@ -16,7 +16,7 @@ module seg_instruction_decode
         input wire                      i_clk,
         input wire                      i_rst,
         input wire [LEN-1:0]            i_PC,
-        input wire [LEN-1:0]            i_instruc,
+        input wire [LEN-1:0]            i_instruction,
         input wire [NB_ADDR-1:0]        i_write_reg,
         input wire [LEN-1:0]            i_write_data,
         input wire                      i_RegWrite,
@@ -26,7 +26,7 @@ module seg_instruction_decode
         output wire [LEN-1:0]           o_read_data_1,
         output wire [LEN-1:0]           o_read_data_2,
         output wire [LEN-1:0]           o_addr_ext,
-        output wire [LEN-1:0]           o_dir_jump, 
+        output wire [LEN-1:0]           o_PC_dir_jump, 
         output wire [NB_ADDR-1:0]       o_rt,           //instruction[20:16]
         output wire [NB_ADDR-1:0]       o_rd,           //instruction[15:11]
         output wire                     o_jump,         //Jump signal        
@@ -44,19 +44,19 @@ module seg_instruction_decode
     wire    [NB_ADDRESS-1:0]    address;
 
     //Instruction
-    assign opcode   = i_instruc[31:26];
-    assign rs       = i_instruc[25:21];
-    assign o_rt     = i_instruc[20:16];
-    assign o_rd     = i_instruc[15:11];
-    assign shamt    = i_instruc[10:6];
-    assign address  = i_instruc[15:0];
+    assign opcode   = i_instruction[31:26];
+    assign rs       = i_instruction[25:21];
+    assign o_rt     = i_instruction[20:16];
+    assign o_rd     = i_instruction[15:11];
+    assign shamt    = i_instruction[10:6];
+    assign address  = i_instruction[15:0];
     
     //Extension de signo
     assign o_addr_ext   = {{NB_ADDRESS{address[15]}}, address[15:0]};
     
-    assign o_PC         = i_PC;
-    assign o_jump       = o_ctrl_exc_bus[4];      //Jump signal
-    assign o_dir_jump   = {i_PC[31:28],{i_instruc[25:0],2'b00}};
+    assign o_PC             = i_PC;
+    assign o_jump           = o_ctrl_exc_bus[4];      //Jump signal
+    assign o_PC_dir_jump    = {i_PC[31:28],{i_instruction[25:0],2'b00}};
 
     control #(
         .NB_OPCODE      (NB_OPCODE),
