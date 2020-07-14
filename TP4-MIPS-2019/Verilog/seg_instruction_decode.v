@@ -50,43 +50,45 @@ module seg_instruction_decode
     assign o_rd     = i_instruction[15:11];
     assign shamt    = i_instruction[10:6];
     assign address  = i_instruction[15:0];
+    assign funct    = i_instruction[5:0];
     
     //Extension de signo
     assign o_addr_ext   = {{NB_ADDRESS{address[15]}}, address[15:0]};
     
     assign o_PC             = i_PC;
-    assign o_jump           = o_ctrl_exc_bus[4];      //Jump signal
+    assign o_jump           = o_ctrl_exc_bus[6];      //Jump signal
     assign o_PC_dir_jump    = {i_PC[31:28],{i_instruction[25:0],2'b00}};
 
     control #(
-        .NB_OPCODE      (NB_OPCODE),
-        .NB_CTRL_EX     (NB_CTRL_EX),
-        .NB_CTRL_M      (NB_CTRL_M), 
-        .NB_CTRL_WB     (NB_CTRL_WB)
+        .NB_OPCODE      (NB_OPCODE      ),
+        .NB_CTRL_EX     (NB_CTRL_EX     ),
+        .NB_CTRL_M      (NB_CTRL_M      ), 
+        .NB_CTRL_WB     (NB_CTRL_WB     )
     )
     u_control(
-        .i_rst          (i_rst),
-        .i_opcode       (opcode),
-        .o_ctrl_exc_bus (o_ctrl_exc_bus),
-        .o_ctrl_mem_bus (o_ctrl_mem_bus),
-        .o_ctrl_wb_bus  (o_ctrl_wb_bus)
+        .i_rst          (i_rst          ),
+        .i_opcode       (opcode         ),
+        .i_funct        (funct          ),
+        .o_ctrl_exc_bus (o_ctrl_exc_bus ),
+        .o_ctrl_mem_bus (o_ctrl_mem_bus ),
+        .o_ctrl_wb_bus  (o_ctrl_wb_bus  )
     );
     
     registers #(
-        .LEN        (LEN),
-        .NB_REG     (NB_REG), 
-        .NB_ADDR    (NB_ADDR)
+        .LEN        (LEN                ),
+        .NB_REG     (NB_REG             ), 
+        .NB_ADDR    (NB_ADDR            )
     )
     u_registers(
-        .i_clk              (i_clk),
-        .i_rst              (i_rst),
-        .i_RegWrite         (i_RegWrite),
-        .i_read_register_1  (rs),
-        .i_read_register_2  (o_rt),
-        .i_write_register   (i_write_reg),
-        .i_write_data       (i_write_data),
-        .o_read_data_1      (o_read_data_1),
-        .o_read_data_2      (o_read_data_2)
+        .i_clk              (i_clk          ),
+        .i_rst              (i_rst          ),
+        .i_RegWrite         (i_RegWrite     ),
+        .i_read_register_1  (rs             ),
+        .i_read_register_2  (o_rt           ),
+        .i_write_register   (i_write_reg    ),
+        .i_write_data       (i_write_data   ),
+        .o_read_data_1      (o_read_data_1  ),
+        .o_read_data_2      (o_read_data_2  )
     );
 
 endmodule
