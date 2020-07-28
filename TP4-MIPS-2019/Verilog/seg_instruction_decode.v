@@ -7,7 +7,7 @@ module seg_instruction_decode
         parameter NB_ADDRESS    = 16,
         parameter NB_OPCODE     = 6,
         parameter NB_ADDR       = 5,
-        parameter NB_CTRL_EX    = 5,
+        parameter NB_CTRL_EX    = 7,
         parameter NB_CTRL_M     = 3,
         parameter NB_CTRL_WB    = 2        
     )
@@ -39,9 +39,11 @@ module seg_instruction_decode
     
     //Instruction 
     wire    [NB_OPCODE-1:0]     opcode;
+    wire    [NB_OPCODE-1:0]     funct;
     wire    [NB_ADDR-1:0]       rs;
     wire    [NB_ADDR-1:0]       shamt;
     wire    [NB_ADDRESS-1:0]    address;
+    
 
     //Instruction
     assign opcode   = i_instruction[31:26];
