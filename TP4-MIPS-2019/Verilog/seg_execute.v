@@ -2,13 +2,13 @@
 
 module seg_execute
     #( parameter    LEN             = 32,
-       parameter    NB_ALUOP        = 2,
+       parameter    NB_ALUOP        = 4,
        parameter    NB_ALUCTL       = 4,
        parameter    NB_ADDR         = 5,
        parameter    NB_FUNC         = 6,
        parameter    NB_CTRL_WB      = 2,
        parameter    NB_CTRL_M       = 3,
-       parameter    NB_CTRL_EX      = 4
+       parameter    NB_CTRL_EX      = 7
     )
     (
         // INPUTS
@@ -38,24 +38,21 @@ module seg_execute
     // Control wires
     wire        [NB_ALUOP - 1 : 0]  ALUOp;
     wire                            ALUSrc;
-    wire                            ALUzero;
     // Program Counter Register
     reg         [LEN - 1 : 0]       reg_PC;
     // ALU Registers
     reg signed  [LEN - 1 : 0]       data_b;
     wire        [NB_ALUCTL - 1 : 0] ALUctl;
     wire        [NB_FUNC - 1 : 0]   funct;
-    wire        [LEN - 1 : 0]       ALU_result;
-    
+     
     assign funct            = i_addr_ext[NB_FUNC-1:0];
-    // Execute bits
-    assign ALUSrc           = i_ctrl_exc_bus[3];
-    assign ALUOp            = i_ctrl_exc_bus[2:1];
+    // Execute bits [Jump, ALUSrc, AluOp[3], AluOp[2], AluOp[1], AluOp[0], RegDst]
+    assign Jump             = i_ctrl_exc_bus[NB_ALUOP + 2];
+    assign ALUSrc           = i_ctrl_exc_bus[NB_ALUOP + 1];
+    assign ALUOp            = i_ctrl_exc_bus[NB_ALUOP : 1];
     assign RegDst           = i_ctrl_exc_bus[0];
     // Outputs 
     assign o_PC_branch      = reg_PC;
-    assign o_ALU_zero       = ALUzero;
-    assign o_ALU_result     = ALU_result;
     assign o_write_data     = i_read_data_2;
     // Control bus
     assign o_ctrl_wb_bus    = i_ctrl_wb_bus;
@@ -74,7 +71,7 @@ module seg_execute
         // MUX ALUSrc
         data_b = (ALUSrc) ? i_addr_ext : i_read_data_2 ;    // ALUSrc = 1 (i_addr_ext) ALUSrc = 0 (i_read_data_2) 
         // MUX RegDst
-        o_write_register = (RegDst) ? i_rt : i_rd;          // RegDst = 0 -> 20-16 | RegDst = 1 -> 15-11
+        o_write_register = (RegDst) ? i_rd : i_rt;          // RegDst = 1 -> 15-11 (rd) | RegDst = 0 -> 20-16 (rt)
     end
     
     // ALU

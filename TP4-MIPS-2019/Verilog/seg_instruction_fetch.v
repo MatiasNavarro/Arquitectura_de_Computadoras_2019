@@ -50,17 +50,16 @@ module seg_instruction_fetch
             reg_PC <= {LEN{1'b0}};
         end
         else begin
-            if (!i_PCSrc) begin             //Primer MUX PC
-                reg_PC <= reg_PC + 1;
-            end
-            else begin
-                reg_PC <= i_PC_branch;
-            end
-            
-            if(!i_jump)                     //Segundo MUX PC
-                reg_PC <= reg_PC;
-            else
+            if(!i_jump) begin                   //Segundo MUX PC
+                if (!i_PCSrc) begin             //Primer MUX PC
+                    reg_PC <= reg_PC + 1;
+                end
+                else begin
+                    reg_PC <= i_PC_branch;
+                end
+            end else begin
                 reg_PC <= i_PC_dir_jump;
+            end
         end
     end
 

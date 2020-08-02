@@ -35,7 +35,7 @@ module mem_instruction #(
     end
   endgenerate
 
-  always @(negedge i_clk)
+  always @(posedge i_clk)
     if (i_ena)
       if (i_wea)
         BRAM[i_addr] <= i_dina;

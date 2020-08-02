@@ -7,10 +7,10 @@ module top_mips
         parameter NB_OPCODE     = 6,
         parameter NB_OPERAND    = 11,
         parameter NB_ADDR       = 5,
-        parameter NB_ALUOP      = 2,
+        parameter NB_ALUOP      = 4,
         parameter NB_FUNC       = 6,
         parameter NB_ALUCTL     = 4,             
-        parameter NB_CTRL_EX    = 5,
+        parameter NB_CTRL_EX    = 7,
         parameter NB_CTRL_M     = 3,
         parameter NB_CTRL_WB    = 2,
         
@@ -38,12 +38,12 @@ module top_mips
     // Instruction Fetch (IF) I/O wires
     //------------------------------------------------
     // Outputs
-    output wire [LEN - 1 : 0] if_id_o_instruction;
-    output wire [LEN - 1 : 0] if_id_o_PC;
+    wire [LEN - 1 : 0]  if_id_o_instruction;
+    wire [LEN - 1 : 0]  if_id_o_PC;
     
     // IF/ID registers
-    reg [LEN-1:0]          if_id_reg_PC;
-    reg [LEN-1:0]          if_id_reg_instruction;
+    reg [LEN-1:0]       if_id_reg_PC;
+    reg [LEN-1:0]       if_id_reg_instruction;
 
     // -----------------------------------------------
     // Instruction decode (ID) I/O wires
@@ -204,6 +204,33 @@ module top_mips
             mem_wb_reg_ctrl_wb_bus      <= mem_wb_o_ctrl_wb_bus;
         end
     end
+
+    // IF/ID registers
+    assign if_id_i_PC                  = if_id_reg_PC;
+    assign if_id_i_instruction         = if_id_reg_instruction;
+    // ID/EX registers
+    assign id_ex_i_PC                  = id_ex_reg_PC;
+    assign id_ex_i_read_data_1         = id_ex_reg_read_data_1;
+    assign id_ex_i_read_data_2         = id_ex_reg_read_data_2;
+    assign id_ex_i_addr_ext            = id_ex_reg_addr_ext;
+    assign id_ex_i_rt                  = id_ex_reg_rt;
+    assign id_ex_i_rd                  = id_ex_reg_rd;
+    assign id_ex_i_ctrl_wb_bus         = id_ex_reg_ctrl_wb_bus;
+    assign id_ex_i_ctrl_mem_bus        = id_ex_reg_ctrl_mem_bus;
+    assign id_ex_i_ctrl_exc_bus        = id_ex_reg_ctrl_exc_bus;
+    // EX/MEM registers
+    assign ex_mem_i_PC_branch          = ex_mem_reg_PC_branch;
+    assign ex_mem_i_ALU_result         = ex_mem_reg_ALU_result;
+    assign ex_mem_i_write_data         = ex_mem_reg_write_data;
+    assign ex_mem_i_write_register     = ex_mem_reg_write_register;
+    assign ex_mem_i_ALU_zero           = ex_mem_reg_ALU_zero;
+    assign ex_mem_i_ctrl_wb_bus        = ex_mem_reg_ctrl_wb_bus;
+    assign ex_mem_i_ctrl_mem_bus       = ex_mem_reg_ctrl_mem_bus;
+    // MEM/WB registers
+    assign mem_wb_i_read_data          = mem_wb_reg_read_data;
+    assign mem_wb_i_ALU_result         = mem_wb_reg_ALU_result;
+    assign mem_wb_i_write_register     = mem_wb_reg_write_register;
+    assign mem_wb_i_ctrl_wb_bus        = mem_wb_reg_ctrl_wb_bus;
 
     // -----------------------------------------------
     // Instruction Fetch (IF) 

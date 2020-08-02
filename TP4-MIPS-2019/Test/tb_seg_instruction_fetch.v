@@ -13,7 +13,9 @@ module tb_seg_instruction_fetch();
     reg                 i_clk;
     reg                 i_rst;
     reg [LEN - 1 : 0]   i_PC_branch;
+    reg [LEN - 1 : 0]   i_PC_dir_jump;
     reg                 i_PCSrc;
+    reg                 i_jump;
     // OUTPUTS
     wire [LEN - 1 : 0]  o_instruction;
     wire [LEN - 1 : 0]  o_PC;
@@ -22,7 +24,9 @@ module tb_seg_instruction_fetch();
         i_clk = 1'b0;
         i_rst = 1'b0;
         i_PC_branch = {LEN{1'b0}};
+        i_PC_dir_jump = {LEN{1'b0}};
         i_PCSrc = 1'b0;
+        i_jump = 1'b0;
         
         #10 i_rst = 1'b1;
 
@@ -57,10 +61,11 @@ module tb_seg_instruction_fetch();
     	.i_clk         (i_clk         ),
         .i_rst         (i_rst         ),
         .i_PC_branch   (i_PC_branch   ),
+        .i_PC_dir_jump (i_PC_dir_jump ),
         .i_PCSrc       (i_PCSrc       ),
+        .i_jump        (i_jump        ),
         .o_instruction (o_instruction ),
         .o_PC          (o_PC          )
     );
-    
 
 endmodule

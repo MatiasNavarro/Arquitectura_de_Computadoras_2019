@@ -29,7 +29,7 @@ module registers
             register[ram_index] = ram_index;
     endgenerate
     
-    always@(negedge i_clk) //Lectura de registros
+    always@(posedge i_clk) //Lectura de registros
     begin
         if(!i_rst)
         begin
@@ -43,7 +43,7 @@ module registers
         end
     end    
     
-    always@(posedge i_clk) //Escrituras de registros
+    always@(negedge i_clk) //Escrituras de registros
     begin
         if(!i_rst)
         begin

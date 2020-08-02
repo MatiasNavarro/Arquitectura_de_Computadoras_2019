@@ -1,5 +1,7 @@
 `timescale 1ns / 1ps
 
+// TODO: Escribir los read_data a registros en un clock entre los clock de escritura de registros entre etapas (top_mips usa negedge, usa posedge aca) y asignalos a los o_read_data
+
 module seg_instruction_decode
     #( 
         parameter LEN           = 32,

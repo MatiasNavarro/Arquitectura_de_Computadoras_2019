@@ -6,22 +6,23 @@ module tb_top_mips();
     localparam NB_OPCODE     = 6;
     localparam NB_OPERAND    = 11;
     localparam NB_ADDR       = 5;
-    localparam NB_ALUOP      = 2;
+    localparam NB_ALUOP      = 4;
     localparam NB_FUNC       = 6;
-    localparam NB_ALUCTL     = 4;             
-    localparam NB_CTRL_EX    = 5;
+    localparam NB_ALUCTL     = 4;
+    localparam NB_CTRL_EX    = 7;
     localparam NB_CTRL_M     = 3;
     localparam NB_CTRL_WB    = 2;
     //PROGRAM MEMORY
     localparam RAM_WIDTH_PROGRAM       = 32;
-    localparam RAM_DEPTH_PROGRAM       = 16;
+    localparam RAM_DEPTH_PROGRAM       = 32;
     localparam RAM_PERFORMANCE_PROGRAM = "LOW_LATENCY";
     localparam INIT_FILE_PROGRAM       = "C:\\Users\\astar\\git\\Arquitectura_de_Computadoras_2019\\TP4-MIPS-2019\\Test\\MIPS_Assembly\\test_alu.bin";
     //DATA MEMORY
     localparam RAM_WIDTH_DATA          = 32;
-    localparam RAM_DEPTH_DATA          = 16; 
+    localparam RAM_DEPTH_DATA          = 32; 
     localparam RAM_PERFORMANCE_DATA    = "LOW_LATENCY";
-    localparam INIT_FILE_DATA          = "C:\\Users\\astar\\git\\Arquitectura_de_Computadoras_2019\\TP4-MIPS-2019\\Test\\init_top_mem_data.mem";
+    localparam INIT_FILE_DATA          = "";
+    // localparam INIT_FILE_DATA          = "C:\\Users\\astar\\git\\Arquitectura_de_Computadoras_2019\\TP4-MIPS-2019\\Test\\init_top_mem_data.mem";
 
     // Inputs
     reg                 i_clk;
@@ -30,7 +31,7 @@ module tb_top_mips();
     wire [LEN - 1 : 0]  o_led;
 
     initial begin
-        i_clk = 1'b0;
+        i_clk = 1'b1;
         i_rst = 1'b0;
         
         #4 i_rst = 1'b1;
