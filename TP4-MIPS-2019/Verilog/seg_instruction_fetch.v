@@ -17,6 +17,7 @@ module seg_instruction_fetch
         input wire  [LEN - 1 : 0]           i_PC_dir_jump,
         input wire                          i_PCSrc,
         input wire                          i_jump,
+        input wire                          i_stall_flag,
         // OUTPUTS
         output wire [LEN - 1 : 0]           o_instruction,
         output wire [LEN - 1 : 0]           o_PC

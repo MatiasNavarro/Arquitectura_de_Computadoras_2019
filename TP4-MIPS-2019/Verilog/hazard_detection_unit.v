@@ -29,10 +29,10 @@ module hazard_detection_unit
     input [NB_ADDR - 1 : 0] i_rs_id,
     input [NB_ADDR - 1 : 0] i_rt_id,
     input [NB_ADDR - 1 : 0] i_rt_ex,
-    input                   i_MemRead_ex,
+    input                   i_MemRead,
     output                  o_stall_flag    
 );
 
-    assign o_stall_flag = ((i_MemRead_ex == 1) & ((i_rs_id == i_rt_ex) | (i_rt_id == i_rt_ex))) ? 1'b1 : 1'b0; 
+    assign o_stall_flag = ((i_MemRead == 1) & ((i_rs_id == i_rt_ex) | (i_rt_id == i_rt_ex))) ? 1'b1 : 1'b0; 
 
 endmodule

@@ -46,6 +46,7 @@ module top_mips
     // IF/ID registers
     reg [LEN-1:0]          if_id_reg_PC;
     reg [LEN-1:0]          if_id_reg_instruction;
+    wire                   stall_flag;
 
     // -----------------------------------------------
     // Instruction decode (ID) I/O wires
@@ -233,6 +234,7 @@ module top_mips
         .i_PCSrc            (mem_if_PCSrc           ),
         .i_PC_dir_jump      (id_if_PC_dir_jump      ),
         .i_jump             (id_if_jump             ),
+        .i_stall_flag       (stall_flag             ),
         // Outputs
         .o_instruction      (if_id_o_instruction    ),
         .o_PC               (if_id_o_PC             )
@@ -270,6 +272,7 @@ module top_mips
         .o_addr_ext         (id_ex_o_addr_ext       ),
         .o_PC_dir_jump      (id_if_PC_dir_jump      ),
         .o_jump             (id_if_jump             ),
+        .o_stall_flag       (stall_flag             ),
         // Control outputs
         .o_ctrl_wb_bus      (id_ex_o_ctrl_wb_bus    ),  // [ RegWrite, MemtoReg]
         .o_ctrl_mem_bus     (id_ex_o_ctrl_mem_bus   ),  // [ SB, SH, LB, LH, Unsigned, BNEQ, Branch, MemRead, MemWrite ]

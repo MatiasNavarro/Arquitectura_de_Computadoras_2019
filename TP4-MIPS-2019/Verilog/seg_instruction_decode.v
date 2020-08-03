@@ -33,6 +33,7 @@ module seg_instruction_decode
         output wire [LEN-1:0]           o_read_data_2,
         output wire [LEN-1:0]           o_PC_dir_jump, 
         output wire                     o_jump_flag,         //Jump signal        
+        output wire                     o_stall_flag,        //Stall signal   
 
         //Control outputs 
         output reg  [NB_CTRL_WB-1:0]    o_ctrl_wb_bus,   // [ RegWrite, MemtoReg]
@@ -50,7 +51,7 @@ module seg_instruction_decode
 
     wire                        stall_flag;         //Hazard detection unit flag 
     wire    [LEN-1:0]           wire_read_data_1;
-    wire    [2:0]               jump_flag;
+    wire    [2:0]               jump_flag;          //Distintos tipos de saltos 
 
     wire                        addr_ext;
     wire    [NB_CTRL_EX-1:0]    ctrl_exc_bus;
@@ -77,8 +78,8 @@ module seg_instruction_decode
                             (o_ctrl_exc_bus[6]==1'b1)? 3'b001 : //JUMP
                             3'b000;  
 
-    assign o_PC_dir_jump    =   (jump_flag == 3'b001) ? {i_PC[31:28],{i_instruction[25:0],2'b00}} :     //JUMP
-                                (jump_flag == 3'b100) ? {i_instruction[25:0],2'b00} :                   //JAL
+    assign o_PC_dir_jump    =   (jump_flag == 3'b001) ? {i_PC[31:28],{2'b00, i_instruction[25:0]}} :     //JUMP
+                                (jump_flag == 3'b100) ? {2'b00, i_instruction[25:0]} :                   //JAL
                                 (jump_flag == 3'b010 || (jump_flag == 3'b011)) ? wire_read_data_1 :     //JR JALR
                                 32'b0;                
 
@@ -125,6 +126,19 @@ module seg_instruction_decode
         o_ctrl_wb_bus   <= o_ctrl_wb_bus;
       end
 
+      if(stall_flag)            //MUX - Control Riesgos 
+                                //Deteccion de riesgos - NOP - Burbuja
+      begin
+        o_ctrl_exc_bus  <= 0;
+        o_ctrl_mem_bus  <= 0;
+        o_ctrl_wb_bus   <= 0;
+      end
+      else
+      begin
+        o_ctrl_exc_bus  <= o_ctrl_exc_bus;
+        o_ctrl_mem_bus  <= o_ctrl_mem_bus;
+        o_ctrl_wb_bus   <= o_ctrl_wb_bus;
+      end
     
     end
 
@@ -171,7 +185,7 @@ module seg_instruction_decode
         .i_rs_id        (rs                 ),
         .i_rt_id        (rt                 ),
         .i_rt_ex        (o_rt               ),
-        .i_MemRead_ex   (o_ctrl_mem_bus[1]  ),  
+        .i_MemRead      (o_ctrl_mem_bus[1]  ),  
         .o_stall_flag   (stall_flag         )
     );
 
