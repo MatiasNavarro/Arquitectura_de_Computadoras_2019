@@ -38,10 +38,8 @@ module top_mips
     // Instruction Fetch (IF) I/O wires
     //------------------------------------------------
     // Outputs
-    //output 
-    wire [LEN - 1 : 0] if_id_o_instruction;
-    //output 
-    wire [LEN - 1 : 0] if_id_o_PC;
+    output wire [LEN - 1 : 0] if_id_o_instruction; 
+    output wire [LEN - 1 : 0] if_id_o_PC;
     
     // IF/ID registers
     reg [LEN-1:0]          if_id_reg_PC;
@@ -86,9 +84,9 @@ module top_mips
     wire [LEN - 1 : 0]          id_ex_i_read_data_1;
     wire [LEN - 1 : 0]          id_ex_i_read_data_2;
     wire [LEN - 1 : 0]          id_ex_i_addr_ext;
-    wire [NB_ADDR - 1 : 0]      rs;
-    wire [NB_ADDR - 1 : 0]      rt;
-    wire [NB_ADDR - 1 : 0]      rd;
+    wire [NB_ADDR - 1 : 0]      id_ex_i_rs;
+    wire [NB_ADDR - 1 : 0]      id_ex_i_rt;
+    wire [NB_ADDR - 1 : 0]      id_ex_i_rd;
     wire [NB_CTRL_WB - 1 : 0]   id_ex_i_ctrl_wb_bus;
     wire [NB_CTRL_M - 1 :  0]   id_ex_i_ctrl_mem_bus;
     wire [NB_CTRL_EX - 1 : 0]   id_ex_i_ctrl_exc_bus;
@@ -263,9 +261,9 @@ module top_mips
         .i_write_data       (wb_id_write_data       ),
         .i_RegWrite         (wb_id_RegWrite         ),
         // Outputs
-        .o_rs               (rs                     ),
-        .o_rt               (rt                     ),
-        .o_rd               (rd                     ),
+        .o_rs               (id_ex_i_rs             ),
+        .o_rt               (id_ex_i_rt             ),
+        .o_rd               (id_ex_i_rd             ),
         .o_PC               (id_ex_o_PC             ),
         .o_read_data_1      (id_ex_o_read_data_1    ),
         .o_read_data_2      (id_ex_o_read_data_2    ),
@@ -389,8 +387,8 @@ module top_mips
         .NB_ADDR    (NB_ADDR    )
     )
     (
-        .i_rs_id_ex         (rs                         ),
-        .i_rt_id_ex         (rt                         ),
+        .i_rs_id_ex         (id_ex_i_rs                 ),
+        .i_rt_id_ex         (id_ex_i_rt                 ),
         .i_write_reg_ex_mem (ex_mem_o_write_register    ),  
         .i_write_reg_mem_wb (wb_id_write_register       ),
         .i_reg_write_ex_mem (mem_wb_i_ctrl_wb_bus[1]    ),
