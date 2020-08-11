@@ -22,14 +22,13 @@
 
 module hazard_detection_unit
 #(
-    parameter LEN       = 32,
     parameter NB_ADDR   = 5
 )
 (
+    input                   i_MemRead,
     input [NB_ADDR - 1 : 0] i_rs_id,
     input [NB_ADDR - 1 : 0] i_rt_id,
     input [NB_ADDR - 1 : 0] i_rt_ex,
-    input                   i_MemRead,
     output                  o_stall_flag    
 );
 

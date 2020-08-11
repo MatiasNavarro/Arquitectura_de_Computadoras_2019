@@ -48,12 +48,16 @@ module seg_instruction_decode
     wire    [NB_ADDR-1:0]       rd;
     wire    [NB_ADDR-1:0]       shamt;
     wire    [NB_ADDRESS-1:0]    address;
+    wire    [NB_OPCODE-1:0]     funct;
+
+    wire    [LEN-1:0]           read_data_1;
+    wire    [LEN-1:0]           read_data_2;
+    wire    [LEN-1:0]           addr_ext;
 
     wire                        stall_flag;         //Hazard detection unit flag 
     wire    [LEN-1:0]           wire_read_data_1;
     wire    [2:0]               jump_flag;          //Distintos tipos de saltos 
-
-    wire                        addr_ext;
+    
     wire    [NB_CTRL_EX-1:0]    ctrl_exc_bus;
     wire    [NB_CTRL_M -1:0]    ctrl_mem_bus; 
     wire    [NB_CTRL_WB-1:0]    ctrl_wb_bus;
@@ -67,7 +71,12 @@ module seg_instruction_decode
     assign address  = i_instruction[15:0];
     assign funct    = i_instruction[5:0];
 
-    
+
+    assign o_stall_flag   = (i_flush) ? 1'b0  : stall_flag;
+    assign o_read_data_1  = (i_flush) ? 32'b0 : read_data_1;
+    assign o_read_data_2  = (i_flush) ? 32'b0 : read_data_2;
+
+
     //Extension de signo
     assign addr_ext = {{NB_ADDRESS{address[15]}}, address[15:0]};
 
@@ -95,15 +104,20 @@ module seg_instruction_decode
         o_PC            <= 0;
         o_addr_ext      <= 0;
 
-        o_ctrl_exc_bus  <= 0;
-        o_ctrl_mem_bus  <= 0;
-        o_ctrl_wb_bus   <= 0;
+        o_ctrl_exc_bus  <= 10'b0000000000;
+        o_ctrl_mem_bus  <= 9'b000000000;
+        o_ctrl_wb_bus   <= 2'b00;
       end
 
       if(i_enable)
       begin
         o_rs            <= rs;
-        o_rt            <= rt; 
+        
+        if(jump_flag == 3'b100) // JAL
+          o_rt  <= 5'b11111;
+        else
+          o_rt  <= rt;
+     
         o_rd            <= rd;
         o_PC            <= i_PC;
         o_addr_ext      <= addr_ext;
@@ -125,23 +139,25 @@ module seg_instruction_decode
         o_ctrl_mem_bus  <= o_ctrl_mem_bus;
         o_ctrl_wb_bus   <= o_ctrl_wb_bus;
       end
-
-      if(stall_flag)            //MUX - Control Riesgos 
-                                //Deteccion de riesgos - NOP - Burbuja
-      begin
-        o_ctrl_exc_bus  <= 0;
-        o_ctrl_mem_bus  <= 0;
-        o_ctrl_wb_bus   <= 0;
-      end
-      else
-      begin
-        o_ctrl_exc_bus  <= o_ctrl_exc_bus;
-        o_ctrl_mem_bus  <= o_ctrl_mem_bus;
-        o_ctrl_wb_bus   <= o_ctrl_wb_bus;
-      end
     
     end
 
+    always@(*)
+    begin
+      if(stall_flag)            //MUX - Control Riesgos 
+                                //Deteccion de riesgos - NOP - Burbuja
+      begin
+        o_ctrl_exc_bus  = 0;
+        o_ctrl_mem_bus  = 0;
+        o_ctrl_wb_bus   = 0;
+      end
+      else
+      begin
+        o_ctrl_exc_bus  = o_ctrl_exc_bus;
+        o_ctrl_mem_bus  = o_ctrl_mem_bus;
+        o_ctrl_wb_bus   = o_ctrl_wb_bus;
+      end
+    end
 
     control #(
         .NB_OPCODE      (NB_OPCODE      ),
@@ -173,19 +189,19 @@ module seg_instruction_decode
         .i_write_register   (i_write_reg        ),
         .i_write_data       (i_write_data       ),
         .o_wire_read_data_1 (wire_read_data_1   ),
-        .o_read_data_1      (o_read_data_1      ),
-        .o_read_data_2      (o_read_data_2      )
+        .o_read_data_1      (read_data_1        ),
+        .o_read_data_2      (read_data_2        )
     );
 
     hazard_detection_unit #(
-        .LEN            (LEN                ),
         .NB_ADDR        (NB_ADDR            )
     )
+    u_hazard_detection_unit
     (
+        .i_MemRead      (o_ctrl_mem_bus[1]  ),  //o_ctrl_mem_bus[1] = MemRead
         .i_rs_id        (rs                 ),
         .i_rt_id        (rt                 ),
         .i_rt_ex        (o_rt               ),
-        .i_MemRead      (o_ctrl_mem_bus[1]  ),  
         .o_stall_flag   (stall_flag         )
     );
 
