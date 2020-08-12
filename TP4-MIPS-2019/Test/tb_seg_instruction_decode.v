@@ -55,7 +55,7 @@ module tb_seg_instruction_decode();
             i_flush = 1'b0;
         
         //R-TYPE ---------------------------------------------
-        #10 i_instruction [31:26]   = 6'b000000;        //R-Type
+        #4  i_instruction [31:26]   = 6'b000000;        //R-Type
             i_instruction [25:6 ]   = $random;
             i_instruction [5 :0 ]   = 6'b100001;        //ADDU 
             i_RegWrite              = 1'b1;        
@@ -68,7 +68,9 @@ module tb_seg_instruction_decode();
 
         //LOAD TYPE ------------------------------------------
         #10 i_instruction [31:26]   = 6'b100000;        //LB
-            i_instruction [25:0 ]   = $random;
+            i_instruction [25:21]   = 5'b001011;
+            i_instruction [20:16]   = 5'b000001;
+            i_instruction [15:0 ]   = $random;
             i_RegWrite              = 1'b1;
 
         #10 i_instruction [31:26]   = 6'b100001;        //LH
@@ -133,7 +135,7 @@ module tb_seg_instruction_decode();
         #10 $finish;
     end
 
-    always #1 i_clk = ~i_clk;
+    always #2.5 i_clk = ~i_clk;
 
     seg_instruction_decode 
     #(
