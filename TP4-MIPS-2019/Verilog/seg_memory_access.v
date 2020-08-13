@@ -4,7 +4,7 @@ module seg_memory_access
     #( parameter    LEN             = 32,
                     NB_ADDR         = 5,
                     NB_CTRL_WB      = 2,
-                    NB_CTRL_M       = 3,
+                    NB_CTRL_M       = 9,
                     //DATA MEMORY
                     RAM_WIDTH_DATA          = 32,
                     RAM_DEPTH_DATA          = 2048, 
@@ -15,7 +15,7 @@ module seg_memory_access
         // INPUTS
         input wire                      i_clk,
         input wire                      i_rst,
-        input wire  [LEN - 1 : 0]       i_PC_branch,        //Branch o Jump 
+        input wire  [LEN - 1 : 0]       i_PC_branch,        //Branch
         input wire  [LEN - 1 : 0]       i_ALU_result,       //Address (Data Memory)
         input wire  [LEN - 1 : 0]       i_write_data,
         input wire  [NB_ADDR-1:0]       i_write_register,
@@ -33,20 +33,20 @@ module seg_memory_access
         output wire [NB_CTRL_WB-1:0]    o_ctrl_wb_bus
     );
     
+    //Memory wires
+    wire    rsta;
+    wire    regcea;
     
     //Control mem 
-    wire MemWrite;
-    wire MemRead;
-    wire Branch;
+    wire    MemWrite;
+    wire    MemRead;
+    wire    Branch;
+    
     assign Branch   = i_ctrl_mem_bus[2];
     assign MemRead  = i_ctrl_mem_bus[1];
     assign MemWrite = i_ctrl_mem_bus[0];
     
-    //Memory control wires
-    wire ena;
-    wire rsta;
-    wire regcea;
-    assign ena      = 1;
+    //Memory control
     assign rsta     = 0;
     assign regcea   = 0;
     
@@ -73,7 +73,7 @@ module seg_memory_access
         .i_data     (i_write_data),
         .i_clk      (i_clk),
         .i_wea      (MemWrite),
-        .i_ena      (ena),
+        .i_ena      (MemRead),
         .i_rsta     (rsta),
         .i_regcea   (regcea),
         .o_data     (o_read_data)

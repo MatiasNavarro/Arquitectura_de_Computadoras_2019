@@ -25,8 +25,8 @@ module tb_control#();
     //Todo puerto de salida del modulo es un cable.
     //Todo puerto de estimulo o generacion de entrada es un registro.
     parameter NB_OPCODE     = 6;
-    parameter NB_CTRL_EX    = 7;
-    parameter NB_CTRL_M     = 3;
+    parameter NB_CTRL_EX    = 10;
+    parameter NB_CTRL_M     = 9;
     parameter NB_CTRL_WB    = 2;
     
     // Entradas.
@@ -44,18 +44,20 @@ module tb_control#();
     begin
     #1
     i_opcode = 0;
+    i_funct  = 0;
     // Test: Prueba reset.
-    #10 i_rst  = 1'b0;        // Reset.
-    #10 i_rst  = 1'b1;      // Desactivo el reset.
+    i_rst  = 1'b0;              // Reset.
+    #10 i_rst  = 1'b1;              // Desactivo el reset.
     
     //R-TYPE ------------------------------------------
     #10 i_opcode    = 6'b000000;
-        i_funct     = 6'b000000;
-    #10 i_funct     = 6'b000010;
-    #10 i_funct     = 6'b000011;
-    #10 i_funct     = 6'b001000;
-    #10 i_funct     = 6'b001001;
-    #10 i_funct     = 6'b100000;  
+        i_funct     = 6'b000000;    //SLL
+        
+    #10 i_funct     = 6'b000010;    //SRL
+    #10 i_funct     = 6'b000011;    //SRA
+    #10 i_funct     = 6'b001000;    //JR
+    #10 i_funct     = 6'b001001;    //JALR
+    #10 i_funct     = 6'b100000;    //Prueba default 
     
     //LOAD TYPE ---------------------------------------
     #10 i_opcode    = 6'b100000;   //LB

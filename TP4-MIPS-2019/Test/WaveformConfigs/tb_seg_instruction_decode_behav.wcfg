@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_seg_instruction_decode_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_seg_instruction_decode" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="44700001fs"></ZoomEndTime>
+      <Cursor1Time time="14000000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="176"></NameColumnWidth>
+      <ValueColumnWidth column_width="166"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="27" />
+   <wvobject type="logic" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/i_clk">
+      <obj_property name="ElementShortName">i_clk</obj_property>
+      <obj_property name="ObjectShortName">i_clk</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/i_rst">
+      <obj_property name="ElementShortName">i_rst</obj_property>
+      <obj_property name="ObjectShortName">i_rst</obj_property>
+      <obj_property name="CustomSignalColor">#0000FF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/i_flush">
+      <obj_property name="ElementShortName">i_flush</obj_property>
+      <obj_property name="ObjectShortName">i_flush</obj_property>
+      <obj_property name="CustomSignalColor">#00FFFF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/i_enable">
+      <obj_property name="ElementShortName">i_enable</obj_property>
+      <obj_property name="ObjectShortName">i_enable</obj_property>
+      <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/i_RegWrite">
+      <obj_property name="ElementShortName">i_RegWrite</obj_property>
+      <obj_property name="ObjectShortName">i_RegWrite</obj_property>
+      <obj_property name="CustomSignalColor">#808000</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/i_PC">
+      <obj_property name="ElementShortName">i_PC[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i_PC[31:0]</obj_property>
+      <obj_property name="CustomSignalColor">#F0E68C</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/i_instruction">
+      <obj_property name="ElementShortName">i_instruction[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i_instruction[31:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#0000A0</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/u_control/i_opcode">
+      <obj_property name="ElementShortName">i_opcode[5:0]</obj_property>
+      <obj_property name="ObjectShortName">i_opcode[5:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/i_write_reg">
+      <obj_property name="ElementShortName">i_write_reg[4:0]</obj_property>
+      <obj_property name="ObjectShortName">i_write_reg[4:0]</obj_property>
+      <obj_property name="CustomSignalColor">#E0FFFF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/i_write_data">
+      <obj_property name="ElementShortName">i_write_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i_write_data[31:0]</obj_property>
+      <obj_property name="CustomSignalColor">#00FF7F</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/o_rs">
+      <obj_property name="ElementShortName">o_rs[4:0]</obj_property>
+      <obj_property name="ObjectShortName">o_rs[4:0]</obj_property>
+      <obj_property name="CustomSignalColor">#008000</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/o_rt">
+      <obj_property name="ElementShortName">o_rt[4:0]</obj_property>
+      <obj_property name="ObjectShortName">o_rt[4:0]</obj_property>
+      <obj_property name="CustomSignalColor">#D2691E</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/o_rd">
+      <obj_property name="ElementShortName">o_rd[4:0]</obj_property>
+      <obj_property name="ObjectShortName">o_rd[4:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/o_PC">
+      <obj_property name="ElementShortName">o_PC[31:0]</obj_property>
+      <obj_property name="ObjectShortName">o_PC[31:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/o_read_data_1">
+      <obj_property name="ElementShortName">o_read_data_1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">o_read_data_1[31:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FF0080</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/o_addr_ext">
+      <obj_property name="ElementShortName">o_addr_ext[31:0]</obj_property>
+      <obj_property name="ObjectShortName">o_addr_ext[31:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/jump_flag">
+      <obj_property name="ElementShortName">jump_flag[2:0]</obj_property>
+      <obj_property name="ObjectShortName">jump_flag[2:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#FFFFFF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/o_jump_flag">
+      <obj_property name="ElementShortName">o_jump_flag</obj_property>
+      <obj_property name="ObjectShortName">o_jump_flag</obj_property>
+      <obj_property name="CustomSignalColor">#008080</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/o_PC_dir_jump">
+      <obj_property name="ElementShortName">o_PC_dir_jump[31:0]</obj_property>
+      <obj_property name="ObjectShortName">o_PC_dir_jump[31:0]</obj_property>
+      <obj_property name="CustomSignalColor">#0000FF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/o_stall_flag">
+      <obj_property name="ElementShortName">o_stall_flag</obj_property>
+      <obj_property name="ObjectShortName">o_stall_flag</obj_property>
+      <obj_property name="CustomSignalColor">#00FFFF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/u_hazard_detection_unit/i_rs_id">
+      <obj_property name="ElementShortName">i_rs_id[4:0]</obj_property>
+      <obj_property name="ObjectShortName">i_rs_id[4:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/u_hazard_detection_unit/i_rt_id">
+      <obj_property name="ElementShortName">i_rt_id[4:0]</obj_property>
+      <obj_property name="ObjectShortName">i_rt_id[4:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/rt">
+      <obj_property name="ElementShortName">rt[4:0]</obj_property>
+      <obj_property name="ObjectShortName">rt[4:0]</obj_property>
+      <obj_property name="CustomSignalColor">#0000FF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/u_hazard_detection_unit/i_rt_ex">
+      <obj_property name="ElementShortName">i_rt_ex[4:0]</obj_property>
+      <obj_property name="ObjectShortName">i_rt_ex[4:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/o_ctrl_wb_bus">
+      <obj_property name="ElementShortName">o_ctrl_wb_bus[1:0]</obj_property>
+      <obj_property name="ObjectShortName">o_ctrl_wb_bus[1:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#0000A0</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/o_ctrl_mem_bus">
+      <obj_property name="ElementShortName">o_ctrl_mem_bus[8:0]</obj_property>
+      <obj_property name="ObjectShortName">o_ctrl_mem_bus[8:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#00FF7F</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_seg_instruction_decode/u_seg_instruction_decode/o_ctrl_exc_bus">
+      <obj_property name="ElementShortName">o_ctrl_exc_bus[9:0]</obj_property>
+      <obj_property name="ObjectShortName">o_ctrl_exc_bus[9:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#808000</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+</wave_config>

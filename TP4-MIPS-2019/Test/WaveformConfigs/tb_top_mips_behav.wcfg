@@ -12,14 +12,14 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="29801fs"></ZoomEndTime>
-      <Cursor1Time time="23000fs"></Cursor1Time>
+      <ZoomEndTime time="29881fs"></ZoomEndTime>
+      <Cursor1Time time="0fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="230"></NameColumnWidth>
-      <ValueColumnWidth column_width="108"></ValueColumnWidth>
+      <ValueColumnWidth column_width="104"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="180" />
+   <WVObjectSize size="184" />
    <wvobject fp_name="/tb_top_mips/u_top_mips/mem_if_PCSrc" type="logic">
       <obj_property name="ElementShortName">mem_if_PCSrc</obj_property>
       <obj_property name="ObjectShortName">mem_if_PCSrc</obj_property>
@@ -174,6 +174,12 @@
       <obj_property name="CustomSignalColor">#F0E68C</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
+   <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_decode/i_rt_ex" type="array">
+      <obj_property name="ElementShortName">i_rt_ex[4:0]</obj_property>
+      <obj_property name="ObjectShortName">i_rt_ex[4:0]</obj_property>
+      <obj_property name="CustomSignalColor">#F0E68C</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
    <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_decode/o_PC" type="array">
       <obj_property name="ElementShortName">o_PC[31:0]</obj_property>
       <obj_property name="ObjectShortName">o_PC[31:0]</obj_property>
@@ -204,6 +210,12 @@
       <obj_property name="CustomSignalColor">#F0E68C</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
+   <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_decode/o_rs" type="array">
+      <obj_property name="ElementShortName">o_rs[4:0]</obj_property>
+      <obj_property name="ObjectShortName">o_rs[4:0]</obj_property>
+      <obj_property name="CustomSignalColor">#F0E68C</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
    <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_decode/o_rt" type="array">
       <obj_property name="ElementShortName">o_rt[4:0]</obj_property>
       <obj_property name="ObjectShortName">o_rt[4:0]</obj_property>
@@ -216,9 +228,15 @@
       <obj_property name="CustomSignalColor">#F0E68C</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_decode/o_jump" type="logic">
-      <obj_property name="ElementShortName">o_jump</obj_property>
-      <obj_property name="ObjectShortName">o_jump</obj_property>
+   <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_decode/o_jump_flag" type="logic">
+      <obj_property name="ElementShortName">o_jump_flag</obj_property>
+      <obj_property name="ObjectShortName">o_jump_flag</obj_property>
+      <obj_property name="CustomSignalColor">#F0E68C</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_decode/o_stall_flag" type="logic">
+      <obj_property name="ElementShortName">o_stall_flag</obj_property>
+      <obj_property name="ObjectShortName">o_stall_flag</obj_property>
       <obj_property name="CustomSignalColor">#F0E68C</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
@@ -229,14 +247,14 @@
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_decode/o_ctrl_mem_bus" type="array">
-      <obj_property name="ElementShortName">o_ctrl_mem_bus[2:0]</obj_property>
-      <obj_property name="ObjectShortName">o_ctrl_mem_bus[2:0]</obj_property>
+      <obj_property name="ElementShortName">o_ctrl_mem_bus[8:0]</obj_property>
+      <obj_property name="ObjectShortName">o_ctrl_mem_bus[8:0]</obj_property>
       <obj_property name="CustomSignalColor">#F0E68C</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_decode/o_ctrl_exc_bus" type="array">
-      <obj_property name="ElementShortName">o_ctrl_exc_bus[6:0]</obj_property>
-      <obj_property name="ObjectShortName">o_ctrl_exc_bus[6:0]</obj_property>
+      <obj_property name="ElementShortName">o_ctrl_exc_bus[9:0]</obj_property>
+      <obj_property name="ObjectShortName">o_ctrl_exc_bus[9:0]</obj_property>
       <obj_property name="CustomSignalColor">#F0E68C</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
@@ -246,9 +264,9 @@
       <obj_property name="CustomSignalColor">#F0E68C</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_decode/rs" type="array">
-      <obj_property name="ElementShortName">rs[4:0]</obj_property>
-      <obj_property name="ObjectShortName">rs[4:0]</obj_property>
+   <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_decode/funct" type="array">
+      <obj_property name="ElementShortName">funct[5:0]</obj_property>
+      <obj_property name="ObjectShortName">funct[5:0]</obj_property>
       <obj_property name="CustomSignalColor">#F0E68C</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
@@ -264,9 +282,21 @@
       <obj_property name="CustomSignalColor">#F0E68C</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_decode/funct" type="array">
-      <obj_property name="ElementShortName">funct[5:0]</obj_property>
-      <obj_property name="ObjectShortName">funct[5:0]</obj_property>
+   <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_decode/stall_flag" type="logic">
+      <obj_property name="ElementShortName">stall_flag</obj_property>
+      <obj_property name="ObjectShortName">stall_flag</obj_property>
+      <obj_property name="CustomSignalColor">#F0E68C</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_decode/wire_read_data_1" type="array">
+      <obj_property name="ElementShortName">wire_read_data_1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wire_read_data_1[31:0]</obj_property>
+      <obj_property name="CustomSignalColor">#F0E68C</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_decode/jump_flag" type="array">
+      <obj_property name="ElementShortName">jump_flag[2:0]</obj_property>
+      <obj_property name="ObjectShortName">jump_flag[2:0]</obj_property>
       <obj_property name="CustomSignalColor">#F0E68C</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
@@ -359,20 +389,16 @@
       <obj_property name="ObjectShortName">id_ex_o_ctrl_wb_bus[1:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_top_mips/u_top_mips/id_ex_o_ctrl_mem_bus" type="array">
-      <obj_property name="ElementShortName">id_ex_o_ctrl_mem_bus[2:0]</obj_property>
-      <obj_property name="ObjectShortName">id_ex_o_ctrl_mem_bus[2:0]</obj_property>
+      <obj_property name="ElementShortName">id_ex_o_ctrl_mem_bus[8:0]</obj_property>
+      <obj_property name="ObjectShortName">id_ex_o_ctrl_mem_bus[8:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_top_mips/u_top_mips/id_ex_o_ctrl_exc_bus" type="array">
-      <obj_property name="ElementShortName">id_ex_o_ctrl_exc_bus[6:0]</obj_property>
-      <obj_property name="ObjectShortName">id_ex_o_ctrl_exc_bus[6:0]</obj_property>
+      <obj_property name="ElementShortName">id_ex_o_ctrl_exc_bus[9:0]</obj_property>
+      <obj_property name="ObjectShortName">id_ex_o_ctrl_exc_bus[9:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_top_mips/u_top_mips/id_if_PC_dir_jump" type="array">
       <obj_property name="ElementShortName">id_if_PC_dir_jump[31:0]</obj_property>
       <obj_property name="ObjectShortName">id_if_PC_dir_jump[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_top_mips/u_top_mips/id_if_jump" type="logic">
-      <obj_property name="ElementShortName">id_if_jump</obj_property>
-      <obj_property name="ObjectShortName">id_if_jump</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_top_mips/u_top_mips/id_ex_reg_PC" type="array">
       <obj_property name="ElementShortName">id_ex_reg_PC[31:0]</obj_property>
@@ -417,14 +443,14 @@
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_top_mips/u_top_mips/id_ex_reg_ctrl_mem_bus" type="array">
-      <obj_property name="ElementShortName">id_ex_reg_ctrl_mem_bus[2:0]</obj_property>
-      <obj_property name="ObjectShortName">id_ex_reg_ctrl_mem_bus[2:0]</obj_property>
+      <obj_property name="ElementShortName">id_ex_reg_ctrl_mem_bus[8:0]</obj_property>
+      <obj_property name="ObjectShortName">id_ex_reg_ctrl_mem_bus[8:0]</obj_property>
       <obj_property name="CustomSignalColor">#FFA500</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_top_mips/u_top_mips/id_ex_reg_ctrl_exc_bus" type="array">
-      <obj_property name="ElementShortName">id_ex_reg_ctrl_exc_bus[6:0]</obj_property>
-      <obj_property name="ObjectShortName">id_ex_reg_ctrl_exc_bus[6:0]</obj_property>
+      <obj_property name="ElementShortName">id_ex_reg_ctrl_exc_bus[9:0]</obj_property>
+      <obj_property name="ObjectShortName">id_ex_reg_ctrl_exc_bus[9:0]</obj_property>
       <obj_property name="CustomSignalColor">#FFA500</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
@@ -457,12 +483,12 @@
       <obj_property name="ObjectShortName">id_ex_i_ctrl_wb_bus[1:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_top_mips/u_top_mips/id_ex_i_ctrl_mem_bus" type="array">
-      <obj_property name="ElementShortName">id_ex_i_ctrl_mem_bus[2:0]</obj_property>
-      <obj_property name="ObjectShortName">id_ex_i_ctrl_mem_bus[2:0]</obj_property>
+      <obj_property name="ElementShortName">id_ex_i_ctrl_mem_bus[8:0]</obj_property>
+      <obj_property name="ObjectShortName">id_ex_i_ctrl_mem_bus[8:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_top_mips/u_top_mips/id_ex_i_ctrl_exc_bus" type="array">
-      <obj_property name="ElementShortName">id_ex_i_ctrl_exc_bus[6:0]</obj_property>
-      <obj_property name="ObjectShortName">id_ex_i_ctrl_exc_bus[6:0]</obj_property>
+      <obj_property name="ElementShortName">id_ex_i_ctrl_exc_bus[9:0]</obj_property>
+      <obj_property name="ObjectShortName">id_ex_i_ctrl_exc_bus[9:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_execute/i_clk" type="logic">
       <obj_property name="ElementShortName">i_clk</obj_property>
@@ -519,14 +545,14 @@
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_execute/i_ctrl_mem_bus" type="array">
-      <obj_property name="ElementShortName">i_ctrl_mem_bus[2:0]</obj_property>
-      <obj_property name="ObjectShortName">i_ctrl_mem_bus[2:0]</obj_property>
+      <obj_property name="ElementShortName">i_ctrl_mem_bus[8:0]</obj_property>
+      <obj_property name="ObjectShortName">i_ctrl_mem_bus[8:0]</obj_property>
       <obj_property name="CustomSignalColor">#FF00FF</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_execute/i_ctrl_exc_bus" type="array">
-      <obj_property name="ElementShortName">i_ctrl_exc_bus[6:0]</obj_property>
-      <obj_property name="ObjectShortName">i_ctrl_exc_bus[6:0]</obj_property>
+      <obj_property name="ElementShortName">i_ctrl_exc_bus[9:0]</obj_property>
+      <obj_property name="ObjectShortName">i_ctrl_exc_bus[9:0]</obj_property>
       <obj_property name="CustomSignalColor">#FF00FF</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
@@ -567,8 +593,8 @@
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_execute/o_ctrl_mem_bus" type="array">
-      <obj_property name="ElementShortName">o_ctrl_mem_bus[2:0]</obj_property>
-      <obj_property name="ObjectShortName">o_ctrl_mem_bus[2:0]</obj_property>
+      <obj_property name="ElementShortName">o_ctrl_mem_bus[8:0]</obj_property>
+      <obj_property name="ObjectShortName">o_ctrl_mem_bus[8:0]</obj_property>
       <obj_property name="CustomSignalColor">#FF00FF</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
@@ -645,8 +671,8 @@
       <obj_property name="ObjectShortName">ex_mem_o_ctrl_wb_bus[1:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_top_mips/u_top_mips/ex_mem_o_ctrl_mem_bus" type="array">
-      <obj_property name="ElementShortName">ex_mem_o_ctrl_mem_bus[2:0]</obj_property>
-      <obj_property name="ObjectShortName">ex_mem_o_ctrl_mem_bus[2:0]</obj_property>
+      <obj_property name="ElementShortName">ex_mem_o_ctrl_mem_bus[8:0]</obj_property>
+      <obj_property name="ObjectShortName">ex_mem_o_ctrl_mem_bus[8:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_top_mips/u_top_mips/ex_mem_reg_PC_branch" type="array">
       <obj_property name="ElementShortName">ex_mem_reg_PC_branch[31:0]</obj_property>
@@ -685,8 +711,8 @@
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_top_mips/u_top_mips/ex_mem_reg_ctrl_mem_bus" type="array">
-      <obj_property name="ElementShortName">ex_mem_reg_ctrl_mem_bus[2:0]</obj_property>
-      <obj_property name="ObjectShortName">ex_mem_reg_ctrl_mem_bus[2:0]</obj_property>
+      <obj_property name="ElementShortName">ex_mem_reg_ctrl_mem_bus[8:0]</obj_property>
+      <obj_property name="ObjectShortName">ex_mem_reg_ctrl_mem_bus[8:0]</obj_property>
       <obj_property name="CustomSignalColor">#FFA500</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
@@ -715,8 +741,8 @@
       <obj_property name="ObjectShortName">ex_mem_i_ctrl_wb_bus[1:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_top_mips/u_top_mips/ex_mem_i_ctrl_mem_bus" type="array">
-      <obj_property name="ElementShortName">ex_mem_i_ctrl_mem_bus[2:0]</obj_property>
-      <obj_property name="ObjectShortName">ex_mem_i_ctrl_mem_bus[2:0]</obj_property>
+      <obj_property name="ElementShortName">ex_mem_i_ctrl_mem_bus[8:0]</obj_property>
+      <obj_property name="ObjectShortName">ex_mem_i_ctrl_mem_bus[8:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_memory_access/i_clk" type="logic">
       <obj_property name="ElementShortName">i_clk</obj_property>
@@ -767,8 +793,8 @@
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_memory_access/i_ctrl_mem_bus" type="array">
-      <obj_property name="ElementShortName">i_ctrl_mem_bus[2:0]</obj_property>
-      <obj_property name="ObjectShortName">i_ctrl_mem_bus[2:0]</obj_property>
+      <obj_property name="ElementShortName">i_ctrl_mem_bus[8:0]</obj_property>
+      <obj_property name="ObjectShortName">i_ctrl_mem_bus[8:0]</obj_property>
       <obj_property name="CustomSignalColor">#008080</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>

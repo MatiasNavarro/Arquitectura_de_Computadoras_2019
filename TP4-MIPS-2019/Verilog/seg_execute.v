@@ -7,8 +7,8 @@ module seg_execute
        parameter    NB_ADDR         = 5,
        parameter    NB_FUNC         = 6,
        parameter    NB_CTRL_WB      = 2,
-       parameter    NB_CTRL_M       = 3,
-       parameter    NB_CTRL_EX      = 7
+       parameter    NB_CTRL_M       = 9,
+       parameter    NB_CTRL_EX      = 10
     )
     (
         // INPUTS
@@ -24,6 +24,11 @@ module seg_execute
         input wire [NB_CTRL_WB - 1 : 0]     i_ctrl_wb_bus,
         input wire [NB_CTRL_M - 1 :  0]     i_ctrl_mem_bus,
         input wire [NB_CTRL_EX - 1 : 0]     i_ctrl_exc_bus,
+        // Forwarding
+        input wire [1:0]                    i_ctrl_muxA_forwarding,
+        input wire [1:0]                    i_ctrl_muxB_forwarding, 
+        input wire [LEN - 1 : 0]            i_rd_mem_forwarding,
+        input wire [LEN - 1 : 0]            i_rd_wb_forwarding, 
         // OUTPUTS
         output wire [LEN - 1 : 0]           o_PC_branch,        // Branch o Jump
         output wire [LEN - 1 : 0]           o_ALU_result,       // Address (Data Memory)
@@ -44,7 +49,13 @@ module seg_execute
     reg signed  [LEN - 1 : 0]       data_b;
     wire        [NB_ALUCTL - 1 : 0] ALUctl;
     wire        [NB_FUNC - 1 : 0]   funct;
-     
+
+    // MUX Forwarding
+    reg         [LEN - 1 : 0]       muxA_Alu;
+    reg         [LEN - 1 : 0]       muxB_Alu;
+    wire        [LEN - 1 : 0]       wire_muxA;
+    wire        [LEN - 1 : 0]       wire_muxB;
+    
     assign funct            = i_addr_ext[NB_FUNC-1:0];
     // Execute bits [Jump, ALUSrc, AluOp[3], AluOp[2], AluOp[1], AluOp[0], RegDst]
     assign Jump             = i_ctrl_exc_bus[NB_ALUOP + 2];
@@ -58,6 +69,9 @@ module seg_execute
     assign o_ctrl_wb_bus    = i_ctrl_wb_bus;
     assign o_ctrl_mem_bus   = i_ctrl_mem_bus;
     
+    assign wire_muxA        = muxA_Alu;
+    assign wire_muxB        = muxB_Alu; 
+    
     // Program Counter Logic
     always @(posedge i_clk) begin
         if (!i_rst) begin
@@ -68,8 +82,28 @@ module seg_execute
     end
     
     always @(*) begin
+        // MUX Forwarding A
+        case(i_ctrl_muxA_forwarding)
+            2'b00:      muxA_Alu = i_read_data_1;
+            2'b01:      muxA_Alu = i_rd_mem_forwarding;
+            2'b10:      muxA_Alu = i_rd_wb_forwarding;
+            
+            default:    muxA_Alu =  i_read_data_1;
+        endcase
+
+        // MUX Forwarding B
+        case(i_ctrl_muxB_forwarding)
+            2'b00:      muxB_Alu = i_read_data_2;
+            2'b01:      muxB_Alu = i_rd_mem_forwarding;
+            2'b10:      muxB_Alu = i_rd_wb_forwarding;
+            
+            default:    muxB_Alu =  i_read_data_2;
+        endcase
+        
+
         // MUX ALUSrc
-        data_b = (ALUSrc) ? i_addr_ext : i_read_data_2 ;    // ALUSrc = 1 (i_addr_ext) ALUSrc = 0 (i_read_data_2) 
+        data_b = (ALUSrc) ? i_addr_ext : muxB_Alu ;         // ALUSrc = 1 (i_addr_ext) ALUSrc = 0 (muxB_Alu) 
+        
         // MUX RegDst
         o_write_register = (RegDst) ? i_rd : i_rt;          // RegDst = 1 -> 15-11 (rd) | RegDst = 0 -> 20-16 (rt)
     end
@@ -94,7 +128,7 @@ module seg_execute
     )
     u_seg_execute_alu(
     	.i_ALUctl (ALUctl),
-        .i_data_a (i_read_data_1),
+        .i_data_a (muxA_Alu),
         .i_data_b (data_b),
         .o_ALUOut (o_ALU_result),
         .o_zero   (o_ALU_zero)

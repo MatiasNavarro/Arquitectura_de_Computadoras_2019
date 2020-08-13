@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_hazard_detection_unit_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_hazard_detection_unit" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="61000001fs"></ZoomEndTime>
+      <Cursor1Time time="28223000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="114"></NameColumnWidth>
+      <ValueColumnWidth column_width="104"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="5" />
+   <wvobject type="logic" fp_name="/tb_hazard_detection_unit/u_hazard_detection_unit/i_MemRead">
+      <obj_property name="ElementShortName">i_MemRead</obj_property>
+      <obj_property name="ObjectShortName">i_MemRead</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_hazard_detection_unit/u_hazard_detection_unit/i_rs_id">
+      <obj_property name="ElementShortName">i_rs_id[4:0]</obj_property>
+      <obj_property name="ObjectShortName">i_rs_id[4:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_hazard_detection_unit/u_hazard_detection_unit/i_rt_id">
+      <obj_property name="ElementShortName">i_rt_id[4:0]</obj_property>
+      <obj_property name="ObjectShortName">i_rt_id[4:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#0000FF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_hazard_detection_unit/u_hazard_detection_unit/i_rt_ex">
+      <obj_property name="ElementShortName">i_rt_ex[4:0]</obj_property>
+      <obj_property name="ObjectShortName">i_rt_ex[4:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#00FFFF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_hazard_detection_unit/u_hazard_detection_unit/o_stall_flag">
+      <obj_property name="ElementShortName">o_stall_flag</obj_property>
+      <obj_property name="ObjectShortName">o_stall_flag</obj_property>
+      <obj_property name="CustomSignalColor">#FFD700</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+</wave_config>
