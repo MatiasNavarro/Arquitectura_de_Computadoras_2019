@@ -53,9 +53,12 @@ module seg_instruction_fetch
         else begin
             if(!i_jump) begin                   //Segundo MUX PC
                 if (!i_PCSrc) begin             //Primer MUX PC
-                    reg_PC <= reg_PC + 1;
-                end
-                else begin
+                    if (!i_stall_flag) begin
+                        reg_PC <= reg_PC + 1;
+                    end else begin
+                        reg_PC <= reg_PC;
+                    end
+                end else begin
                     reg_PC <= i_PC_branch;
                 end
             end else begin
@@ -65,7 +68,6 @@ module seg_instruction_fetch
     end
 
     assign o_PC             = reg_PC;
-    //assign o_instruction    = instruction; 
         
     // Intruction Memory
     mem_instruction #(

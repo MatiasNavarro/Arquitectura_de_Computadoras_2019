@@ -42,18 +42,10 @@ module registers
         end
         else
         begin
-            if(i_enable)
-            begin
-                o_read_data_1 <= register[i_read_register_1];
-                o_read_data_2 <= register[i_read_register_2];
-            end
-            else
-            begin
-                o_read_data_1 <= o_read_data_1;
-                o_read_data_2 <= o_read_data_2;
-            end
+            o_read_data_1 <= register[i_read_register_1];
+            o_read_data_2 <= register[i_read_register_2];
         end
-    end    
+    end
     
     always@(negedge i_clk) //Escrituras de registros
     begin

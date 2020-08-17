@@ -10,7 +10,7 @@ module top_mips
         parameter NB_ALUOP      = 4,
         parameter NB_FUNC       = 6,
         parameter NB_ALUCTL     = 4,             
-        parameter NB_CTRL_EX    = 10,
+        parameter NB_CTRL_EX    = 6,
         parameter NB_CTRL_M     = 9,
         parameter NB_CTRL_WB    = 2,
         
@@ -44,7 +44,6 @@ module top_mips
     // IF/ID registers
     reg [LEN-1:0]       if_id_reg_PC;
     reg [LEN-1:0]       if_id_reg_instruction;
-    wire                stall_flag;
 
     // -----------------------------------------------
     // Instruction decode (ID) I/O wires
@@ -53,6 +52,7 @@ module top_mips
     wire [LEN-1:0]         if_id_i_PC;
     wire [LEN-1:0]         if_id_i_instruction;
     wire [NB_ADDR-1:0]     id_id_i_rt;
+    wire [NB_ADDR-1:0]     id_id_i_PCSrc;
     // Outputs
     wire [LEN-1:0]          id_ex_o_PC;
     wire [LEN-1:0]          id_ex_o_read_data_1;
@@ -66,19 +66,20 @@ module top_mips
     wire [NB_CTRL_EX-1:0]   id_ex_o_ctrl_exc_bus;
     wire [LEN-1:0]          id_if_PC_dir_jump;
     wire                    id_if_jump_flag;
-    wire                    id_if_o_stall_flag;
+    wire                    id_if_stall_flag;
 
     // ID/EX registers
     reg [LEN - 1 : 0]           id_ex_reg_PC;
     reg [LEN - 1 : 0]           id_ex_reg_read_data_1;
     reg [LEN - 1 : 0]           id_ex_reg_read_data_2;
     reg [LEN - 1 : 0]           id_ex_reg_addr_ext;
-    reg [NB_ADDR - 1 : 0]       id_fu_reg_rs;
     reg [NB_ADDR - 1 : 0]       id_ex_reg_rt;
     reg [NB_ADDR - 1 : 0]       id_ex_reg_rd;
     reg [NB_CTRL_WB - 1 : 0]    id_ex_reg_ctrl_wb_bus;
     reg [NB_CTRL_M - 1 :  0]    id_ex_reg_ctrl_mem_bus;
     reg [NB_CTRL_EX - 1 : 0]    id_ex_reg_ctrl_exc_bus;
+    // ID/FU registers
+    reg [NB_ADDR - 1 : 0]       id_fu_reg_rs;
 
     // -----------------------------------------------
     // Execute (EX) I/O wires
@@ -88,7 +89,6 @@ module top_mips
     wire [LEN - 1 : 0]          id_ex_i_read_data_1;
     wire [LEN - 1 : 0]          id_ex_i_read_data_2;
     wire [LEN - 1 : 0]          id_ex_i_addr_ext;
-    wire [NB_ADDR - 1 : 0]      id_fu_i_rs;
     wire [NB_ADDR - 1 : 0]      id_ex_i_rt;
     wire [NB_ADDR - 1 : 0]      id_ex_i_rd;
     wire [NB_CTRL_WB - 1 : 0]   id_ex_i_ctrl_wb_bus;
@@ -153,9 +153,9 @@ module top_mips
     // -----------------------------------------------
     // Forwarding Unit
     //------------------------------------------------
+    wire [NB_ADDR - 1 : 0]      id_fu_i_rs;
     wire [1:0]                  crtl_muxA_forwarding;
     wire [1:0]                  crtl_muxB_forwarding;
-
 
     // -----------------------------------------------
     // Inter-segment register logic 
@@ -268,7 +268,7 @@ module top_mips
         .i_PCSrc            (mem_if_PCSrc           ),
         .i_PC_dir_jump      (id_if_PC_dir_jump      ),
         .i_jump             (id_if_jump_flag        ),
-        .i_stall_flag       (stall_flag             ),
+        .i_stall_flag       (id_if_stall_flag       ),
         // Outputs
         .o_instruction      (if_id_o_instruction    ),
         .o_PC               (if_id_o_PC             )
@@ -307,7 +307,7 @@ module top_mips
         .o_addr_ext         (id_ex_o_addr_ext       ),
         .o_PC_dir_jump      (id_if_PC_dir_jump      ),
         .o_jump_flag        (id_if_jump_flag        ),
-        .o_stall_flag       (stall_flag             ),
+        .o_stall_flag       (id_if_stall_flag       ),
         // Control outputs
         .o_ctrl_wb_bus      (id_ex_o_ctrl_wb_bus    ),  // [ RegWrite, MemtoReg]
         .o_ctrl_mem_bus     (id_ex_o_ctrl_mem_bus   ),  // [ SB, SH, LB, LH, Unsigned, BNEQ, Branch, MemRead, MemWrite ]
