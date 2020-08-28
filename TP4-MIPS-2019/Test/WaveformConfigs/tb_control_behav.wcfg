@@ -12,17 +12,21 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="266323343fs"></ZoomEndTime>
-      <Cursor1Time time="93533000fs"></Cursor1Time>
+      <ZoomEndTime time="40234494fs"></ZoomEndTime>
+      <Cursor1Time time="135000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="134"></NameColumnWidth>
-      <ValueColumnWidth column_width="104"></ValueColumnWidth>
+      <ValueColumnWidth column_width="100"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="6" />
+   <WVObjectSize size="11" />
    <wvobject type="logic" fp_name="/tb_control/u_control/i_rst">
       <obj_property name="ElementShortName">i_rst</obj_property>
       <obj_property name="ObjectShortName">i_rst</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_control/i_stall_flag">
+      <obj_property name="ElementShortName">i_stall_flag</obj_property>
+      <obj_property name="ObjectShortName">i_stall_flag</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/tb_control/u_control/i_opcode">
       <obj_property name="ElementShortName">i_opcode[5:0]</obj_property>
@@ -45,8 +49,24 @@
       <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/tb_control/u_control/o_ctrl_exc_bus">
-      <obj_property name="ElementShortName">o_ctrl_exc_bus[9:0]</obj_property>
-      <obj_property name="ObjectShortName">o_ctrl_exc_bus[9:0]</obj_property>
+      <obj_property name="ElementShortName">o_ctrl_exc_bus[5:0]</obj_property>
+      <obj_property name="ObjectShortName">o_ctrl_exc_bus[5:0]</obj_property>
       <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_control/u_control/o_Jump">
+      <obj_property name="ElementShortName">o_Jump</obj_property>
+      <obj_property name="ObjectShortName">o_Jump</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_control/u_control/o_JAL">
+      <obj_property name="ElementShortName">o_JAL</obj_property>
+      <obj_property name="ObjectShortName">o_JAL</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_control/u_control/o_JR">
+      <obj_property name="ElementShortName">o_JR</obj_property>
+      <obj_property name="ObjectShortName">o_JR</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_control/u_control/o_JALR">
+      <obj_property name="ElementShortName">o_JALR</obj_property>
+      <obj_property name="ObjectShortName">o_JALR</obj_property>
    </wvobject>
 </wave_config>

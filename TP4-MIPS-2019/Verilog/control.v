@@ -12,7 +12,7 @@ module control
         input                           i_rst,
         input       [NB_OPCODE-1:0]     i_opcode,
         input       [NB_OPCODE-1:0]     i_funct,
-        input                           i_stall_flag,
+        //input                           i_stall_flag,
         // Outputs (organiza las salidas en buses, para mayor prolijidad)
         output reg  [NB_CTRL_WB-1:0]    o_ctrl_wb_bus,      // [ RegWrite, MemtoReg]
         output reg  [NB_CTRL_M-1:0]     o_ctrl_mem_bus,     // [ SB, SH, LB, LH, Unsigned, BNEQ, Branch, MemRead, MemWrite ]
@@ -32,17 +32,18 @@ module control
             o_ctrl_wb_bus   = 0;
             o_ctrl_mem_bus  = 0;
             o_ctrl_exc_bus  = 0;
-        end else if (i_stall_flag) begin
-            o_ctrl_wb_bus   = 0;
-            o_ctrl_mem_bus  = 0;
-            o_ctrl_exc_bus  = 0;
-        end else begin
+        end 
+//        else if (i_stall_flag) begin
+//            o_ctrl_wb_bus   = 0;
+//            o_ctrl_mem_bus  = 0;
+//            o_ctrl_exc_bus  = 0;
+//        end 
+        else begin
             o_ctrl_wb_bus   = o_ctrl_wb_bus;
             o_ctrl_mem_bus  = o_ctrl_mem_bus;
             o_ctrl_exc_bus  = o_ctrl_exc_bus;
 
             case(i_opcode)
-
                 //R-TYPE ------------------------------------------
                 6'b 000000: 
                 begin

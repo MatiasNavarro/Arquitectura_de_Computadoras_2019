@@ -24,7 +24,8 @@ module seg_instruction_decode
         input wire                      i_RegWrite,
         input wire                      i_flush,
         input wire [NB_ADDR-1:0]        i_rt_ex,
-        input wire                      i_PCSrc,
+        //input wire                      i_PCSrc,
+//        input wire                      i_stall_flag,
         
         //Salidas
         output wire [NB_ADDR-1:0]       o_rs,           //instruction[25:21]
@@ -37,27 +38,34 @@ module seg_instruction_decode
         output wire [LEN-1:0]           o_PC_dir_jump, 
         output wire                     o_jump_flag,         //Jump signal        
         output wire                     o_stall_flag,        //Stall signal   
-        output wire                     o_flush_if,
-        output wire                     o_flush_ex,
+        //output wire                     o_flush_if,
+        //output wire                     o_flush_ex,
 
         //Control outputs 
-        output wire [NB_CTRL_WB-1:0]    o_ctrl_wb_bus,   // [ RegWrite, MemtoReg]
-        output wire [NB_CTRL_M-1:0]     o_ctrl_mem_bus,  // [ SB, SH, LB, LH, Unsigned, BNEQ, Branch, MemRead, MemWrite ]
-        output wire [NB_CTRL_EX-1:0]    o_ctrl_exc_bus   // [ ALUSrc, AluOp[3], AluOp[2], AluOp[1], AluOp[0], RegDst]
+        output reg  [NB_CTRL_WB-1:0]    o_ctrl_wb_bus,   // [ RegWrite, MemtoReg]
+        output reg  [NB_CTRL_M-1:0]     o_ctrl_mem_bus,  // [ SB, SH, LB, LH, Unsigned, BNEQ, Branch, MemRead, MemWrite ]
+        output reg  [NB_CTRL_EX-1:0]    o_ctrl_exc_bus   // [ ALUSrc, AluOp[3], AluOp[2], AluOp[1], AluOp[0], RegDst]
     );
     
     //Instruction 
     wire    [NB_OPCODE-1:0]     opcode;
+//    wire    [NB_ADDR-1:0]       rs;
+//    wire    [NB_ADDR-1:0]       rt;
+//    wire    [NB_ADDR-1:0]       rd;
     wire    [NB_OPCODE-1:0]     funct;
     wire    [NB_ADDR-1:0]       shamt;
     wire    [NB_ADDRESS-1:0]    address;
 
+    
     wire                        stall_flag;         //Hazard detection unit flag 
     wire    [LEN-1:0]           wire_read_data_1;
     wire    [2:0]               jump_flag;          //Distintos tipos de saltos 
     wire    [LEN-1:0]           read_data_1;
     wire    [LEN-1:0]           read_data_2;
-
+    wire    [NB_CTRL_WB-1:0]    ctrl_wb_bus;
+    wire    [NB_CTRL_M-1:0]     ctrl_mem_bus;
+    wire    [NB_CTRL_EX-1:0]    ctrl_exc_bus;      
+    
     wire                        Jump;
     wire                        JAL;
     wire                        JR;
@@ -74,8 +82,9 @@ module seg_instruction_decode
 
     //Extension de signo
     assign o_addr_ext   = {{NB_ADDRESS{address[15]}}, address[15:0]};
-
+    //assign o_stall_flag = stall_flag;
     assign o_PC = i_PC;
+    //assign stall_flag   = i_stall_flag;
 
     //Extension de signo
     assign o_addr_ext = {{NB_ADDRESS{address[15]}}, address[15:0]};
@@ -91,6 +100,27 @@ module seg_instruction_decode
     assign o_read_data_1 = (JAL || JALR) ? i_PC  : read_data_1;
     assign o_read_data_2 = (JAL || JALR) ? 32'd2 : read_data_2;
 
+
+    always @(negedge i_clk)
+    begin
+      if(!i_rst | o_stall_flag) begin
+        o_ctrl_exc_bus  <= 0;
+        o_ctrl_mem_bus  <= 0;
+        o_ctrl_wb_bus   <= 0;
+      end
+//      else begin
+//        if(i_stall_flag) begin
+//            o_ctrl_exc_bus  <= 0;
+//            o_ctrl_mem_bus  <= 0;
+//            o_ctrl_wb_bus   <= 0;
+//        end
+      else begin
+          o_ctrl_exc_bus  <= ctrl_exc_bus;
+          o_ctrl_mem_bus  <= ctrl_mem_bus;
+          o_ctrl_wb_bus   <= ctrl_wb_bus;
+      end
+    end
+
     control #(
         .NB_OPCODE      (NB_OPCODE      ),
         .NB_CTRL_EX     (NB_CTRL_EX     ),
@@ -101,10 +131,10 @@ module seg_instruction_decode
         .i_rst          (i_rst          ),
         .i_opcode       (opcode         ),
         .i_funct        (funct          ),
-        .i_stall_flag   (o_stall_flag   ),
-        .o_ctrl_exc_bus (o_ctrl_exc_bus ),
-        .o_ctrl_mem_bus (o_ctrl_mem_bus ),
-        .o_ctrl_wb_bus  (o_ctrl_wb_bus  ),
+        //.i_stall_flag   (i_stall_flag   ),
+        .o_ctrl_exc_bus (ctrl_exc_bus   ),
+        .o_ctrl_mem_bus (ctrl_mem_bus   ),
+        .o_ctrl_wb_bus  (ctrl_wb_bus    ),
         .o_Jump         (Jump           ),
         .o_JAL          (JAL            ),
         .o_JR           (JR             ),
@@ -138,7 +168,7 @@ module seg_instruction_decode
         .i_rs_id        (o_rs               ),
         .i_rt_id        (o_rt               ),
         .i_rt_ex        (i_rt_ex            ),
-        .o_stall_flag   (o_stall_flag       )
+        .o_stall_flag   (o_stall_flag         )
     );
 
 endmodule
