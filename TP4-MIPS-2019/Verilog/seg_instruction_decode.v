@@ -24,8 +24,6 @@ module seg_instruction_decode
         input wire                      i_RegWrite,
         input wire                      i_flush,
         input wire [NB_ADDR-1:0]        i_rt_ex,
-        //input wire                      i_PCSrc,
-//        input wire                      i_stall_flag,
         
         //Salidas
         output wire [NB_ADDR-1:0]       o_rs,           //instruction[25:21]
@@ -49,9 +47,6 @@ module seg_instruction_decode
     
     //Instruction 
     wire    [NB_OPCODE-1:0]     opcode;
-//    wire    [NB_ADDR-1:0]       rs;
-//    wire    [NB_ADDR-1:0]       rt;
-//    wire    [NB_ADDR-1:0]       rd;
     wire    [NB_OPCODE-1:0]     funct;
     wire    [NB_ADDR-1:0]       shamt;
     wire    [NB_ADDRESS-1:0]    address;
@@ -82,9 +77,7 @@ module seg_instruction_decode
 
     //Extension de signo
     assign o_addr_ext   = {{NB_ADDRESS{address[15]}}, address[15:0]};
-    //assign o_stall_flag = stall_flag;
-    assign o_PC = i_PC;
-    //assign stall_flag   = i_stall_flag;
+    assign o_PC         = i_PC;
 
     //Extension de signo
     assign o_addr_ext = {{NB_ADDRESS{address[15]}}, address[15:0]};
@@ -101,24 +94,25 @@ module seg_instruction_decode
     assign o_read_data_2 = (JAL || JALR) ? 32'd2 : read_data_2;
 
 
-    always @(negedge i_clk)
+    always @(posedge i_clk)
     begin
-      if(!i_rst | o_stall_flag) begin
-        o_ctrl_exc_bus  <= 0;
-        o_ctrl_mem_bus  <= 0;
-        o_ctrl_wb_bus   <= 0;
-      end
-//      else begin
-//        if(i_stall_flag) begin
-//            o_ctrl_exc_bus  <= 0;
-//            o_ctrl_mem_bus  <= 0;
-//            o_ctrl_wb_bus   <= 0;
-//        end
-      else begin
-          o_ctrl_exc_bus  <= ctrl_exc_bus;
-          o_ctrl_mem_bus  <= ctrl_mem_bus;
-          o_ctrl_wb_bus   <= ctrl_wb_bus;
-      end
+        if(!i_rst) begin
+            o_ctrl_exc_bus  <= 0;
+            o_ctrl_mem_bus  <= 0;
+            o_ctrl_wb_bus   <= 0;
+        end
+        else begin
+            if(o_stall_flag) begin
+                o_ctrl_exc_bus  <= 0;
+                o_ctrl_mem_bus  <= 0;
+                o_ctrl_wb_bus   <= 0;
+            end
+            else begin
+                o_ctrl_exc_bus  <= ctrl_exc_bus;
+                o_ctrl_mem_bus  <= ctrl_mem_bus;
+                o_ctrl_wb_bus   <= ctrl_wb_bus;
+            end
+        end
     end
 
     control #(
@@ -131,7 +125,6 @@ module seg_instruction_decode
         .i_rst          (i_rst          ),
         .i_opcode       (opcode         ),
         .i_funct        (funct          ),
-        //.i_stall_flag   (i_stall_flag   ),
         .o_ctrl_exc_bus (ctrl_exc_bus   ),
         .o_ctrl_mem_bus (ctrl_mem_bus   ),
         .o_ctrl_wb_bus  (ctrl_wb_bus    ),
@@ -164,11 +157,11 @@ module seg_instruction_decode
     )
     u_hazard_detection_unit
     (
-        .i_MemRead      (o_ctrl_mem_bus[1]  ),  //o_ctrl_mem_bus[1] = MemRead
+        .i_MemRead      (ctrl_mem_bus[1]    ),  //o_ctrl_mem_bus[1] = MemRead
         .i_rs_id        (o_rs               ),
         .i_rt_id        (o_rt               ),
         .i_rt_ex        (i_rt_ex            ),
-        .o_stall_flag   (o_stall_flag         )
+        .o_stall_flag   (o_stall_flag       )
     );
 
 endmodule
