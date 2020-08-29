@@ -18,6 +18,7 @@ module mem_data #(
   input                     i_ena,      //RAM Enable, for additional power savings, disable port when not in use
   input                     i_rsta,     //Output reset (does not affect memory contents)
   input                     i_regcea,   //Output register enable
+  input [1 : 0]             i_store_size,   // 00=Word, 01=Halfword, 10=Byte
   output [RAM_WIDTH-1:0]    o_data      //RAM output data
 );
 
@@ -39,10 +40,17 @@ module mem_data #(
 
   always @(posedge i_clk)
     if (i_ena)                        //Si la RAM esta habilitada
-      if (i_wea)                      //Write = 1 ==> escribo en la memoria
-        BRAM[i_addr] <= i_data;
-      else                          //Mantengo el valor
+      if (i_wea) begin                     //Write = 1 ==> escribo en la memoria
+        if (i_store_size == 2'b01) begin
+          BRAM[i_addr] <= {BRAM[i_addr][RAM_WIDTH-1:8], i_data[7:0]};   // Store byte
+        end else if (i_store_size == 2'b10) begin
+          BRAM[i_addr] <= {BRAM[i_addr][RAM_WIDTH-1:16], i_data[15:0]}; // Store halfword
+        end else begin
+          BRAM[i_addr] <= i_data;                                       // Store word
+        end
+      end else begin                         //Mantengo el valor
         ram_data <= BRAM[i_addr];
+      end
 
   //  The following code generates HIGH_PERFORMANCE (use output register) or LOW_LATENCY (no output register)
   generate

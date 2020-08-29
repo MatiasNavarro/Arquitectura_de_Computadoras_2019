@@ -49,13 +49,10 @@ module registers
     
     always@(negedge i_clk) //Escrituras de registros
     begin
-        if(i_enable)
-        begin
-            if(i_RegWrite)
-                register[i_write_register] <= i_write_data;
-
-            else
-                register[i_write_register] <= register[i_write_register];
+        if(i_RegWrite) begin
+            register[i_write_register] <= i_write_data;
+        end else begin
+            register[i_write_register] <= register[i_write_register];
         end
     end
     
