@@ -18,7 +18,11 @@ module mem_data #(
   input                     i_ena,      //RAM Enable, for additional power savings, disable port when not in use
   input                     i_rsta,     //Output reset (does not affect memory contents)
   input                     i_regcea,   //Output register enable
-  input [1 : 0]             i_store_size,   // 00=Word, 01=Halfword, 10=Byte
+  input                     i_SB_flag,
+  input                     i_SH_flag,
+  input                     i_LB_flag,
+  input                     i_LH_flag,
+  input                     i_Unsigned_flag,
   output [RAM_WIDTH-1:0]    o_data      //RAM output data
 );
 
@@ -38,20 +42,36 @@ module mem_data #(
     end
   endgenerate
 
-  always @(posedge i_clk)
-    if (i_ena)                        //Si la RAM esta habilitada
+  always @(posedge i_clk) begin
+    if (i_ena) begin                       //Si la RAM esta habilitada
       if (i_wea) begin                     //Write = 1 ==> escribo en la memoria
-        if (i_store_size == 2'b01) begin
+        if (i_SB_flag) begin
           BRAM[i_addr] <= {BRAM[i_addr][RAM_WIDTH-1:8], i_data[7:0]};   // Store byte
-        end else if (i_store_size == 2'b10) begin
+        end else if (i_SH_flag) begin
           BRAM[i_addr] <= {BRAM[i_addr][RAM_WIDTH-1:16], i_data[15:0]}; // Store halfword
         end else begin
           BRAM[i_addr] <= i_data;                                       // Store word
         end
-      end else begin                         //Mantengo el valor
-        ram_data <= BRAM[i_addr];
+      end else begin // Read
+        if (i_LB_flag) begin
+          if (i_Unsigned_flag) begin
+            ram_data <= {{24{1'b0}}, BRAM[i_addr][7:0]};                // Load byte unsigned
+          end else begin
+            ram_data <= {{24{BRAM[i_addr][7]}}, BRAM[i_addr][7:0]};     // Load byte
+          end
+        end else if (i_LH_flag) begin
+          if (i_Unsigned_flag) begin
+            ram_data <= {{16{1'b0}}, BRAM[i_addr][15:0]};                // Load halfword unsigned
+          end else begin
+            ram_data <= {{16{BRAM[i_addr][15]}}, BRAM[i_addr][15:0]};    // Load halfword
+          end
+        end else begin
+          ram_data <= BRAM[i_addr];                                      // Load word
+        end
       end
-
+    end
+  end
+  
   //  The following code generates HIGH_PERFORMANCE (use output register) or LOW_LATENCY (no output register)
   generate
     if (RAM_PERFORMANCE == "LOW_LATENCY") begin: no_output_register

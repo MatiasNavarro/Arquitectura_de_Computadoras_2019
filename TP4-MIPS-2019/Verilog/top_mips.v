@@ -154,8 +154,8 @@ module top_mips
     // Forwarding Unit
     //------------------------------------------------
     wire [NB_ADDR - 1 : 0]      id_fu_i_rs;
-    wire [1:0]                  crtl_muxA_forwarding;
-    wire [1:0]                  crtl_muxB_forwarding;
+    wire [1:0]                  fu_ex_ctrl_muxA_forwarding;
+    wire [1:0]                  fu_ex_ctrl_muxB_forwarding;
 
     // -----------------------------------------------
     // Inter-segment register logic 
@@ -342,8 +342,8 @@ module top_mips
         .i_ctrl_mem_bus         (id_ex_i_ctrl_mem_bus       ),
         .i_ctrl_exc_bus         (id_ex_i_ctrl_exc_bus       ),
         // Forwarding
-        .i_ctrl_muxA_forwarding (crtl_muxA_forwarding       ),
-        .i_ctrl_muxB_forwarding (crtl_muxB_forwarding       ),
+        .i_ctrl_muxA_forwarding (fu_ex_ctrl_muxA_forwarding ),
+        .i_ctrl_muxB_forwarding (fu_ex_ctrl_muxB_forwarding ),
         .i_rd_mem_forwarding    (ex_mem_o_ALU_result        ),  //Salida de ALU 
         .i_rd_wb_forwarding     (wb_id_write_data           ),  //WB write data en banco de registros (mismo que en ID)
         // Outputs
@@ -431,8 +431,8 @@ module top_mips
         .i_write_reg_mem_wb (wb_id_write_register       ),
         .i_reg_write_ex_mem (mem_wb_i_ctrl_wb_bus[1]    ),
         .i_reg_write_mem_wb (wb_id_RegWrite             ),
-        .o_muxA_alu         (crtl_muxA_forwarding       ),
-        .o_muxB_alu         (crtl_muxB_forwarding       )
+        .o_muxA_alu         (fu_ex_ctrl_muxA_forwarding ),
+        .o_muxB_alu         (fu_ex_ctrl_muxB_forwarding )
     );
     
     

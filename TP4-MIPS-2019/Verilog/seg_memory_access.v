@@ -34,16 +34,20 @@ module seg_memory_access
     );
     
     //Memory wires
+    wire ena;
     wire rsta;
     wire regcea;
-    wire [LEN - 1 : 0] read_data;
-    wire [LEN - 1 : 0] write_data;
-    wire [1 : 0] store_size; // 00=Word, 01=Halfword, 10=Byte
     
     //Control mem 
-    wire    MemWrite;
-    wire    MemRead;
-    wire    Branch;
+    wire MemWrite;
+    wire MemRead;
+    wire Branch;
+    //TODO BNEQ
+    wire SB_flag;
+    wire SH_flag;
+    wire LB_flag;
+    wire LH_flag;
+    wire Unsigned_flag;
     
     assign Branch   = i_ctrl_mem_bus[2];
     assign MemRead  = i_ctrl_mem_bus[1];
@@ -56,6 +60,7 @@ module seg_memory_access
     assign Unsigned_flag = i_ctrl_mem_bus[4];
     
     //Memory control
+    assign ena      = 1;
     assign rsta     = 0;
     assign regcea   = 0;
     
@@ -65,14 +70,8 @@ module seg_memory_access
     assign o_address        = i_ALU_result;
     assign o_write_register = i_write_register;
 
-    assign o_read_data =    (LB_flag) ? (Unsigned_flag) ? {{24{read_data[7]}}, read_data[7:0]} : {{24{1'b0}}, read_data[7:0]} :
-                            (LH_flag) ? (Unsigned_flag) ? {{16{read_data[15]}}, read_data[7:0]} : {{16{1'b0}}, read_data[15:0]} :
-                            read_data;
-    assign store_size = (SH_flag) ? 2'b01 : (SB_flag) ? 2'b10 : 2'b00;
-
     //Control 
     assign o_ctrl_wb_bus    = i_ctrl_wb_bus;
-
 
     //DATA MEMORY
     mem_data #(
@@ -83,15 +82,19 @@ module seg_memory_access
     )
     u_data_mem
     (
-        .i_addr         (i_ALU_result),
-        .i_data         (i_write_data),
-        .i_clk          (i_clk),
-        .i_wea          (MemWrite),
-        .i_ena          (MemRead),
-        .i_rsta         (rsta),
-        .i_regcea       (regcea),
-        .i_store_size   (store_size),
-        .o_data         (read_data)
+        .i_addr             (i_ALU_result),
+        .i_data             (i_write_data),
+        .i_clk              (i_clk),
+        .i_wea              (MemWrite),
+        .i_ena              (ena),
+        .i_rsta             (rsta),
+        .i_regcea           (regcea),
+        .i_SB_flag          (SB_flag),
+        .i_SH_flag          (SH_flag),
+        .i_LB_flag          (LB_flag),
+        .i_LH_flag          (LH_flag),
+        .i_Unsigned_flag    (Unsigned_flag),
+        .o_data             (o_read_data)
     );
 
 endmodule
