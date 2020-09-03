@@ -53,10 +53,10 @@ module seg_instruction_fetch
         else begin
             if(!i_jump) begin                   //Segundo MUX PC
                 if (!i_PCSrc) begin             //Primer MUX PC
-                    if (!i_stall_flag) begin
-                        reg_PC <= reg_PC + 1;
-                    end else begin
+                    if (i_stall_flag) begin
                         reg_PC <= reg_PC;
+                    end else begin
+                        reg_PC <= reg_PC + 1;
                     end
                 end else begin
                     reg_PC <= i_PC_branch;
@@ -68,6 +68,9 @@ module seg_instruction_fetch
     end
 
     assign o_PC             = reg_PC;
+
+    // TODO: CONSULTA 1 - Esta mal escribir PC y leer de la memoria de instrucciones en esa address (el PC) en el mismo posedge?
+    //       CONSULTA 2 - Como leer de archivo en disco y escribirlo a una memoria en la simulacion.
         
     // Intruction Memory
     mem_instruction #(

@@ -20,6 +20,7 @@ module seg_execute
         input wire [LEN - 1 : 0]            i_addr_ext,         // instruction[15:0] extendida a 32 bits
         input wire [NB_ADDR - 1 : 0]        i_rt,               // instruction[20:16]
         input wire [NB_ADDR - 1 : 0]        i_rd,               // instruction[15:11]
+        input wire                          i_flush,
         // Control input
         input wire [NB_CTRL_WB - 1 : 0]     i_ctrl_wb_bus,
         input wire [NB_CTRL_M - 1 :  0]     i_ctrl_mem_bus,
@@ -65,8 +66,8 @@ module seg_execute
     assign o_PC_branch      = reg_PC;
     assign o_write_data     = i_read_data_2;
     // Control bus
-    assign o_ctrl_wb_bus    = i_ctrl_wb_bus;
-    assign o_ctrl_mem_bus   = i_ctrl_mem_bus;
+    assign o_ctrl_wb_bus    = (i_flush) ? 0 : i_ctrl_wb_bus;
+    assign o_ctrl_mem_bus   = (i_flush) ? 0 : i_ctrl_mem_bus;
     
     assign wire_muxA        = muxA_Alu;
     assign wire_muxB        = muxB_Alu; 

@@ -42,13 +42,14 @@ module seg_memory_access
     wire MemWrite;
     wire MemRead;
     wire Branch;
-    //TODO BNEQ
+    wire BNEQ;
     wire SB_flag;
     wire SH_flag;
     wire LB_flag;
     wire LH_flag;
     wire Unsigned_flag;
     
+    assign BNEQ     = i_ctrl_mem_bus[3];
     assign Branch   = i_ctrl_mem_bus[2];
     assign MemRead  = i_ctrl_mem_bus[1];
     assign MemWrite = i_ctrl_mem_bus[0];
@@ -65,7 +66,7 @@ module seg_memory_access
     assign regcea   = 0;
     
     //Outputs 
-    assign o_PCSrc          = (Branch & i_ALU_zero);
+    assign o_PCSrc          = (Branch && i_ALU_zero) || (BNEQ && !i_ALU_zero);
     assign o_PC_branch      = i_PC_branch;
     assign o_address        = i_ALU_result;
     assign o_write_register = i_write_register;

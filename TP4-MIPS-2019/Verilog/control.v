@@ -190,14 +190,14 @@ module control
                 6'b 000100: //BEQ
                 begin
                     o_ctrl_wb_bus    = 2'b00;
-                    o_ctrl_mem_bus   = 9'b000000010;
+                    o_ctrl_mem_bus   = 9'b000000100;
                     o_ctrl_exc_bus   = 6'b100010;
                 end
                 
                 6'b 000101: //BNQ
                 begin
                     o_ctrl_wb_bus    = 2'b00;
-                    o_ctrl_mem_bus   = 9'b000001100;
+                    o_ctrl_mem_bus   = 9'b000001000;
                     o_ctrl_exc_bus   = 6'b100010;
                 end
 

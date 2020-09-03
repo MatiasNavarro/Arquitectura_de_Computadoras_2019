@@ -28,7 +28,7 @@ module tb_top_mips();
     reg                 i_clk;
     reg                 i_rst;
     // Outputs
-    wire [LEN - 1 : 0]  o_led;
+    // wire [LEN - 1 : 0]  o_led;
 
     initial begin
         i_clk = 1'b1;
@@ -37,7 +37,7 @@ module tb_top_mips();
         #4 i_rst = 1'b1;
 
         
-        #100 $finish;
+        #40 $finish;
     end
 
     always #1 i_clk = ~i_clk;
@@ -66,8 +66,8 @@ module tb_top_mips();
     )
     u_top_mips(
     	.i_clk               (i_clk               ),
-        .i_rst               (i_rst               ),
-        .o_led               (o_led               )
+        .i_rst               (i_rst               )
+        // .o_led               (o_led               )
     );
     
 

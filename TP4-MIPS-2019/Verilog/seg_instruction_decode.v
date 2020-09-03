@@ -1,7 +1,5 @@
 `timescale 1ns / 1ps
 
-// TODO: Escribir los read_data a registros en un clock entre los clock de escritura de registros entre etapas (top_mips usa negedge, usa posedge aca) y asignalos a los o_read_data
-
 module seg_instruction_decode
     #( 
         parameter LEN           = 32,
@@ -35,9 +33,7 @@ module seg_instruction_decode
         output wire [LEN-1:0]           o_read_data_2,
         output wire [LEN-1:0]           o_PC_dir_jump, 
         output wire                     o_jump_flag,         //Jump signal        
-        output wire                     o_stall_flag,        //Stall signal   
-        //output wire                     o_flush_if,
-        //output wire                     o_flush_ex,
+        output wire                     o_stall_flag,        //Stall signal
 
         //Control outputs 
         output reg  [NB_CTRL_WB-1:0]    o_ctrl_wb_bus,   // [ RegWrite, MemtoReg]
@@ -96,7 +92,7 @@ module seg_instruction_decode
 
     always @(posedge i_clk)
     begin
-        if(!i_rst) begin
+        if(!i_rst || i_flush) begin
             o_ctrl_exc_bus  <= 0;
             o_ctrl_mem_bus  <= 0;
             o_ctrl_wb_bus   <= 0;

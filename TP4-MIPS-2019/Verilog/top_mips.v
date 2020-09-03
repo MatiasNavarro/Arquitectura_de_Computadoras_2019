@@ -29,9 +29,9 @@ module top_mips
     (
         // Inputs
         input                           i_clk,
-        input                           i_rst,
+        input                           i_rst
         // Outputs
-        output wire [LEN - 1 : 0]       o_led
+        // output wire [LEN - 1 : 0]       o_led
     );
     
     // -----------------------------------------------
@@ -130,12 +130,18 @@ module top_mips
     wire [LEN - 1 : 0]      mem_wb_o_address;
     wire [NB_ADDR-1:0]      mem_wb_o_write_register;
     wire [NB_CTRL_WB-1:0]   mem_wb_o_ctrl_wb_bus;
+    // MEM/EX wires
+    wire                    mem_ex_flush;
+    // MEM/ID wires
+    wire                    mem_id_flush;
 
     // MEM/WB registers
     reg [LEN - 1 : 0]           mem_wb_reg_read_data;
     reg [LEN - 1 : 0]           mem_wb_reg_ALU_result;
     reg [NB_ADDR - 1 : 0]       mem_wb_reg_write_register;
     reg [NB_CTRL_WB - 1 : 0]    mem_wb_reg_ctrl_wb_bus;
+    // MEM/EX
+
 
     // -----------------------------------------------
     // Write Back (WB) I/O wires
@@ -250,6 +256,11 @@ module top_mips
     assign mem_wb_i_write_register     = mem_wb_reg_write_register;
     assign mem_wb_i_ctrl_wb_bus        = mem_wb_reg_ctrl_wb_bus;
 
+    // MEM/EX wires
+    assign mem_ex_flush                = mem_if_PCSrc;
+    // MEM/ID wires
+    assign mem_id_flush                = mem_if_PCSrc;
+
     // -----------------------------------------------
     // Instruction Fetch (IF) 
     //------------------------------------------------
@@ -296,6 +307,7 @@ module top_mips
         .i_write_reg        (wb_id_write_register   ),
         .i_write_data       (wb_id_write_data       ),
         .i_RegWrite         (wb_id_RegWrite         ),
+        .i_flush            (mem_id_flush           ),
         .i_rt_ex            (id_id_i_rt             ),
         // Outputs
         .o_rs               (id_fu_o_rs             ),
@@ -337,6 +349,7 @@ module top_mips
         .i_addr_ext             (id_ex_i_addr_ext           ),
         .i_rt                   (id_ex_i_rt                 ),
         .i_rd                   (id_ex_i_rd                 ),
+        .i_flush                (mem_ex_flush               ),
         // Control inputs    
         .i_ctrl_wb_bus          (id_ex_i_ctrl_wb_bus        ),
         .i_ctrl_mem_bus         (id_ex_i_ctrl_mem_bus       ),
