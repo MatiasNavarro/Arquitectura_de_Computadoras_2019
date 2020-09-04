@@ -16,11 +16,14 @@ module mem_instruction #(
   input                     i_rsta,     // Output reset (does not affect memory contents)
   input                     i_regcea,   // Output register enable
   //Salidas
-  output [RAM_WIDTH-1:0]    o_data      // RAM output data
+  output [RAM_WIDTH-1:0]    o_data,     // RAM output data
+  output                    o_halt
 );
   
   reg [RAM_WIDTH-1:0] BRAM [RAM_DEPTH-1:0];
   reg [RAM_WIDTH-1:0] ram_data = {RAM_WIDTH{1'b0}};
+
+  assign o_halt = &BRAM[i_addr];
 
   // The following code either initializes the memory values to a specified file or to all zeros to match hardware
   generate

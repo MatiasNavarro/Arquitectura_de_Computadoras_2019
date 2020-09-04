@@ -12,12 +12,12 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="29881fs"></ZoomEndTime>
-      <Cursor1Time time="0fs"></Cursor1Time>
+      <ZoomEndTime time="29961fs"></ZoomEndTime>
+      <Cursor1Time time="13260fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="230"></NameColumnWidth>
-      <ValueColumnWidth column_width="104"></ValueColumnWidth>
+      <ValueColumnWidth column_width="100"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="184" />
    <wvobject fp_name="/tb_top_mips/u_top_mips/mem_if_PCSrc" type="logic">
@@ -65,6 +65,12 @@
    <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_fetch/i_jump" type="logic">
       <obj_property name="ElementShortName">i_jump</obj_property>
       <obj_property name="ObjectShortName">i_jump</obj_property>
+      <obj_property name="CustomSignalColor">#00FFFF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_fetch/i_stall_flag" type="logic">
+      <obj_property name="ElementShortName">i_stall_flag</obj_property>
+      <obj_property name="ObjectShortName">i_stall_flag</obj_property>
       <obj_property name="CustomSignalColor">#00FFFF</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
@@ -631,12 +637,6 @@
    <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_execute/funct" type="array">
       <obj_property name="ElementShortName">funct[5:0]</obj_property>
       <obj_property name="ObjectShortName">funct[5:0]</obj_property>
-      <obj_property name="CustomSignalColor">#FF00FF</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_execute/Jump" type="logic">
-      <obj_property name="ElementShortName">Jump</obj_property>
-      <obj_property name="ObjectShortName">Jump</obj_property>
       <obj_property name="CustomSignalColor">#FF00FF</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>

@@ -93,24 +93,6 @@ module seg_execute
                       (i_ctrl_muxB_forwarding == 2'b10) ? i_rd_wb_forwarding :
                       i_read_data_2;
 
-    // always @(*) begin
-    //     // MUX Forwarding A
-    //     case(i_ctrl_muxA_forwarding)
-    //         2'b00:      muxA_Alu = i_read_data_1;
-    //         2'b01:      muxA_Alu = i_rd_mem_forwarding;
-    //         2'b10:      muxA_Alu = i_rd_wb_forwarding;
-    //         default:    muxA_Alu =  i_read_data_1;
-    //     endcase
-
-    //     // MUX Forwarding B
-    //     case(i_ctrl_muxB_forwarding)
-    //         2'b00:      muxB_Alu = i_read_data_2;
-    //         2'b01:      muxB_Alu = i_rd_mem_forwarding;
-    //         2'b10:      muxB_Alu = i_rd_wb_forwarding;
-    //         default:    muxB_Alu =  i_read_data_2;
-    //     endcase
-    // end
-
     // MUX ALUSrc
     assign data_b = (ALUSrc) ? i_addr_ext : muxB_Alu ;         // ALUSrc = 1 (i_addr_ext) ALUSrc = 0 (muxB_Alu)
     // MUX RegDst
