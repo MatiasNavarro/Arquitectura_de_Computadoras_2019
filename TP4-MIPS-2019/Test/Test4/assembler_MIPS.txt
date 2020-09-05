@@ -1,0 +1,13 @@
+#A 10
+#B 5
+#C 8
+#D 0
+#E 1
+#F 2
+//Cargo en R1 un 10
+ADDI R1,R2,A
+//Cargo en R2 un 15 (forward en mem)
+ADDI R2,R1,B
+//Cargo en R3 un 15 (forward en wb)
+ADDI R3,R1,B
+HLT
