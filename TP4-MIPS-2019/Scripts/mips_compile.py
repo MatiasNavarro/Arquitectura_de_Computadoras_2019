@@ -61,7 +61,6 @@ def get_hex_instr(op, struct_instr, flag):
     for jj in range(0, len(operando)):
         hex_instr = hex_instr + \
             int((int(operando[jj]) << int(struct_instr[jj+1][1])))
-
     return hex(hex_instr)
 
 
@@ -109,7 +108,7 @@ def main(argv):
     hex_instructions = []
     for instruction in inputfile_contents:
         # Dividimos codigo de operacion y parametros
-        aux_instr = instruction.split(' ')
+        aux_instr = instruction.split()
         str_instr = get_struct_instr(aux_instr[0].upper())
 
         if(str(str_instr).find("base") == -1):  # No hay parentesis (no es load ni store)
