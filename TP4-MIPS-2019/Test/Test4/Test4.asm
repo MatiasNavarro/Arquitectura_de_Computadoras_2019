@@ -1,4 +1,4 @@
-ADDI 1,2,10
-ADDI 2,1,5
-ADDI 3,1,5
+ADDI    1,2,10
+ADDI    2,1,5
+ADDI    3,1,5
 HALT

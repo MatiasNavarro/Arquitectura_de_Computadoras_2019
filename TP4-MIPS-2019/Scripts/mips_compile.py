@@ -59,8 +59,12 @@ def get_hex_instr(op, struct_instr, flag):
 
     hex_instr = int(struct_instr[0][1])  # Obtenemos el opcode
     for jj in range(0, len(operando)):
-        hex_instr = hex_instr + \
-            int((int(operando[jj]) << int(struct_instr[jj+1][1])))
+        if (int(struct_instr[jj+1][1]) == 0 and int(operando[jj]) < 0):
+            hex_instr = hex_instr + 0xffff & int(operando[jj])
+        else:
+            hex_instr = hex_instr + \
+                int((int(operando[jj]) << int(struct_instr[jj+1][1])))
+
     return hex(hex_instr)
 
 
