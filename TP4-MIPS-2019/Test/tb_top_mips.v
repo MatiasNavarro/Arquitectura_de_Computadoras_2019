@@ -9,14 +9,14 @@ module tb_top_mips();
     localparam NB_ALUOP      = 4;
     localparam NB_FUNC       = 6;
     localparam NB_ALUCTL     = 4;
-    localparam NB_CTRL_EX    = 10;
+    localparam NB_CTRL_EX    = 6;
     localparam NB_CTRL_M     = 9;
     localparam NB_CTRL_WB    = 2;
     //PROGRAM MEMORY
     localparam RAM_WIDTH_PROGRAM       = 32;
     localparam RAM_DEPTH_PROGRAM       = 32;
     localparam RAM_PERFORMANCE_PROGRAM = "LOW_LATENCY";
-    localparam INIT_FILE_PROGRAM       = "C:\\Users\\astar\\git\\Arquitectura_de_Computadoras_2019\\TP4-MIPS-2019\\Test\\MIPS_Assembly\\test_alu.bin";
+    localparam INIT_FILE_PROGRAM       = "C:\\Users\\astar\\git\\Arquitectura_de_Computadoras_2019\\TP4-MIPS-2019\\Test\\MIPS_Binarios\\Test3Prueba.bin";
     //DATA MEMORY
     localparam RAM_WIDTH_DATA          = 32;
     localparam RAM_DEPTH_DATA          = 32; 

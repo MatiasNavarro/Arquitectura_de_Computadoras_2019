@@ -30,7 +30,7 @@ module registers
         integer ram_index;
         initial
         for (ram_index = 0; ram_index < NB_REG; ram_index = ram_index + 1) 
-            register[ram_index] = ram_index;
+            register[ram_index] = {LEN{1'b0}};
     endgenerate
     
     always@(posedge i_clk) //Lectura de registros

@@ -26,8 +26,8 @@ module seg_execute
         input wire [NB_CTRL_M - 1 :  0]     i_ctrl_mem_bus,
         input wire [NB_CTRL_EX - 1 : 0]     i_ctrl_exc_bus,
         // Forwarding
-        input wire [1:0]                    i_ctrl_muxA_forwarding,
-        input wire [1:0]                    i_ctrl_muxB_forwarding, 
+        input wire [1:0]                    i_muxA_forwarding,
+        input wire [1:0]                    i_muxB_forwarding, 
         input wire [LEN - 1 : 0]            i_rd_mem_forwarding,
         input wire [LEN - 1 : 0]            i_rd_wb_forwarding, 
         // OUTPUTS
@@ -54,8 +54,6 @@ module seg_execute
     // MUX Forwarding
     wire        [LEN - 1 : 0]       muxA_Alu;
     wire        [LEN - 1 : 0]       muxB_Alu;
-    wire        [LEN - 1 : 0]       wire_muxA;
-    wire        [LEN - 1 : 0]       wire_muxB;
     
     assign funct            = i_addr_ext[NB_FUNC-1:0];
     // Execute bits [ALUSrc, AluOp[3], AluOp[2], AluOp[1], AluOp[0], RegDst]
@@ -64,13 +62,9 @@ module seg_execute
     assign RegDst           = i_ctrl_exc_bus[0];
     // Outputs 
     assign o_PC_branch      = reg_PC;
-    assign o_write_data     = i_read_data_2;
     // Control bus
     assign o_ctrl_wb_bus    = (i_flush) ? 0 : i_ctrl_wb_bus;
     assign o_ctrl_mem_bus   = (i_flush) ? 0 : i_ctrl_mem_bus;
-    
-    assign wire_muxA        = muxA_Alu;
-    assign wire_muxB        = muxB_Alu; 
     
     // Program Counter Logic
     always @(posedge i_clk) begin
@@ -82,16 +76,18 @@ module seg_execute
     end
 
     // MUX Forwarding A
-    assign muxA_Alu = (i_ctrl_muxA_forwarding == 2'b00) ? i_read_data_1 :
-                      (i_ctrl_muxA_forwarding == 2'b01) ? i_rd_mem_forwarding :
-                      (i_ctrl_muxA_forwarding == 2'b10) ? i_rd_wb_forwarding :
+    assign muxA_Alu = (i_muxA_forwarding == 2'b00) ? i_read_data_1 :
+                      (i_muxA_forwarding == 2'b01) ? i_rd_mem_forwarding :
+                      (i_muxA_forwarding == 2'b10) ? i_rd_wb_forwarding :
                       i_read_data_1;
 
     // MUX Forwarding B
-    assign muxB_Alu = (i_ctrl_muxB_forwarding == 2'b00) ? i_read_data_2 :
-                      (i_ctrl_muxB_forwarding == 2'b01) ? i_rd_mem_forwarding :
-                      (i_ctrl_muxB_forwarding == 2'b10) ? i_rd_wb_forwarding :
+    assign muxB_Alu = (i_muxB_forwarding == 2'b00) ? i_read_data_2 :
+                      (i_muxB_forwarding == 2'b01) ? i_rd_mem_forwarding :
+                      (i_muxB_forwarding == 2'b10) ? i_rd_wb_forwarding :
                       i_read_data_2;
+
+    assign o_write_data = muxB_Alu;
 
     // MUX ALUSrc
     assign data_b = (ALUSrc) ? i_addr_ext : muxB_Alu ;         // ALUSrc = 1 (i_addr_ext) ALUSrc = 0 (muxB_Alu)
