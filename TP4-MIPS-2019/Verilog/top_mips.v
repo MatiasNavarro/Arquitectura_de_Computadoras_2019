@@ -309,6 +309,7 @@ module top_mips
         .i_RegWrite         (wb_id_RegWrite         ),
         .i_flush            (mem_id_flush           ),
         .i_rt_ex            (id_id_i_rt             ),
+        .i_id_ex_ctrl_mem_bus_MemRead (id_ex_i_ctrl_mem_bus[1]),
         // Outputs
         .o_rs               (id_fu_o_rs             ),
         .o_rt               (id_ex_o_rt             ),

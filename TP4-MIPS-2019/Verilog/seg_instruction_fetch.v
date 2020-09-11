@@ -95,6 +95,7 @@ module seg_instruction_fetch
 
     assign mem_address = (i_jump) ? i_PC_dir_jump :
                          (i_PCSrc) ? i_PC_branch :
+                         (i_stall_flag) ? reg_PC - 1 :
                          reg_PC;
 
     assign o_PC = reg_PC_aumentado;

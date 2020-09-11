@@ -22,6 +22,7 @@ module seg_instruction_decode
         input wire                      i_RegWrite,
         input wire                      i_flush,
         input wire [NB_ADDR-1:0]        i_rt_ex,
+        input wire                      i_id_ex_ctrl_mem_bus_MemRead,
         
         //Salidas
         output wire [NB_ADDR-1:0]       o_rs,           //instruction[25:21]
@@ -153,7 +154,7 @@ module seg_instruction_decode
     )
     u_hazard_detection_unit
     (
-        .i_MemRead      (ctrl_mem_bus[1]    ),  //o_ctrl_mem_bus[1] = MemRead
+        .i_MemRead      (i_id_ex_ctrl_mem_bus_MemRead),  //o_ctrl_mem_bus[1] = MemRead
         .i_rs_id        (o_rs               ),
         .i_rt_id        (o_rt               ),
         .i_rt_ex        (i_rt_ex            ),
