@@ -14,10 +14,8 @@ SW R1,D{R3}
 SW R2,E{R3}
 //Cargo en registro R3 el valor=10 de la posicion M0 de memoria
 LWU R3,D{R3}
-//Cargo en registro R4 el valor=5 de la posicion M4 de memoria
-LWU R4,E{R4}
-// R3 + R4 = 15 (lo guardo en R5)
-ADDU R5,R3,R4
+// R4 + R1 = 15 (lo guardo en R5)
+ADDU R5,R4,R1
 //Cargo en posicion dos de memoria el valor de R5
 SW R5,F{R7}
 HLT
