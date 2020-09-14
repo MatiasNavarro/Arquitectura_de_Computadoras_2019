@@ -10,7 +10,7 @@ module top_mips
         parameter NB_ALUOP      = 4,
         parameter NB_FUNC       = 6,
         parameter NB_ALUCTL     = 4,             
-        parameter NB_CTRL_EX    = 6,
+        parameter NB_CTRL_EX    = 7,
         parameter NB_CTRL_M     = 9,
         parameter NB_CTRL_WB    = 2,
         

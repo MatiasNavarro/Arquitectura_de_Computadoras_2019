@@ -25,7 +25,7 @@ module tb_control#();
     //Todo puerto de salida del modulo es un cable.
     //Todo puerto de estimulo o generacion de entrada es un registro.
     parameter NB_OPCODE     = 6;
-    parameter NB_CTRL_EX    = 10;
+    parameter NB_CTRL_EX    = 7;
     parameter NB_CTRL_M     = 9;
     parameter NB_CTRL_WB    = 2;
     

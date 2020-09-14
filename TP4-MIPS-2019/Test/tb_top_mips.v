@@ -9,7 +9,7 @@ module tb_top_mips();
     localparam NB_ALUOP      = 4;
     localparam NB_FUNC       = 6;
     localparam NB_ALUCTL     = 4;
-    localparam NB_CTRL_EX    = 6;
+    localparam NB_CTRL_EX    = 7;
     localparam NB_CTRL_M     = 9;
     localparam NB_CTRL_WB    = 2;
     //PROGRAM MEMORY

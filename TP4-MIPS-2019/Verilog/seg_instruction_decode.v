@@ -7,7 +7,7 @@ module seg_instruction_decode
         parameter NB_ADDRESS    = 16,
         parameter NB_OPCODE     = 6,
         parameter NB_ADDR       = 5,
-        parameter NB_CTRL_EX    = 6,
+        parameter NB_CTRL_EX    = 7,
         parameter NB_CTRL_M     = 9,
         parameter NB_CTRL_WB    = 2        
     )
@@ -28,6 +28,7 @@ module seg_instruction_decode
         output wire [NB_ADDR-1:0]       o_rs,           //instruction[25:21]
         output wire [NB_ADDR-1:0]       o_rt,           //instruction[20:16]
         output wire [NB_ADDR-1:0]       o_rd,           //instruction[15:11]
+        output wire [NB_ADDR-1:0]       o_shamt,        //instruction[10: 6]
         output wire [LEN-1:0]           o_PC,
         output wire [LEN-1:0]           o_addr_ext,
         output wire [LEN-1:0]           o_read_data_1,
@@ -45,7 +46,6 @@ module seg_instruction_decode
     //Instruction 
     wire    [NB_OPCODE-1:0]     opcode;
     wire    [NB_OPCODE-1:0]     funct;
-    wire    [NB_ADDR-1:0]       shamt;
     wire    [NB_ADDRESS-1:0]    address;
 
     
@@ -68,7 +68,7 @@ module seg_instruction_decode
     assign o_rs     = i_instruction[25:21];
     assign o_rt     = (JAL) ? 5'b11111 : i_instruction[20:16];
     assign o_rd     = i_instruction[15:11];
-    assign shamt    = i_instruction[10:6];
+    assign o_shamt  = i_instruction[10:6];
     assign address  = i_instruction[15:0];
     assign funct    = i_instruction[5:0];
 

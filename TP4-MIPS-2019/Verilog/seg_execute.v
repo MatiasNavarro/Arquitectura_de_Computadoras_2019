@@ -8,7 +8,7 @@ module seg_execute
        parameter    NB_FUNC         = 6,
        parameter    NB_CTRL_WB      = 2,
        parameter    NB_CTRL_M       = 9,
-       parameter    NB_CTRL_EX      = 6
+       parameter    NB_CTRL_EX      = 7
     )
     (
         // INPUTS
@@ -20,6 +20,7 @@ module seg_execute
         input wire [LEN - 1 : 0]            i_addr_ext,         // instruction[15:0] extendida a 32 bits
         input wire [NB_ADDR - 1 : 0]        i_rt,               // instruction[20:16]
         input wire [NB_ADDR - 1 : 0]        i_rd,               // instruction[15:11]
+        input wire [NB_ADDR - 1 : 0]        i_shamt,
         input wire                          i_flush,
         // Control input
         input wire [NB_CTRL_WB - 1 : 0]     i_ctrl_wb_bus,
@@ -47,6 +48,7 @@ module seg_execute
     // Program Counter Register
     reg         [LEN - 1 : 0]       reg_PC;
     // ALU Registers
+    wire        [LEN - 1 : 0]       data_a;
     wire        [LEN - 1 : 0]       data_b;
     wire        [NB_ALUCTL - 1 : 0] ALUctl;
     wire        [NB_FUNC - 1 : 0]   funct;
@@ -56,8 +58,9 @@ module seg_execute
     wire        [LEN - 1 : 0]       muxB_Alu;
     
     assign funct            = i_addr_ext[NB_FUNC-1:0];
-    // Execute bits [ALUSrc, AluOp[3], AluOp[2], AluOp[1], AluOp[0], RegDst]
-    assign ALUSrc           = i_ctrl_exc_bus[NB_ALUOP + 1];
+    // Execute bits [ALUSrc2, ALUSrc1, AluOp[3], AluOp[2], AluOp[1], AluOp[0], RegDst]
+    assign ALUSrc1          = i_ctrl_exc_bus[5];
+    assign ALUSrc2          = i_ctrl_exc_bus[6];
     assign ALUOp            = i_ctrl_exc_bus[NB_ALUOP : 1];
     assign RegDst           = i_ctrl_exc_bus[0];
     // Outputs 
@@ -89,10 +92,12 @@ module seg_execute
 
     assign o_write_data = muxB_Alu;
 
-    // MUX ALUSrc
-    assign data_b = (ALUSrc) ? i_addr_ext : muxB_Alu ;         // ALUSrc = 1 (i_addr_ext) ALUSrc = 0 (muxB_Alu)
+    // MUX ALUSrc1
+    assign data_a = (ALUSrc1) ? i_addr_ext : muxB_Alu ;             // ALUSrc1 = 1 (i_addr_ext) ALUSrc = 0 (muxB_Alu)
+    // MUX ALUSrc2  
+    assign data_b = (ALUSrc2) ? {{(27){1'b0}},i_shamt} : muxA_Alu;  // ALUSrc2 = 1 (i_shamt)    ALUSrc = 0 (muxA_Alu)
     // MUX RegDst
-    assign o_write_register = (RegDst) ? i_rd : i_rt;          // RegDst = 1 -> 15-11 (rd) | RegDst = 0 -> 20-16 (rt)
+    assign o_write_register = (RegDst) ? i_rd : i_rt;               // RegDst  = 1 -> 15-11 (rd) | RegDst = 0 -> 20-16 (rt)
     
     // ALU
     seg_execute_alu_control 
@@ -114,7 +119,7 @@ module seg_execute
     )
     u_seg_execute_alu(
     	.i_ALUctl (ALUctl),
-        .i_data_a (muxA_Alu),
+        .i_data_a (data_a),
         .i_data_b (data_b),
         .o_ALUOut (o_ALU_result),
         .o_zero   (o_ALU_zero)

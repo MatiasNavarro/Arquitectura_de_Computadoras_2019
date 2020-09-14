@@ -7,8 +7,8 @@ module tb_seg_execute();
     localparam    NB_ADDR         = 5;
     localparam    NB_FUNC         = 6;
     localparam    NB_CTRL_WB      = 2;
-    localparam    NB_CTRL_M       = 3;
-    localparam    NB_CTRL_EX      = 4;
+    localparam    NB_CTRL_M       = 9;
+    localparam    NB_CTRL_EX      = 7;
 
     // INPUTS
     reg                           i_clk;

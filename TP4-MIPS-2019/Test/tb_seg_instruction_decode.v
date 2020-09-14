@@ -8,7 +8,7 @@ module tb_seg_instruction_decode();
     localparam NB_ADDRESS    = 16;
     localparam NB_OPCODE     = 6;
     localparam NB_ADDR       = 5;
-    localparam NB_CTRL_EX    = 6;
+    localparam NB_CTRL_EX    = 7;
     localparam NB_CTRL_M     = 9;
     localparam NB_CTRL_WB    = 2;
 
