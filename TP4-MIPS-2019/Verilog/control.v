@@ -19,7 +19,8 @@ module control
         output reg                      o_Jump,
         output reg                      o_JAL,
         output reg                      o_JR,
-        output reg                      o_JALR
+        output reg                      o_JALR,
+        output reg                      o_shift
     );
     
     always@(*) begin
@@ -27,6 +28,7 @@ module control
         o_JAL   = 0;
         o_JR    = 0;
         o_JALR  = 0;
+        o_shift = 0;
         if(!i_rst) begin
             o_ctrl_wb_bus   = 0;
             o_ctrl_mem_bus  = 0;
@@ -46,7 +48,8 @@ module control
                         begin
                             o_ctrl_wb_bus    = 2'b10;
                             o_ctrl_mem_bus   = 9'b000000000;
-                            o_ctrl_exc_bus   = 6'b100101;
+                            o_ctrl_exc_bus   = 6'b000101;
+                            o_shift          = 1;
                         end
 
                         6'b001000: //o_JR

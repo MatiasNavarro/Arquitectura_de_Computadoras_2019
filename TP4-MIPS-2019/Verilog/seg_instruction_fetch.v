@@ -74,6 +74,7 @@ module seg_instruction_fetch
     always @(negedge i_clk) begin
         if (!i_rst) begin
             reg_PC <= {LEN{1'b0}};
+            reg_PC_aumentado <= 1;
         end else begin
             reg_PC <= reg_PC_aumentado;
         end
@@ -82,6 +83,7 @@ module seg_instruction_fetch
     always @(posedge i_clk) begin
         if (!i_rst) begin
             reg_PC <= {LEN{1'b0}};
+            reg_PC_aumentado <= 1;
         end else if (i_jump) begin
             reg_PC_aumentado <= i_PC_dir_jump + 1;
         end else if (i_PCSrc) begin

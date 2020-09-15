@@ -14,12 +14,12 @@ module tb_top_mips();
     localparam NB_CTRL_WB    = 2;
     //PROGRAM MEMORY
     localparam RAM_WIDTH_PROGRAM       = 32;
-    localparam RAM_DEPTH_PROGRAM       = 32;
+    localparam RAM_DEPTH_PROGRAM       = 64;
     localparam RAM_PERFORMANCE_PROGRAM = "LOW_LATENCY";
-    localparam INIT_FILE_PROGRAM       = "C:\\Users\\astar\\git\\Arquitectura_de_Computadoras_2019\\TP4-MIPS-2019\\Test\\MIPS_Binarios\\Test3Prueba.bin";
+    localparam INIT_FILE_PROGRAM       = "C:\\Users\\astar\\git\\Arquitectura_de_Computadoras_2019\\TP4-MIPS-2019\\Test\\MIPS_Binarios\\Test6Prueba.bin";
     //DATA MEMORY
     localparam RAM_WIDTH_DATA          = 32;
-    localparam RAM_DEPTH_DATA          = 32; 
+    localparam RAM_DEPTH_DATA          = 128; 
     localparam RAM_PERFORMANCE_DATA    = "LOW_LATENCY";
     localparam INIT_FILE_DATA          = "";
     // localparam INIT_FILE_DATA          = "C:\\Users\\astar\\git\\Arquitectura_de_Computadoras_2019\\TP4-MIPS-2019\\Test\\init_top_mem_data.mem";
@@ -29,15 +29,17 @@ module tb_top_mips();
     reg                 i_rst;
     // Outputs
     // wire [LEN - 1 : 0]  o_led;
+    
+//    wire clk_wiz;
 
     initial begin
         i_clk = 1'b1;
         i_rst = 1'b0;
         
-        #4 i_rst = 1'b1;
+        #3 i_rst = 1'b1;
 
         
-        #40 $finish;
+        #110 $finish;
     end
 
     always #1 i_clk = ~i_clk;
@@ -70,5 +72,14 @@ module tb_top_mips();
         // .o_led               (o_led               )
     );
     
+//    clk_wiz_0 instance_name
+//    (
+//        // Clock out ports
+//        .clk_out1(clk_wiz),     // output clk_out1
+//        // Status and control signals
+//        .reset(i_rst), // input reset
+//        // Clock in ports
+//        .clk_in1(i_clk) // input clk_in1
+//    );
 
 endmodule

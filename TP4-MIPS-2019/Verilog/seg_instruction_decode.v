@@ -47,7 +47,6 @@ module seg_instruction_decode
     wire    [NB_OPCODE-1:0]     funct;
     wire    [NB_ADDR-1:0]       shamt;
     wire    [NB_ADDRESS-1:0]    address;
-
     
     wire                        stall_flag;         //Hazard detection unit flag 
     wire    [LEN-1:0]           wire_read_data_1;
@@ -56,12 +55,15 @@ module seg_instruction_decode
     wire    [LEN-1:0]           read_data_2;
     wire    [NB_CTRL_WB-1:0]    ctrl_wb_bus;
     wire    [NB_CTRL_M-1:0]     ctrl_mem_bus;
-    wire    [NB_CTRL_EX-1:0]    ctrl_exc_bus;      
+    wire    [NB_CTRL_EX-1:0]    ctrl_exc_bus;
+    wire    [NB_ADDR-1:0]       read_register_1;
     
-    wire                        Jump;
-    wire                        JAL;
-    wire                        JR;
-    wire                        JALR;
+    // Control flags
+    wire Jump;
+    wire JAL;
+    wire JR;
+    wire JALR;
+    wire shift_flag;
 
     //Instruction
     assign opcode   = i_instruction[31:26];
@@ -88,8 +90,11 @@ module seg_instruction_decode
     assign o_jump_flag = Jump || JAL || JR || JALR; //Jump signal
 
     assign o_read_data_1 = (JAL || JALR) ? i_PC  : read_data_1;
-    assign o_read_data_2 = (JAL || JALR) ? 32'd2 : read_data_2;
+    assign o_read_data_2 = (JAL || JALR) ? 32'd2 : 
+                           (shift_flag)  ? {{27{1'b0}},shamt} : 
+                           read_data_2;
 
+    assign read_register_1 = (shift_flag) ? o_rt : o_rs;
 
     always @(posedge i_clk)
     begin
@@ -128,7 +133,8 @@ module seg_instruction_decode
         .o_Jump         (Jump           ),
         .o_JAL          (JAL            ),
         .o_JR           (JR             ),
-        .o_JALR         (JALR           )
+        .o_JALR         (JALR           ),
+        .o_shift        (shift_flag     )
     );
     
     registers #(
@@ -140,7 +146,7 @@ module seg_instruction_decode
         .i_clk              (i_clk              ),
         .i_rst              (i_rst              ),
         .i_RegWrite         (i_RegWrite         ),
-        .i_read_register_1  (o_rs               ),
+        .i_read_register_1  (read_register_1    ),
         .i_read_register_2  (o_rt               ),
         .i_write_register   (i_write_reg        ),
         .i_write_data       (i_write_data       ),
