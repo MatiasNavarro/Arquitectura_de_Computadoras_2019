@@ -20,7 +20,8 @@ module control
         output reg                      o_JAL,
         output reg                      o_JR,
         output reg                      o_JALR,
-        output reg                      o_shift
+        output reg                      o_shift,
+        output reg                      o_shamt
     );
     
     always@(*) begin
@@ -29,6 +30,7 @@ module control
         o_JR    = 0;
         o_JALR  = 0;
         o_shift = 0;
+        o_shamt = 0;
         if(!i_rst) begin
             o_ctrl_wb_bus   = 0;
             o_ctrl_mem_bus  = 0;
@@ -45,6 +47,15 @@ module control
                 begin
                     case(i_funct)
                         6'b000000, 6'b000010, 6'b000011: //SHIFT CON SHAMT (SLL - SRL - SRA)
+                        begin
+                            o_ctrl_wb_bus    = 2'b10;
+                            o_ctrl_mem_bus   = 9'b000000000;
+                            o_ctrl_exc_bus   = 6'b000101;
+                            o_shift          = 1;
+                            o_shamt          = 1;
+                        end
+                        
+                        6'b000100, 6'b000110, 6'b000111: //SHIFT CON VARIABLE (SLLV - SRLV - SRAV)
                         begin
                             o_ctrl_wb_bus    = 2'b10;
                             o_ctrl_mem_bus   = 9'b000000000;

@@ -5,7 +5,7 @@ ADDI    3,3,21
 SUBU    1,1,2
 BEQ     1,5,2
 BNE     1,5,-3
-AND     1,1,1
+XOR     1,1,0
 JR      0
 AND     1,1,1
 AND     1,1,1

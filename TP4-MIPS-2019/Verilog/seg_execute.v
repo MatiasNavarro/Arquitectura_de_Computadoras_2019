@@ -71,7 +71,7 @@ module seg_execute
         if (!i_rst) begin
             reg_PC <= {LEN{1'b0}};
         end else begin
-            reg_PC <= i_PC + (i_addr_ext << 2);
+            reg_PC <= i_PC + i_addr_ext;
         end
     end
 

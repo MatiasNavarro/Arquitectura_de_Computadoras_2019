@@ -12,8 +12,8 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="18721fs"></ZoomEndTime>
-      <Cursor1Time time="21000fs"></Cursor1Time>
+      <ZoomEndTime time="30121fs"></ZoomEndTime>
+      <Cursor1Time time="17000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="230"></NameColumnWidth>
@@ -39,6 +39,7 @@
       <wvobject fp_name="group368" type="group">
          <obj_property name="label">IF Inputs</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_fetch/i_PC_branch" type="array">
             <obj_property name="ElementShortName">i_PC_branch[31:0]</obj_property>
             <obj_property name="ObjectShortName">i_PC_branch[31:0]</obj_property>
@@ -138,6 +139,7 @@
       <wvobject fp_name="group370" type="group">
          <obj_property name="label">ID Inputs</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_decode/i_clk" type="logic">
             <obj_property name="ElementShortName">i_clk</obj_property>
             <obj_property name="ObjectShortName">i_clk</obj_property>
@@ -168,6 +170,7 @@
             <obj_property name="ObjectShortName">i_write_reg[4:0]</obj_property>
             <obj_property name="CustomSignalColor">#F0E68C</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
          </wvobject>
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_decode/i_write_data" type="array">
             <obj_property name="ElementShortName">i_write_data[31:0]</obj_property>
@@ -405,6 +408,7 @@
       <wvobject fp_name="group410" type="group">
          <obj_property name="label">EX Inputs</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_execute/i_clk" type="logic">
             <obj_property name="ElementShortName">i_clk</obj_property>
             <obj_property name="ObjectShortName">i_clk</obj_property>
@@ -422,24 +426,26 @@
             <obj_property name="ObjectShortName">i_PC[31:0]</obj_property>
             <obj_property name="CustomSignalColor">#FF00FF</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
          </wvobject>
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_execute/i_read_data_1" type="array">
             <obj_property name="ElementShortName">i_read_data_1[31:0]</obj_property>
             <obj_property name="ObjectShortName">i_read_data_1[31:0]</obj_property>
-            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="CustomSignalColor">#FF0080</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
          </wvobject>
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_execute/i_read_data_2" type="array">
             <obj_property name="ElementShortName">i_read_data_2[31:0]</obj_property>
             <obj_property name="ObjectShortName">i_read_data_2[31:0]</obj_property>
-            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="CustomSignalColor">#FF0080</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
          </wvobject>
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_execute/i_addr_ext" type="array">
             <obj_property name="ElementShortName">i_addr_ext[31:0]</obj_property>
             <obj_property name="ObjectShortName">i_addr_ext[31:0]</obj_property>
-            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="CustomSignalColor">#FF0080</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
          </wvobject>
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_execute/i_rt" type="array">
             <obj_property name="ElementShortName">i_rt[4:0]</obj_property>
@@ -516,6 +522,7 @@
             <obj_property name="ObjectShortName">o_PC_branch[31:0]</obj_property>
             <obj_property name="CustomSignalColor">#FF00FF</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
          </wvobject>
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_execute/o_ALU_zero" type="logic">
             <obj_property name="ElementShortName">o_ALU_zero</obj_property>
@@ -526,7 +533,7 @@
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_execute/o_ALU_result" type="array">
             <obj_property name="ElementShortName">o_ALU_result[31:0]</obj_property>
             <obj_property name="ObjectShortName">o_ALU_result[31:0]</obj_property>
-            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="CustomSignalColor">#FF0080</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
          </wvobject>
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_execute/o_write_data" type="array">
@@ -665,6 +672,7 @@
       <wvobject fp_name="group412" type="group">
          <obj_property name="label">MEM Inputs</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_memory_access/i_clk" type="logic">
             <obj_property name="ElementShortName">i_clk</obj_property>
             <obj_property name="ObjectShortName">i_clk</obj_property>
@@ -706,18 +714,21 @@
             <obj_property name="ObjectShortName">i_write_register[4:0]</obj_property>
             <obj_property name="CustomSignalColor">#008080</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
          </wvobject>
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_memory_access/i_ctrl_wb_bus" type="array">
             <obj_property name="ElementShortName">i_ctrl_wb_bus[1:0]</obj_property>
             <obj_property name="ObjectShortName">i_ctrl_wb_bus[1:0]</obj_property>
             <obj_property name="CustomSignalColor">#008080</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="Radix">BINARYRADIX</obj_property>
          </wvobject>
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_memory_access/i_ctrl_mem_bus" type="array">
             <obj_property name="ElementShortName">i_ctrl_mem_bus[8:0]</obj_property>
             <obj_property name="ObjectShortName">i_ctrl_mem_bus[8:0]</obj_property>
             <obj_property name="CustomSignalColor">#008080</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="Radix">BINARYRADIX</obj_property>
          </wvobject>
       </wvobject>
       <wvobject fp_name="group413" type="group">
@@ -753,12 +764,14 @@
             <obj_property name="ObjectShortName">o_write_register[4:0]</obj_property>
             <obj_property name="CustomSignalColor">#008080</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
          </wvobject>
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_memory_access/o_ctrl_wb_bus" type="array">
             <obj_property name="ElementShortName">o_ctrl_wb_bus[1:0]</obj_property>
             <obj_property name="ObjectShortName">o_ctrl_wb_bus[1:0]</obj_property>
             <obj_property name="CustomSignalColor">#008080</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="Radix">BINARYRADIX</obj_property>
          </wvobject>
       </wvobject>
       <wvobject fp_name="group429" type="group">
@@ -848,8 +861,8 @@
          </wvobject>
       </wvobject>
       <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_memory_access/u_data_mem/BRAM" type="array">
-         <obj_property name="ElementShortName">BRAM[127:0][31:0]</obj_property>
-         <obj_property name="ObjectShortName">BRAM[127:0][31:0]</obj_property>
+         <obj_property name="ElementShortName">BRAM[31:0][31:0]</obj_property>
+         <obj_property name="ObjectShortName">BRAM[31:0][31:0]</obj_property>
          <obj_property name="CustomSignalColor">#008000</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
@@ -861,6 +874,7 @@
    <wvobject fp_name="group409" type="group">
       <obj_property name="label">MEM/WB Registers</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
       <wvobject fp_name="/tb_top_mips/u_top_mips/mem_wb_reg_read_data" type="array">
          <obj_property name="ElementShortName">mem_wb_reg_read_data[31:0]</obj_property>
          <obj_property name="ObjectShortName">mem_wb_reg_read_data[31:0]</obj_property>

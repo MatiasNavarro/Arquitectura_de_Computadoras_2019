@@ -57,6 +57,7 @@ module seg_instruction_decode
     wire    [NB_CTRL_M-1:0]     ctrl_mem_bus;
     wire    [NB_CTRL_EX-1:0]    ctrl_exc_bus;
     wire    [NB_ADDR-1:0]       read_register_1;
+    wire    [NB_ADDR-1:0]       read_register_2;
     
     // Control flags
     wire Jump;
@@ -64,6 +65,7 @@ module seg_instruction_decode
     wire JR;
     wire JALR;
     wire shift_flag;
+    wire shamt_flag;
 
     //Instruction
     assign opcode   = i_instruction[31:26];
@@ -91,10 +93,11 @@ module seg_instruction_decode
 
     assign o_read_data_1 = (JAL || JALR) ? i_PC  : read_data_1;
     assign o_read_data_2 = (JAL || JALR) ? 32'd2 : 
-                           (shift_flag)  ? {{27{1'b0}},shamt} : 
+                           (shamt_flag)  ? {{27{1'b0}},shamt} : 
                            read_data_2;
 
     assign read_register_1 = (shift_flag) ? o_rt : o_rs;
+    assign read_register_2 = (shift_flag) ? o_rs : o_rt;
 
     always @(posedge i_clk)
     begin
@@ -134,7 +137,8 @@ module seg_instruction_decode
         .o_JAL          (JAL            ),
         .o_JR           (JR             ),
         .o_JALR         (JALR           ),
-        .o_shift        (shift_flag     )
+        .o_shift        (shift_flag     ),
+        .o_shamt        (shamt_flag     )
     );
     
     registers #(
@@ -147,7 +151,7 @@ module seg_instruction_decode
         .i_rst              (i_rst              ),
         .i_RegWrite         (i_RegWrite         ),
         .i_read_register_1  (read_register_1    ),
-        .i_read_register_2  (o_rt               ),
+        .i_read_register_2  (read_register_2    ),
         .i_write_register   (i_write_reg        ),
         .i_write_data       (i_write_data       ),
         .o_wire_read_data_1 (wire_read_data_1   ),

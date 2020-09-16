@@ -84,10 +84,10 @@ module seg_instruction_fetch
         if (!i_rst) begin
             reg_PC <= {LEN{1'b0}};
             reg_PC_aumentado <= 1;
-        end else if (i_jump) begin
-            reg_PC_aumentado <= i_PC_dir_jump + 1;
         end else if (i_PCSrc) begin
             reg_PC_aumentado <= i_PC_branch + 1;
+        end else if (i_jump) begin
+            reg_PC_aumentado <= i_PC_dir_jump + 1;
         end else if (i_stall_flag || halt_flag) begin
             reg_PC_aumentado <= reg_PC;
         end else begin

@@ -14,12 +14,12 @@ module tb_top_mips();
     localparam NB_CTRL_WB    = 2;
     //PROGRAM MEMORY
     localparam RAM_WIDTH_PROGRAM       = 32;
-    localparam RAM_DEPTH_PROGRAM       = 64;
+    localparam RAM_DEPTH_PROGRAM       = 32; // Cantidad de instrucciones
     localparam RAM_PERFORMANCE_PROGRAM = "LOW_LATENCY";
-    localparam INIT_FILE_PROGRAM       = "C:\\Users\\astar\\git\\Arquitectura_de_Computadoras_2019\\TP4-MIPS-2019\\Test\\MIPS_Binarios\\Test6Prueba.bin";
+    localparam INIT_FILE_PROGRAM       = "C:\\Users\\astar\\git\\Arquitectura_de_Computadoras_2019\\TP4-MIPS-2019\\Test\\MIPS_Binarios\\Test3Prueba.bin";
     //DATA MEMORY
     localparam RAM_WIDTH_DATA          = 32;
-    localparam RAM_DEPTH_DATA          = 128; 
+    localparam RAM_DEPTH_DATA          = 32; // Cantidad de datos
     localparam RAM_PERFORMANCE_DATA    = "LOW_LATENCY";
     localparam INIT_FILE_DATA          = "";
     // localparam INIT_FILE_DATA          = "C:\\Users\\astar\\git\\Arquitectura_de_Computadoras_2019\\TP4-MIPS-2019\\Test\\init_top_mem_data.mem";
@@ -39,7 +39,7 @@ module tb_top_mips();
         #3 i_rst = 1'b1;
 
         
-        #110 $finish;
+        #50 $finish;
     end
 
     always #1 i_clk = ~i_clk;
