@@ -155,6 +155,10 @@ module top_mips
     wire                        wb_id_RegWrite;
     wire [LEN - 1 : 0]          wb_id_write_data;
     wire [NB_ADDR - 1 : 0]      wb_id_write_register;
+    // Outputs - forwarding
+    wire                        wb_id_RegWrite_forwarding;
+    wire [LEN - 1 : 0]          wb_id_write_data_forwarding;
+    wire [NB_ADDR - 1 : 0]      wb_id_write_register_forwarding;
 
     // -----------------------------------------------
     // Forwarding Unit
@@ -359,7 +363,7 @@ module top_mips
         .i_muxA_forwarding      (fu_ex_muxA_forwarding      ),
         .i_muxB_forwarding      (fu_ex_muxB_forwarding      ),
         .i_rd_mem_forwarding    (ex_mem_i_ALU_result        ),  //Salida de ALU 
-        .i_rd_wb_forwarding     (wb_id_write_data           ),  //WB write data en banco de registros (mismo que en ID)
+        .i_rd_wb_forwarding     (wb_id_write_data_forwarding),  //WB write data en banco de registros (mismo que en ID)
         // Outputs
         .o_PC_branch            (ex_mem_o_PC_branch         ),
         .o_ALU_result           (ex_mem_o_ALU_result        ),
@@ -418,16 +422,35 @@ module top_mips
     )
     u_seg_write_back
     (
-        // Inputs
+        // Inputs - VIA WIRES
+        .i_read_data        (mem_wb_o_read_data         ),
+        .i_ALU_result       (mem_wb_o_address           ),
+        .i_write_register   (mem_wb_o_write_register    ),
+        // Control inputs
+        .i_ctrl_wb_bus      (mem_wb_o_ctrl_wb_bus       ),
+        // Outputs
+        .o_RegWrite         (wb_id_RegWrite             ),
+        .o_write_data       (wb_id_write_data           ),
+        .o_write_register   (wb_id_write_register       )
+    );
+    // WB Auxiliario para forwarding
+    seg_write_back #(
+        .LEN            (LEN            ),
+        .NB_ADDR        (NB_ADDR        ),
+        .NB_CTRL_WB     (NB_CTRL_WB     )
+    )
+    u_seg_write_back_forwarding
+    (
+        // Inputs - VIA TOP REGISTERS
         .i_read_data        (mem_wb_i_read_data         ),
         .i_ALU_result       (mem_wb_i_ALU_result        ),
         .i_write_register   (mem_wb_i_write_register    ),
         // Control inputs
         .i_ctrl_wb_bus      (mem_wb_i_ctrl_wb_bus       ),
         // Outputs
-        .o_RegWrite         (wb_id_RegWrite             ),
-        .o_write_data       (wb_id_write_data           ),
-        .o_write_register   (wb_id_write_register       )
+        .o_RegWrite         (                           ),
+        .o_write_data       (wb_id_write_data_forwarding),
+        .o_write_register   (                           )
     );
     
     // -----------------------------------------------
