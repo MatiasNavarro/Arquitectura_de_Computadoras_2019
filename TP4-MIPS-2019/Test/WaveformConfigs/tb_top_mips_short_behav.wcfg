@@ -11,13 +11,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="30121fs"></ZoomEndTime>
-      <Cursor1Time time="17000fs"></Cursor1Time>
+      <ZoomStartTime time="54502fs"></ZoomStartTime>
+      <ZoomEndTime time="84783fs"></ZoomEndTime>
+      <Cursor1Time time="103000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="230"></NameColumnWidth>
-      <ValueColumnWidth column_width="92"></ValueColumnWidth>
+      <ValueColumnWidth column_width="84"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="16" />
    <wvobject fp_name="/tb_top_mips/i_clk" type="logic">
@@ -86,28 +86,41 @@
             <obj_property name="ObjectShortName">o_PC[31:0]</obj_property>
             <obj_property name="CustomSignalColor">#00FFFF</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
          </wvobject>
       </wvobject>
       <wvobject fp_name="group433" type="group">
          <obj_property name="label">IF Internals</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_fetch/halt_flag" type="logic">
+            <obj_property name="ElementShortName">halt_flag</obj_property>
+            <obj_property name="ObjectShortName">halt_flag</obj_property>
+         </wvobject>
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_fetch/reg_PC" type="array">
             <obj_property name="ElementShortName">reg_PC[31:0]</obj_property>
             <obj_property name="ObjectShortName">reg_PC[31:0]</obj_property>
             <obj_property name="CustomSignalColor">#00FFFF</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
          </wvobject>
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_fetch/reg_PC_aumentado" type="array">
             <obj_property name="ElementShortName">reg_PC_aumentado[31:0]</obj_property>
             <obj_property name="ObjectShortName">reg_PC_aumentado[31:0]</obj_property>
             <obj_property name="CustomSignalColor">#00FFFF</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
          </wvobject>
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_fetch/mem_address" type="array">
             <obj_property name="ElementShortName">mem_address[31:0]</obj_property>
             <obj_property name="ObjectShortName">mem_address[31:0]</obj_property>
             <obj_property name="CustomSignalColor">#00FFFF</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_fetch/u_mem_instruction/BRAM" type="array">
+            <obj_property name="ElementShortName">BRAM[31:0][31:0]</obj_property>
+            <obj_property name="ObjectShortName">BRAM[31:0][31:0]</obj_property>
          </wvobject>
       </wvobject>
    </wvobject>
@@ -124,6 +137,7 @@
          <obj_property name="ObjectShortName">if_id_reg_PC[31:0]</obj_property>
          <obj_property name="CustomSignalColor">#FFA500</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_top_mips/u_top_mips/if_id_reg_instruction" type="array">
          <obj_property name="ElementShortName">if_id_reg_instruction[31:0]</obj_property>
@@ -157,6 +171,7 @@
             <obj_property name="ObjectShortName">i_PC[31:0]</obj_property>
             <obj_property name="CustomSignalColor">#F0E68C</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
          </wvobject>
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_decode/i_instruction" type="array">
             <obj_property name="ElementShortName">i_instruction[31:0]</obj_property>
@@ -303,6 +318,7 @@
          <obj_property name="ObjectShortName">register[31:0][31:0]</obj_property>
          <obj_property name="CustomSignalColor">#FFD700</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
       </wvobject>
       <wvobject fp_name="group231" type="group">
          <obj_property name="label">Hazard Detection Unit</obj_property>

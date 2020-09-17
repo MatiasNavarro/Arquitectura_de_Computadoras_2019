@@ -15,14 +15,15 @@ AND     1,1,1
 AND     1,1,1
 AND     1,1,1
 JALR    6,3
-JAL     27
+JR      4
 AND     1,1,1
 AND     1,1,1
 AND     1,1,1
-AND     1,1,1
+SUBU    6,6,2
 AND     1,1,1
 AND     1,1,1
 AND     1,1,1
 JALR    4,6
+AND     1,1,1
 AND     1,1,1
 HALT

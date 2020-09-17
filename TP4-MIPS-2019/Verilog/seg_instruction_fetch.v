@@ -50,26 +50,6 @@ module seg_instruction_fetch
     //---------------------------------------
     // Program Counter Logic
     //---------------------------------------
-    // always @(posedge i_clk) begin
-    //     if (!i_rst) begin
-    //         reg_PC <= {LEN{1'b0}};
-    //     end
-    //     else begin
-    //         if(!i_jump) begin                   //Segundo MUX PC
-    //             if (!i_PCSrc) begin             //Primer MUX PC
-    //                 if (i_stall_flag) begin
-    //                     reg_PC <= reg_PC;
-    //                 end else begin
-    //                     reg_PC <= reg_PC + 1;
-    //                 end
-    //             end else begin
-    //                 reg_PC <= i_PC_branch;
-    //             end
-    //         end else begin
-    //             reg_PC <= i_PC_dir_jump;
-    //         end
-    //     end
-    // end
 
     always @(negedge i_clk) begin
         if (!i_rst) begin
@@ -85,9 +65,17 @@ module seg_instruction_fetch
             reg_PC <= {LEN{1'b0}};
             reg_PC_aumentado <= 1;
         end else if (i_PCSrc) begin
-            reg_PC_aumentado <= i_PC_branch + 1;
+            if (halt_flag) begin
+                reg_PC_aumentado <= i_PC_branch;
+            end else begin
+                reg_PC_aumentado <= i_PC_branch + 1;
+            end
         end else if (i_jump) begin
-            reg_PC_aumentado <= i_PC_dir_jump + 1;
+            if (halt_flag) begin
+                reg_PC_aumentado <= i_PC_dir_jump;
+            end else begin
+                reg_PC_aumentado <= i_PC_dir_jump + 1;
+            end
         end else if (i_stall_flag || halt_flag) begin
             reg_PC_aumentado <= reg_PC;
         end else begin
@@ -95,8 +83,8 @@ module seg_instruction_fetch
         end
     end
 
-    assign mem_address = (i_jump) ? i_PC_dir_jump :
-                         (i_PCSrc) ? i_PC_branch :
+    assign mem_address = (i_PCSrc) ? i_PC_branch :
+                         (i_jump) ? i_PC_dir_jump :
                          (i_stall_flag) ? reg_PC - 1 :
                          reg_PC;
 
