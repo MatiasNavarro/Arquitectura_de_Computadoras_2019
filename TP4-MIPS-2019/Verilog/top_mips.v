@@ -28,8 +28,11 @@ module top_mips
     )
     (
         // Inputs
-        input                           i_clk,
-        input                           i_rst
+        input wire               i_clk,
+        input wire               i_rst,
+        input wire               i_preload_flag,
+        input wire [LEN - 1 : 0] i_preload_address,
+        input wire [LEN - 1 : 0] i_preload_instruction
         // Outputs
         // output wire [LEN - 1 : 0]       o_led
     );
@@ -277,16 +280,19 @@ module top_mips
     )
     u_seg_instruction_fetch (
         // Inputs
-        .i_clk              (i_clk                  ),
-        .i_rst              (i_rst                  ),
-        .i_PC_branch        (mem_if_PC_branch       ),
-        .i_PCSrc            (mem_if_PCSrc           ),
-        .i_PC_dir_jump      (id_if_PC_dir_jump      ),
-        .i_jump             (id_if_jump_flag        ),
-        .i_stall_flag       (id_if_stall_flag       ),
+        .i_clk                  (i_clk                  ),
+        .i_rst                  (i_rst                  ),
+        .i_PC_branch            (mem_if_PC_branch       ),
+        .i_PCSrc                (mem_if_PCSrc           ),
+        .i_PC_dir_jump          (id_if_PC_dir_jump      ),
+        .i_jump                 (id_if_jump_flag        ),
+        .i_stall_flag           (id_if_stall_flag       ),
+        .i_preload_flag         (i_preload_flag         ),
+        .i_preload_address      (i_preload_address      ),
+        .i_preload_instruction  (i_preload_instruction  ),
         // Outputs
-        .o_instruction      (if_id_o_instruction    ),
-        .o_PC               (if_id_o_PC             )
+        .o_instruction          (if_id_o_instruction    ),
+        .o_PC                   (if_id_o_PC             )
     );
     
     // -----------------------------------------------

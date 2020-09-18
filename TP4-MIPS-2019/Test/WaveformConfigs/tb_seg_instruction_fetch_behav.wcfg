@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_seg_instruction_fetch_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_seg_instruction_fetch" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="90266fs"></ZoomStartTime>
+      <ZoomEndTime time="109147fs"></ZoomEndTime>
+      <Cursor1Time time="106000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="230"></NameColumnWidth>
+      <ValueColumnWidth column_width="84"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="18" />
+   <wvobject fp_name="/tb_seg_instruction_fetch/i_clk" type="logic">
+      <obj_property name="ElementShortName">i_clk</obj_property>
+      <obj_property name="ObjectShortName">i_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_instruction_fetch/i_rst" type="logic">
+      <obj_property name="ElementShortName">i_rst</obj_property>
+      <obj_property name="ObjectShortName">i_rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_instruction_fetch/i_PC_branch" type="array">
+      <obj_property name="ElementShortName">i_PC_branch[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i_PC_branch[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_instruction_fetch/i_PC_dir_jump" type="array">
+      <obj_property name="ElementShortName">i_PC_dir_jump[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i_PC_dir_jump[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_instruction_fetch/i_PCSrc" type="logic">
+      <obj_property name="ElementShortName">i_PCSrc</obj_property>
+      <obj_property name="ObjectShortName">i_PCSrc</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_instruction_fetch/i_jump" type="logic">
+      <obj_property name="ElementShortName">i_jump</obj_property>
+      <obj_property name="ObjectShortName">i_jump</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_instruction_fetch/i_stall_flag" type="logic">
+      <obj_property name="ElementShortName">i_stall_flag</obj_property>
+      <obj_property name="ObjectShortName">i_stall_flag</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_instruction_fetch/i_preload_flag" type="logic">
+      <obj_property name="ElementShortName">i_preload_flag</obj_property>
+      <obj_property name="ObjectShortName">i_preload_flag</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_instruction_fetch/i_preload_address" type="array">
+      <obj_property name="ElementShortName">i_preload_address[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i_preload_address[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_instruction_fetch/i_preload_instruction" type="array">
+      <obj_property name="ElementShortName">i_preload_instruction[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i_preload_instruction[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_instruction_fetch/o_instruction" type="array">
+      <obj_property name="ElementShortName">o_instruction[31:0]</obj_property>
+      <obj_property name="ObjectShortName">o_instruction[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_instruction_fetch/o_PC" type="array">
+      <obj_property name="ElementShortName">o_PC[31:0]</obj_property>
+      <obj_property name="ObjectShortName">o_PC[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_instruction_fetch/u_seg_instruction_fetch/u_mem_instruction/BRAM" type="array">
+      <obj_property name="ElementShortName">BRAM[2047:0][31:0]</obj_property>
+      <obj_property name="ObjectShortName">BRAM[2047:0][31:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FFD700</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_instruction_fetch/u_seg_instruction_fetch/mem_address" type="array">
+      <obj_property name="ElementShortName">mem_address[31:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_address[31:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FFA500</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_instruction_fetch/u_seg_instruction_fetch/reg_PC" type="array">
+      <obj_property name="ElementShortName">reg_PC[31:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_PC[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_instruction_fetch/u_seg_instruction_fetch/reg_PC_aumentado" type="array">
+      <obj_property name="ElementShortName">reg_PC_aumentado[31:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_PC_aumentado[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_seg_instruction_fetch/u_seg_instruction_fetch/halt_flag" type="logic">
+      <obj_property name="ElementShortName">halt_flag</obj_property>
+      <obj_property name="ObjectShortName">halt_flag</obj_property>
+   </wvobject>
+   <wvobject fp_name="group28" type="group">
+      <obj_property name="label">Instruction Memory</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/tb_seg_instruction_fetch/u_seg_instruction_fetch/u_mem_instruction/i_clk" type="logic">
+         <obj_property name="ElementShortName">i_clk</obj_property>
+         <obj_property name="ObjectShortName">i_clk</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_seg_instruction_fetch/u_seg_instruction_fetch/u_mem_instruction/i_addr" type="array">
+         <obj_property name="ElementShortName">i_addr[31:0]</obj_property>
+         <obj_property name="ObjectShortName">i_addr[31:0]</obj_property>
+         <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_seg_instruction_fetch/u_seg_instruction_fetch/u_mem_instruction/i_dina" type="array">
+         <obj_property name="ElementShortName">i_dina[31:0]</obj_property>
+         <obj_property name="ObjectShortName">i_dina[31:0]</obj_property>
+         <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_seg_instruction_fetch/u_seg_instruction_fetch/u_mem_instruction/i_wea" type="logic">
+         <obj_property name="ElementShortName">i_wea</obj_property>
+         <obj_property name="ObjectShortName">i_wea</obj_property>
+         <obj_property name="CustomSignalColor">#FF0080</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_seg_instruction_fetch/u_seg_instruction_fetch/u_mem_instruction/o_data" type="array">
+         <obj_property name="ElementShortName">o_data[31:0]</obj_property>
+         <obj_property name="ObjectShortName">o_data[31:0]</obj_property>
+         <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_seg_instruction_fetch/u_seg_instruction_fetch/u_mem_instruction/o_halt" type="logic">
+         <obj_property name="ElementShortName">o_halt</obj_property>
+         <obj_property name="ObjectShortName">o_halt</obj_property>
+         <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_seg_instruction_fetch/u_seg_instruction_fetch/u_mem_instruction/BRAM" type="array">
+         <obj_property name="ElementShortName">BRAM[2047:0][31:0]</obj_property>
+         <obj_property name="ObjectShortName">BRAM[2047:0][31:0]</obj_property>
+         <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_seg_instruction_fetch/u_seg_instruction_fetch/u_mem_instruction/ram_data" type="array">
+         <obj_property name="ElementShortName">ram_data[31:0]</obj_property>
+         <obj_property name="ObjectShortName">ram_data[31:0]</obj_property>
+         <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+   </wvobject>
+</wave_config>

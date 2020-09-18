@@ -18,14 +18,16 @@ module seg_instruction_fetch
         input wire                          i_PCSrc,
         input wire                          i_jump,
         input wire                          i_stall_flag,
+        input wire                          i_preload_flag,
+        input wire  [LEN - 1 : 0]           i_preload_address,
+        input wire  [LEN - 1 : 0]           i_preload_instruction,
         // OUTPUTS
         output wire [LEN - 1 : 0]           o_instruction,
         output wire [LEN - 1 : 0]           o_PC
     );
     
     //Memory
-    wire [LEN-1:0]      dina;
-    wire                wea;
+    wire [LEN - 1 : 0]  mem_address;
     wire                ena;
     wire                rsta;
     wire                regcea;
@@ -34,15 +36,8 @@ module seg_instruction_fetch
     // Program Counter Register
     reg [LEN - 1 : 0]   reg_PC;
     reg [LEN - 1 : 0]   reg_PC_aumentado;
-
-    wire [LEN - 1 : 0] mem_address;
-    
-    //Salida de Instruccion
-    //wire [LEN-1:0]      instruction;
     
     //Control Memoria
-    assign dina     = 0;
-    assign wea      = 0;
     assign ena      = 1;
     assign rsta     = 0;
     assign regcea   = 1;
@@ -83,16 +78,14 @@ module seg_instruction_fetch
         end
     end
 
-    assign mem_address = (i_PCSrc) ? i_PC_branch :
+    assign mem_address = (i_preload_flag) ? i_preload_address :
+                         (i_PCSrc) ? i_PC_branch :
                          (i_jump) ? i_PC_dir_jump :
                          (i_stall_flag) ? reg_PC - 1 :
                          reg_PC;
 
     assign o_PC = reg_PC_aumentado;
 
-    // TODO: CONSULTA 1 - Esta mal escribir PC y leer de la memoria de instrucciones en esa address (el PC) en el mismo posedge?
-    //       CONSULTA 2 - Como leer de archivo en disco y escribirlo a una memoria en la simulacion.
-        
     // Intruction Memory
     mem_instruction #(
         .RAM_WIDTH          (RAM_WIDTH_PROGRAM),
@@ -103,9 +96,9 @@ module seg_instruction_fetch
     u_mem_instruction
     (
         .i_addr     (mem_address),
-        .i_dina     (dina),
+        .i_dina     (i_preload_instruction),
         .i_clk      (i_clk),
-        .i_wea      (wea),
+        .i_wea      (i_preload_flag),
         .i_ena      (ena),
         .i_rsta     (rsta),
         .i_regcea   (regcea),
