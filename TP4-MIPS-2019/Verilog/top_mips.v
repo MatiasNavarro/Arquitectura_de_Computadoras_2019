@@ -13,6 +13,11 @@ module top_mips
         parameter NB_CTRL_EX    = 6,
         parameter NB_CTRL_M     = 9,
         parameter NB_CTRL_WB    = 2,
+        //Latches 
+        parameter NB_IF_ID      = 64,
+        parameter NB_ID_EX      = 163,
+        parameter NB_EX_MEM     = 145,
+        parameter NB_MEM_WB     = 72,
         
         //PROGRAM MEMORY
         parameter RAM_WIDTH_PROGRAM       = 32,
@@ -32,9 +37,13 @@ module top_mips
         input wire               i_rst,
         input wire               i_preload_flag,
         input wire [LEN - 1 : 0] i_preload_address,
-        input wire [LEN - 1 : 0] i_preload_instruction
+        input wire [LEN - 1 : 0] i_preload_instruction,
         // Outputs
         // output wire [LEN - 1 : 0]       o_led
+        output      [NB_IF_ID  -1 : 0]  o_latch_if_id,
+        output      [NB_ID_EX  -1 : 0]  o_latch_id_ex,
+        output      [NB_EX_MEM -1 : 0]  o_latch_ex_mem,
+        output      [NB_MEM_WB -1 : 0]  o_latch_mem_wb
     );
     
     // -----------------------------------------------
@@ -169,6 +178,44 @@ module top_mips
     wire [NB_ADDR - 1 : 0]      id_fu_i_rs;
     wire [1:0]                  fu_ex_muxA_forwarding;
     wire [1:0]                  fu_ex_muxB_forwarding;
+
+    // -----------------------------------------------
+    // Inter-segment outputs 
+    //------------------------------------------------
+    assign o_latch_if_id = {
+                            if_id_reg_PC,               //32 bits
+                            if_id_reg_instruction       //32 bits
+                           }; //Total = 64 bits
+
+    assign o_latch_id_ex = {
+                            id_ex_reg_PC,               //32 bits
+                            id_ex_reg_read_data_1,      //32 bits
+                            id_ex_reg_read_data_2,      //32 bits
+                            id_ex_reg_addr_ext,         //32 bits
+                            id_fu_reg_rs,               //6  bits
+                            id_ex_reg_rt,               //6  bits
+                            id_ex_reg_rd,               //6  bits
+                            id_ex_reg_ctrl_wb_bus,      //2  bits
+                            id_ex_reg_ctrl_mem_bus,     //9  bits
+                            id_ex_reg_ctrl_exc_bus     //6  bits
+                           }; //Total = 163 bits
+
+    assign o_latch_ex_mem = {
+                            ex_mem_reg_PC_branch,       //32 bits
+                            ex_mem_reg_ALU_result,      //32 bits
+                            ex_mem_reg_write_data,      //32 bits
+                            ex_mem_reg_write_register,  //6  bits
+                            ex_mem_reg_ALU_zero,        //32 bits
+                            ex_mem_reg_ctrl_wb_bus,     //2  bits
+                            ex_mem_reg_ctrl_mem_bus    //9  bits
+                            }; //Total = 145 bits
+
+    assign o_latch_mem_wb = {
+                            mem_wb_reg_read_data,       //32 bits
+                            mem_wb_reg_ALU_result,      //32 bits
+                            mem_wb_reg_write_register,  //6  bits
+                            mem_wb_reg_ctrl_wb_bus      //2  bits
+                            }; //Total = 72 bits
 
     // -----------------------------------------------
     // Inter-segment register logic 

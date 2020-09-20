@@ -1,4 +1,10 @@
 `timescale 1ns / 1ps
+//     localparam INIT_FILE_PROGRAM       = "/home/matiasnavarro/Facultad/2019/Arquitectura_de_Computadoras/Practico/Arquitectura_de_Computadoras_2019/TP4-MIPS-2019/Test/MIPS_Binarios/Test8Prueba.bin";
+//     // /home/matiasnavarro/Facultad/2019/Arquitectura_de_Computadoras/Practico/Arquitectura_de_Computadoras_2019/TP4-MIPS-2019/Test/MIPS_Assembly/test_alu.bin
+//     // /home/matiasnavarro/Facultad/2019/Arquitectura_de_Computadoras/Practico/Arquitectura_de_Computadoras_2019/TP4-MIPS-2019/Scripts/Test1Prueba.bin
+//     //DATA MEMORY
+//    //DATA MEMORY
+
 
 module tb_top_mips();
     localparam LEN           = 32;
@@ -12,17 +18,22 @@ module tb_top_mips();
     localparam NB_CTRL_EX    = 6;
     localparam NB_CTRL_M     = 9;
     localparam NB_CTRL_WB    = 2;
+    //Latches 
+    parameter NB_IF_ID      = 64;
+    parameter NB_ID_EX      = 163;
+    parameter NB_EX_MEM     = 145;
+    parameter NB_MEM_WB     = 72;
+        
     //PROGRAM MEMORY
     localparam RAM_WIDTH_PROGRAM       = 32;
     localparam RAM_DEPTH_PROGRAM       = 32; // Cantidad de instrucciones
     localparam RAM_PERFORMANCE_PROGRAM = "LOW_LATENCY";
-    localparam INIT_FILE_PROGRAM       = "C:\\Users\\astar\\git\\Arquitectura_de_Computadoras_2019\\TP4-MIPS-2019\\Test\\MIPS_Binarios\\Test8Prueba.bin";
+    localparam INIT_FILE_PROGRAM       = "/home/matiasnavarro/Facultad/2019/Arquitectura_de_Computadoras/Practico/Arquitectura_de_Computadoras_2019/TP4-MIPS-2019/Test/MIPS_Binarios/Test8Prueba.bin";
     //DATA MEMORY
     localparam RAM_WIDTH_DATA          = 32;
     localparam RAM_DEPTH_DATA          = 32; // Cantidad de datos
     localparam RAM_PERFORMANCE_DATA    = "LOW_LATENCY";
     localparam INIT_FILE_DATA          = "";
-    // localparam INIT_FILE_DATA          = "C:\\Users\\astar\\git\\Arquitectura_de_Computadoras_2019\\TP4-MIPS-2019\\Test\\init_top_mem_data.mem";
 
     // Inputs
     reg                 i_clk;
@@ -32,8 +43,19 @@ module tb_top_mips();
     reg [LEN - 1 : 0]   i_preload_instruction;
     // Outputs
     // wire [LEN - 1 : 0]  o_led;
-    
-//    wire clk_wiz;
+    wire [NB_IF_ID  -1 : 0] o_latch_if_id;      
+    wire [NB_ID_EX  -1 : 0] o_latch_id_ex;   
+    wire [NB_EX_MEM -1 : 0] o_latch_ex_mem;   
+    wire [NB_MEM_WB -1 : 0] o_latch_mem_wb;       
+    //    wire clk_wiz;
+
+    //PARA PODER SACAR LOS DATOS
+    integer wr_latch_if_id, 
+            wr_latch_id_ex, 
+            wr_latch_ex_mem, 
+            wr_latch_mem_wb;
+     
+    reg flag; 
 
     reg [RAM_WIDTH_PROGRAM - 1 : 0] instruction_ram [RAM_DEPTH_PROGRAM - 1 : 0];
     reg [LEN - 1 : 0] preload_address_aux;
@@ -41,15 +63,27 @@ module tb_top_mips();
     initial begin
         i_clk = 1'b1;
         i_rst = 1'b0;
+        flag = 0;
         i_preload_flag = 1'b0;
         i_preload_address = {LEN{1'b0}};
         i_preload_instruction = {LEN{1'b0}};
         $readmemb(INIT_FILE_PROGRAM, instruction_ram, 0, RAM_DEPTH_PROGRAM-1);
         preload_address_aux = {LEN{1'b0}};
+
+        //Archivos a escribir (Sacar datos del MIPS)
+        wr_latch_if_id = $fopen("/home/matiasnavarro/Facultad/2019/Arquitectura_de_Computadoras/Practico/Arquitectura_de_Computadoras_2019/TP4-MIPS-2019/Test/Output_files/latch_if_id.txt", "w");
+            if(wr_latch_if_id==0) $stop;
+        wr_latch_id_ex = $fopen("/home/matiasnavarro/Facultad/2019/Arquitectura_de_Computadoras/Practico/Arquitectura_de_Computadoras_2019/TP4-MIPS-2019/Test/Output_files/latch_id_ex.txt", "w");
+            if(wr_latch_id_ex==0) $stop;
+        wr_latch_ex_mem = $fopen("/home/matiasnavarro/Facultad/2019/Arquitectura_de_Computadoras/Practico/Arquitectura_de_Computadoras_2019/TP4-MIPS-2019/Test/Output_files/latch_ex_mem.txt", "w");
+            if(wr_latch_ex_mem==0) $stop;
+        wr_latch_mem_wb = $fopen("/home/matiasnavarro/Facultad/2019/Arquitectura_de_Computadoras/Practico/Arquitectura_de_Computadoras_2019/TP4-MIPS-2019/Test/Output_files/latch_mem_wb.txt", "w");
+            if(wr_latch_mem_wb==0) $stop;
         
         #200 $finish;
     end
-    //Cargamos instrucciones
+
+    //Cargamos instrucciones una por una
     always @(negedge i_clk) begin
         if (!i_rst) begin
             if (i_preload_instruction == 32'hffffffff) begin
@@ -61,6 +95,25 @@ module tb_top_mips();
                 i_preload_instruction <= instruction_ram[preload_address_aux];
                 preload_address_aux <= preload_address_aux + 1;
             end
+        end
+    end
+
+    //Para sacar los datos de los latches intermedios 
+    always @(negedge i_clk)
+    begin
+        if(i_rst && flag == 1'b0)
+        begin              
+            $fwrite(wr_latch_if_id,  "%b\n", o_latch_if_id);
+            $fwrite(wr_latch_id_ex,  "%b\n", o_latch_id_ex);
+            $fwrite(wr_latch_ex_mem, "%b\n", o_latch_ex_mem);
+            $fwrite(wr_latch_mem_wb, "%b\n", o_latch_mem_wb);
+        end
+        if(o_latch_if_id[31:0] == 32'hffffffff) begin
+            flag = 1;
+            $fclose(wr_latch_if_id);
+            $fclose(wr_latch_id_ex);
+            $fclose(wr_latch_ex_mem);
+            $fclose(wr_latch_mem_wb);
         end
     end
 
@@ -89,11 +142,15 @@ module tb_top_mips();
         .INIT_FILE_DATA          (INIT_FILE_DATA          )
     )
     u_top_mips(
-    	.i_clk                 (i_clk                 ),
-        .i_rst                 (i_rst                 ),
-        .i_preload_flag        (i_preload_flag        ),
-        .i_preload_address     (i_preload_address     ),
-        .i_preload_instruction (i_preload_instruction )
+    	.i_clk                  (i_clk                  ),
+        .i_rst                  (i_rst                  ),
+        .i_preload_flag         (i_preload_flag         ),
+        .i_preload_address      (i_preload_address      ),
+        .i_preload_instruction  (i_preload_instruction  ),
+        .o_latch_if_id          (o_latch_if_id          ),
+        .o_latch_id_ex          (o_latch_id_ex          ),
+        .o_latch_ex_mem         (o_latch_ex_mem         ),
+        .o_latch_mem_wb         (o_latch_mem_wb         )
     );
     
     
