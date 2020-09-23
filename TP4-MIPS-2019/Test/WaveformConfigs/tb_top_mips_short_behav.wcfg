@@ -11,20 +11,24 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="40500fs"></ZoomStartTime>
-      <ZoomEndTime time="116601fs"></ZoomEndTime>
-      <Cursor1Time time="80000fs"></Cursor1Time>
+      <ZoomStartTime time="524246fs"></ZoomStartTime>
+      <ZoomEndTime time="1203146fs"></ZoomEndTime>
+      <Cursor1Time time="840000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="230"></NameColumnWidth>
-      <ValueColumnWidth column_width="76"></ValueColumnWidth>
+      <ValueColumnWidth column_width="72"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="20" />
+   <WVObjectSize size="22" />
    <wvobject fp_name="/tb_top_mips/i_clk" type="logic">
       <obj_property name="ElementShortName">i_clk</obj_property>
       <obj_property name="ObjectShortName">i_clk</obj_property>
       <obj_property name="CustomSignalColor">#00FF00</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_mips/clk_locked_estable" type="logic">
+      <obj_property name="ElementShortName">clk_locked_estable</obj_property>
+      <obj_property name="ObjectShortName">clk_locked_estable</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_top_mips/i_rst" type="logic">
       <obj_property name="ElementShortName">i_rst</obj_property>
@@ -72,6 +76,18 @@
          <obj_property name="ObjectShortName">preload_address_aux[31:0]</obj_property>
          <obj_property name="CustomSignalColor">#D2691E</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group233" type="group">
+      <obj_property name="label">clk_wiz aux</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/tb_top_mips/clk_wiz" type="logic">
+         <obj_property name="ElementShortName">clk_wiz</obj_property>
+         <obj_property name="ObjectShortName">clk_wiz</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_top_mips/rst_wiz" type="logic">
+         <obj_property name="ElementShortName">rst_wiz</obj_property>
+         <obj_property name="ObjectShortName">rst_wiz</obj_property>
       </wvobject>
    </wvobject>
    <wvobject type="divider" fp_name="divider268">

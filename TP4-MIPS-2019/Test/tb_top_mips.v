@@ -23,14 +23,12 @@ module tb_top_mips();
     parameter NB_ID_EX      = 163;
     parameter NB_EX_MEM     = 145;
     parameter NB_MEM_WB     = 72;
-
-    localparam OUTPUT_DIR = "C:\\Users\\astar\\git\\Arquitectura_de_Computadoras_2019\\TP4-MIPS-2019\\Test\\Output_files\\";
         
     //PROGRAM MEMORY
     localparam RAM_WIDTH_PROGRAM       = 32;
     localparam RAM_DEPTH_PROGRAM       = 32; // Cantidad de instrucciones
     localparam RAM_PERFORMANCE_PROGRAM = "LOW_LATENCY";
-    localparam INIT_FILE_PROGRAM       = "C:\\Users\\astar\\git\\Arquitectura_de_Computadoras_2019\\TP4-MIPS-2019\\Test\\MIPS_Binarios\\Test8Prueba.bin";
+    localparam INIT_FILE_PROGRAM       = "C:\\Users\\astar\\git\\Arquitectura_de_Computadoras_2019\\TP4-MIPS-2019\\Test\\MIPS_Binarios\\Test2Prueba.bin";
     // localparam INIT_FILE_PROGRAM       = "/home/matiasnavarro/Facultad/2019/Arquitectura_de_Computadoras/Practico/Arquitectura_de_Computadoras_2019/TP4-MIPS-2019/Test/MIPS_Binarios/Test8Prueba.bin";
     //DATA MEMORY
     localparam RAM_WIDTH_DATA          = 32;
@@ -39,7 +37,7 @@ module tb_top_mips();
     localparam INIT_FILE_DATA          = "";
 
     // Inputs
-    reg                 i_clk;
+    wire                i_clk;
     reg                 i_rst;
     reg                 i_preload_flag;
     reg [LEN - 1 : 0]   i_preload_address;
@@ -52,7 +50,6 @@ module tb_top_mips();
     wire [NB_ID_EX  -1 : 0] o_latch_id_ex;   
     wire [NB_EX_MEM -1 : 0] o_latch_ex_mem;   
     wire [NB_MEM_WB -1 : 0] o_latch_mem_wb;
-    //    wire clk_wiz;
     
     // Variables de contador de clock
     integer clock_counter;
@@ -66,11 +63,18 @@ module tb_top_mips();
      
     reg output_write_flag; 
 
+    // Clock generator
+    reg clk_wiz;
+    reg rst_wiz;
+    wire clk_locked_estable;
+
+    // Preload instructions & address aux
     reg [RAM_WIDTH_PROGRAM - 1 : 0] instruction_ram [RAM_DEPTH_PROGRAM - 1 : 0];
     reg [LEN - 1 : 0] preload_address_aux;
 
     initial begin
-        i_clk = 1'b1;
+        clk_wiz = 1'b0;
+        rst_wiz = 1'b1;
         i_rst = 1'b0;
         output_write_flag = 1'b1;
         i_preload_flag = 1'b0;
@@ -92,22 +96,22 @@ module tb_top_mips();
         wr_latch_mem_wb = $fopen("C:\\Users\\astar\\git\\Arquitectura_de_Computadoras_2019\\TP4-MIPS-2019\\Test\\Output_files\\latch_mem_wb.txt", "w");
             if(wr_latch_mem_wb==0) $stop;
 
-        #81
-        i_step_mode_flag <= 1'b1;
+        #10
+        rst_wiz = 1'b0;
 
-        repeat(40) begin
+        repeat(500) begin
             #6 i_step = ~i_step;
             #3 i_step = ~i_step;
         end
-        #4 $finish;
     end
 
     //Cargamos instrucciones una por una
     always @(negedge i_clk) begin
-        if (!i_rst) begin
+        if (!i_rst && clk_locked_estable) begin
             if (i_preload_instruction == 32'hffffffff) begin
                 i_preload_flag <= 1'b0;
                 i_rst <= 1'b1;
+                // i_step_mode_flag <= 1'b1;
             end else begin
                 i_preload_flag <= 1'b1;
                 i_preload_address <= preload_address_aux;
@@ -154,7 +158,7 @@ module tb_top_mips();
         end
     end
 
-    always #1 i_clk = ~i_clk;
+    always #5 clk_wiz = ~clk_wiz;
 
     top_mips 
     #(
@@ -191,15 +195,17 @@ module tb_top_mips();
         .o_latch_ex_mem         (o_latch_ex_mem         ),
         .o_latch_mem_wb         (o_latch_mem_wb         )
     );
-    
-//    clk_wiz_0 instance_name
-//    (
-//        // Clock out ports
-//        .clk_out1(clk_wiz),     // output clk_out1
-//        // Status and control signals
-//        .reset(i_rst), // input reset
-//        // Clock in ports
-//        .clk_in1(i_clk) // input clk_in1
-//    );
+
+    clk_wiz_0
+    u_clk_wiz
+    (
+        // Clock out ports
+        .clk_out1(i_clk),               // output clk_out1
+        // Status and control signals
+        .reset(rst_wiz),                // input reset
+        .locked(clk_locked_estable),    // output locked
+        // Clock in ports
+        .clk_in1(clk_wiz)               // input clk_in1
+    );
 
 endmodule
