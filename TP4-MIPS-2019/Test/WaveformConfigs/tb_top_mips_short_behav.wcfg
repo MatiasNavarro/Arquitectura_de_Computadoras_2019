@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="50182fs"></ZoomStartTime>
-      <ZoomEndTime time="80543fs"></ZoomEndTime>
-      <Cursor1Time time="53742fs"></Cursor1Time>
+      <ZoomStartTime time="40500fs"></ZoomStartTime>
+      <ZoomEndTime time="116601fs"></ZoomEndTime>
+      <Cursor1Time time="80000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="230"></NameColumnWidth>
-      <ValueColumnWidth column_width="80"></ValueColumnWidth>
+      <ValueColumnWidth column_width="76"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="18" />
+   <WVObjectSize size="20" />
    <wvobject fp_name="/tb_top_mips/i_clk" type="logic">
       <obj_property name="ElementShortName">i_clk</obj_property>
       <obj_property name="ObjectShortName">i_clk</obj_property>
@@ -31,6 +31,14 @@
       <obj_property name="ObjectShortName">i_rst</obj_property>
       <obj_property name="CustomSignalColor">#00FF00</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_mips/u_top_mips/i_step_mode_flag" type="logic">
+      <obj_property name="ElementShortName">i_step_mode_flag</obj_property>
+      <obj_property name="ObjectShortName">i_step_mode_flag</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_mips/u_top_mips/i_step" type="logic">
+      <obj_property name="ElementShortName">i_step</obj_property>
+      <obj_property name="ObjectShortName">i_step</obj_property>
    </wvobject>
    <wvobject fp_name="group267" type="group">
       <obj_property name="label">top preload</obj_property>
@@ -77,6 +85,7 @@
       <wvobject fp_name="group368" type="group">
          <obj_property name="label">IF Inputs</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_fetch/i_PC_branch" type="array">
             <obj_property name="ElementShortName">i_PC_branch[31:0]</obj_property>
             <obj_property name="ObjectShortName">i_PC_branch[31:0]</obj_property>
@@ -128,6 +137,7 @@
       <wvobject fp_name="group433" type="group">
          <obj_property name="label">IF Internals</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_fetch/halt_flag" type="logic">
             <obj_property name="ElementShortName">halt_flag</obj_property>
             <obj_property name="ObjectShortName">halt_flag</obj_property>

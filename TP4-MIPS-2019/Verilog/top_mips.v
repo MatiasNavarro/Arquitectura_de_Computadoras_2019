@@ -38,6 +38,8 @@ module top_mips
         input wire               i_preload_flag,
         input wire [LEN - 1 : 0] i_preload_address,
         input wire [LEN - 1 : 0] i_preload_instruction,
+        input wire               i_step_mode_flag,
+        input wire               i_step,
         // Outputs
         // output wire [LEN - 1 : 0]       o_led
         output      [NB_IF_ID  -1 : 0]  o_latch_if_id,
@@ -220,7 +222,8 @@ module top_mips
     // -----------------------------------------------
     // Inter-segment register logic 
     //------------------------------------------------
-    always @(negedge i_clk) begin
+    assign clock = (i_step_mode_flag && i_rst) ? i_step : i_clk;
+    always @(negedge clock) begin
         if (!i_rst) begin
             // IF/ID registers
             if_id_reg_PC                <= {LEN{1'b0}};
@@ -327,7 +330,7 @@ module top_mips
     )
     u_seg_instruction_fetch (
         // Inputs
-        .i_clk                  (i_clk                  ),
+        .i_clk                  (clock                  ),
         .i_rst                  (i_rst                  ),
         .i_PC_branch            (mem_if_PC_branch       ),
         .i_PCSrc                (mem_if_PCSrc           ),
@@ -357,7 +360,7 @@ module top_mips
     )
     u_seg_instruction_decode (
         // Inputs
-        .i_clk              (i_clk                  ),
+        .i_clk              (clock                  ),
         .i_rst              (i_rst                  ),
         .i_PC               (if_id_i_PC             ),
         .i_instruction      (if_id_i_instruction    ),
@@ -399,7 +402,7 @@ module top_mips
     )
     u_seg_execute (
         // Inputs
-        .i_clk                  (i_clk                      ),
+        .i_clk                  (clock                      ),
         .i_rst                  (i_rst                      ),
         .i_PC                   (id_ex_i_PC                 ),
         .i_read_data_1          (id_ex_i_read_data_1        ),
@@ -446,7 +449,7 @@ module top_mips
     u_seg_memory_access
     (
         // Inputs
-        .i_clk              (i_clk                      ),
+        .i_clk              (clock                      ),
         .i_rst              (i_rst                      ),
         .i_PC_branch        (ex_mem_i_PC_branch         ),
         .i_ALU_result       (ex_mem_i_ALU_result        ),
