@@ -26,13 +26,13 @@ module tb_top_mips();
         
     //PROGRAM MEMORY
     localparam RAM_WIDTH_PROGRAM       = 32;
-    localparam RAM_DEPTH_PROGRAM       = 32; // Cantidad de instrucciones
+    localparam RAM_DEPTH_PROGRAM       = 64; // Cantidad de instrucciones
     localparam RAM_PERFORMANCE_PROGRAM = "LOW_LATENCY";
-    localparam INIT_FILE_PROGRAM       = "C:\\Users\\astar\\git\\Arquitectura_de_Computadoras_2019\\TP4-MIPS-2019\\Test\\MIPS_Binarios\\Test2Prueba.bin";
+    localparam INIT_FILE_PROGRAM       = "C:\\Users\\astar\\git\\Arquitectura_de_Computadoras_2019\\TP4-MIPS-2019\\Test\\MIPS_Binarios\\TestMain.bin";
     // localparam INIT_FILE_PROGRAM       = "/home/matiasnavarro/Facultad/2019/Arquitectura_de_Computadoras/Practico/Arquitectura_de_Computadoras_2019/TP4-MIPS-2019/Test/MIPS_Binarios/Test8Prueba.bin";
     //DATA MEMORY
     localparam RAM_WIDTH_DATA          = 32;
-    localparam RAM_DEPTH_DATA          = 32; // Cantidad de datos
+    localparam RAM_DEPTH_DATA          = 128; // Cantidad de datos
     localparam RAM_PERFORMANCE_DATA    = "LOW_LATENCY";
     localparam INIT_FILE_DATA          = "";
 

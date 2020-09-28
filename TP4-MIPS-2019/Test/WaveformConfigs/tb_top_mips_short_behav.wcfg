@@ -11,9 +11,9 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="524246fs"></ZoomStartTime>
-      <ZoomEndTime time="1203146fs"></ZoomEndTime>
-      <Cursor1Time time="840000fs"></Cursor1Time>
+      <ZoomStartTime time="756000fs"></ZoomStartTime>
+      <ZoomEndTime time="908601fs"></ZoomEndTime>
+      <Cursor1Time time="790000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="230"></NameColumnWidth>
@@ -66,8 +66,8 @@
          <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_top_mips/instruction_ram" type="array">
-         <obj_property name="ElementShortName">instruction_ram[31:0][31:0]</obj_property>
-         <obj_property name="ObjectShortName">instruction_ram[31:0][31:0]</obj_property>
+         <obj_property name="ElementShortName">instruction_ram[63:0][31:0]</obj_property>
+         <obj_property name="ObjectShortName">instruction_ram[63:0][31:0]</obj_property>
          <obj_property name="CustomSignalColor">#D2691E</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
@@ -97,11 +97,9 @@
    <wvobject fp_name="group227" type="group">
       <obj_property name="label">IF - Instruction Fetch</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
       <wvobject fp_name="group368" type="group">
          <obj_property name="label">IF Inputs</obj_property>
          <obj_property name="DisplayName">label</obj_property>
-         <obj_property name="isExpanded"></obj_property>
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_fetch/i_PC_branch" type="array">
             <obj_property name="ElementShortName">i_PC_branch[31:0]</obj_property>
             <obj_property name="ObjectShortName">i_PC_branch[31:0]</obj_property>
@@ -153,7 +151,6 @@
       <wvobject fp_name="group433" type="group">
          <obj_property name="label">IF Internals</obj_property>
          <obj_property name="DisplayName">label</obj_property>
-         <obj_property name="isExpanded"></obj_property>
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_fetch/halt_flag" type="logic">
             <obj_property name="ElementShortName">halt_flag</obj_property>
             <obj_property name="ObjectShortName">halt_flag</obj_property>
@@ -182,8 +179,8 @@
             <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
          </wvobject>
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_fetch/u_mem_instruction/BRAM" type="array">
-            <obj_property name="ElementShortName">BRAM[31:0][31:0]</obj_property>
-            <obj_property name="ObjectShortName">BRAM[31:0][31:0]</obj_property>
+            <obj_property name="ElementShortName">BRAM[63:0][31:0]</obj_property>
+            <obj_property name="ObjectShortName">BRAM[63:0][31:0]</obj_property>
          </wvobject>
       </wvobject>
    </wvobject>
@@ -381,7 +378,7 @@
          <obj_property name="ObjectShortName">register[31:0][31:0]</obj_property>
          <obj_property name="CustomSignalColor">#FFD700</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
-         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
       </wvobject>
       <wvobject fp_name="group231" type="group">
          <obj_property name="label">Hazard Detection Unit</obj_property>
@@ -751,7 +748,6 @@
       <wvobject fp_name="group412" type="group">
          <obj_property name="label">MEM Inputs</obj_property>
          <obj_property name="DisplayName">label</obj_property>
-         <obj_property name="isExpanded"></obj_property>
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_memory_access/i_clk" type="logic">
             <obj_property name="ElementShortName">i_clk</obj_property>
             <obj_property name="ObjectShortName">i_clk</obj_property>
@@ -940,8 +936,8 @@
          </wvobject>
       </wvobject>
       <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_memory_access/u_data_mem/BRAM" type="array">
-         <obj_property name="ElementShortName">BRAM[31:0][31:0]</obj_property>
-         <obj_property name="ObjectShortName">BRAM[31:0][31:0]</obj_property>
+         <obj_property name="ElementShortName">BRAM[127:0][31:0]</obj_property>
+         <obj_property name="ObjectShortName">BRAM[127:0][31:0]</obj_property>
          <obj_property name="CustomSignalColor">#008000</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
