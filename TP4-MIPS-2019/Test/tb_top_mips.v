@@ -1,10 +1,4 @@
 `timescale 1ns / 1ps
-//     localparam INIT_FILE_PROGRAM       = "/home/matiasnavarro/Facultad/2019/Arquitectura_de_Computadoras/Practico/Arquitectura_de_Computadoras_2019/TP4-MIPS-2019/Test/MIPS_Binarios/Test8Prueba.bin";
-//     // /home/matiasnavarro/Facultad/2019/Arquitectura_de_Computadoras/Practico/Arquitectura_de_Computadoras_2019/TP4-MIPS-2019/Test/MIPS_Assembly/test_alu.bin
-//     // /home/matiasnavarro/Facultad/2019/Arquitectura_de_Computadoras/Practico/Arquitectura_de_Computadoras_2019/TP4-MIPS-2019/Scripts/Test1Prueba.bin
-//     //DATA MEMORY
-//    //DATA MEMORY
-
 
 module tb_top_mips();
     localparam LEN           = 32;
@@ -26,30 +20,31 @@ module tb_top_mips();
         
     //PROGRAM MEMORY
     localparam RAM_WIDTH_PROGRAM       = 32;
-    localparam RAM_DEPTH_PROGRAM       = 64; // Cantidad de instrucciones
+    localparam RAM_DEPTH_PROGRAM       = 32; // Cantidad de instrucciones
     localparam RAM_PERFORMANCE_PROGRAM = "LOW_LATENCY";
     localparam INIT_FILE_PROGRAM       = "C:\\Users\\astar\\git\\Arquitectura_de_Computadoras_2019\\TP4-MIPS-2019\\Test\\MIPS_Binarios\\TestMain.bin";
     // localparam INIT_FILE_PROGRAM       = "/home/matiasnavarro/Facultad/2019/Arquitectura_de_Computadoras/Practico/Arquitectura_de_Computadoras_2019/TP4-MIPS-2019/Test/MIPS_Binarios/Test8Prueba.bin";
     //DATA MEMORY
     localparam RAM_WIDTH_DATA          = 32;
-    localparam RAM_DEPTH_DATA          = 128; // Cantidad de datos
+    localparam RAM_DEPTH_DATA          = 32; // Cantidad de datos
     localparam RAM_PERFORMANCE_DATA    = "LOW_LATENCY";
     localparam INIT_FILE_DATA          = "";
 
     // Inputs
-    wire                i_clk;
+    reg                 i_clk;
     reg                 i_rst;
     reg                 i_preload_flag;
     reg [LEN - 1 : 0]   i_preload_address;
     reg [LEN - 1 : 0]   i_preload_instruction;
     reg                 i_step_mode_flag;
-    reg                 i_step;
+    reg                 i_step;      
     // Outputs
     // wire [LEN - 1 : 0]  o_led;
     wire [NB_IF_ID  -1 : 0] o_latch_if_id;      
     wire [NB_ID_EX  -1 : 0] o_latch_id_ex;   
     wire [NB_EX_MEM -1 : 0] o_latch_ex_mem;   
     wire [NB_MEM_WB -1 : 0] o_latch_mem_wb;
+    wire                    o_clk_locked_estable;
     
     // Variables de contador de clock
     integer clock_counter;
@@ -63,19 +58,13 @@ module tb_top_mips();
      
     reg output_write_flag; 
 
-    // Clock generator
-    reg clk_wiz;
-    reg rst_wiz;
-    wire clk_locked_estable;
-
     // Preload instructions & address aux
     reg [RAM_WIDTH_PROGRAM - 1 : 0] instruction_ram [RAM_DEPTH_PROGRAM - 1 : 0];
     reg [LEN - 1 : 0] preload_address_aux;
 
     initial begin
-        clk_wiz = 1'b0;
-        rst_wiz = 1'b1;
         i_rst = 1'b0;
+        i_clk = 1'b0;
         output_write_flag = 1'b1;
         i_preload_flag = 1'b0;
         i_preload_address = {LEN{1'b0}};
@@ -96,9 +85,6 @@ module tb_top_mips();
         wr_latch_mem_wb = $fopen("C:\\Users\\astar\\git\\Arquitectura_de_Computadoras_2019\\TP4-MIPS-2019\\Test\\Output_files\\latch_mem_wb.txt", "w");
             if(wr_latch_mem_wb==0) $stop;
 
-        #10
-        rst_wiz = 1'b0;
-
         repeat(500) begin
             #6 i_step = ~i_step;
             #3 i_step = ~i_step;
@@ -106,8 +92,8 @@ module tb_top_mips();
     end
 
     //Cargamos instrucciones una por una
-    always @(negedge i_clk) begin
-        if (!i_rst && clk_locked_estable) begin
+    always @(negedge o_clk) begin
+        if (!i_rst) begin
             if (i_preload_instruction == 32'hffffffff) begin
                 i_preload_flag <= 1'b0;
                 i_rst <= 1'b1;
@@ -138,7 +124,7 @@ module tb_top_mips();
         end
     end
 
-    assign clock = (i_step_mode_flag && i_rst) ? i_step : i_clk;
+    assign clock = (i_step_mode_flag && i_rst) ? i_step : o_clk;
     //Para sacar los datos de los latches intermedios 
     always @(negedge clock)
     begin
@@ -158,7 +144,7 @@ module tb_top_mips();
         end
     end
 
-    always #5 clk_wiz = ~clk_wiz;
+    always #5 i_clk = ~i_clk;
 
     top_mips 
     #(
@@ -193,19 +179,8 @@ module tb_top_mips();
         .o_latch_if_id          (o_latch_if_id          ),
         .o_latch_id_ex          (o_latch_id_ex          ),
         .o_latch_ex_mem         (o_latch_ex_mem         ),
-        .o_latch_mem_wb         (o_latch_mem_wb         )
-    );
-
-    clk_wiz_0
-    u_clk_wiz
-    (
-        // Clock out ports
-        .clk_out1(i_clk),               // output clk_out1
-        // Status and control signals
-        .reset(rst_wiz),                // input reset
-        .locked(clk_locked_estable),    // output locked
-        // Clock in ports
-        .clk_in1(clk_wiz)               // input clk_in1
+        .o_latch_mem_wb         (o_latch_mem_wb         ),
+        .o_clk                  (o_clk                  )
     );
 
 endmodule

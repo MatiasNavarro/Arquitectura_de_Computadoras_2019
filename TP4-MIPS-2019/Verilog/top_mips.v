@@ -41,12 +41,25 @@ module top_mips
         input wire               i_step_mode_flag,
         input wire               i_step,
         // Outputs
-        // output wire [LEN - 1 : 0]       o_led
         output      [NB_IF_ID  -1 : 0]  o_latch_if_id,
         output      [NB_ID_EX  -1 : 0]  o_latch_id_ex,
         output      [NB_EX_MEM -1 : 0]  o_latch_ex_mem,
-        output      [NB_MEM_WB -1 : 0]  o_latch_mem_wb
+        output      [NB_MEM_WB -1 : 0]  o_latch_mem_wb,
+        output wire                     o_clk
     );
+
+    
+    // -----------------------------------------------
+    // Clock wizard I/O wires
+    //------------------------------------------------
+    wire rst_wiz;
+    wire clk_wiz;
+    wire clock;
+    wire clk_locked_estable;
+
+    assign rst_wiz = 0;
+    assign clock = (clk_locked_estable) ? clk_wiz : 0;
+    assign o_clk = clock;
     
     // -----------------------------------------------
     // Instruction Fetch (IF) I/O wires
@@ -222,7 +235,6 @@ module top_mips
     // -----------------------------------------------
     // Inter-segment register logic 
     //------------------------------------------------
-    assign clock = (i_step_mode_flag && i_rst) ? i_step : i_clk;
     always @(negedge clock) begin
         if (!i_rst) begin
             // IF/ID registers
@@ -527,6 +539,16 @@ module top_mips
         .o_muxA_alu                 (fu_ex_muxA_forwarding      ),
         .o_muxB_alu                 (fu_ex_muxB_forwarding      )
     );
-    
+
+    clk_wiz_0
+    u_clk_wiz
+    (
+        // Clock in ports
+        .clk_in1(i_clk),                // input clk_in1
+        .reset(rst_wiz),                // input reset
+        // Clock out ports
+        .locked(clk_locked_estable),    // output locked
+        .clk_out1(clk_wiz)              // output clk_out1
+    );
     
 endmodule
