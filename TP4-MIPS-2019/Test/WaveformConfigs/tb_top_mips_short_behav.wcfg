@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="6284225fs"></ZoomEndTime>
-      <Cursor1Time time="10000000fs"></Cursor1Time>
+      <ZoomStartTime time="7325875fs"></ZoomStartTime>
+      <ZoomEndTime time="7633476fs"></ZoomEndTime>
+      <Cursor1Time time="7582209fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="230"></NameColumnWidth>
-      <ValueColumnWidth column_width="64"></ValueColumnWidth>
+      <ValueColumnWidth column_width="60"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="24" />
+   <WVObjectSize size="26" />
    <wvobject fp_name="/tb_top_mips/i_clk" type="logic">
       <obj_property name="ElementShortName">i_clk</obj_property>
       <obj_property name="ObjectShortName">i_clk</obj_property>
@@ -47,6 +47,8 @@
    <wvobject fp_name="/tb_top_mips/u_top_mips/clk_wiz" type="logic">
       <obj_property name="ElementShortName">clk_wiz</obj_property>
       <obj_property name="ObjectShortName">clk_wiz</obj_property>
+      <obj_property name="CustomSignalColor">#00FF7F</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_top_mips/u_top_mips/u_clk_wiz/locked" type="logic">
       <obj_property name="ElementShortName">locked</obj_property>
@@ -89,6 +91,16 @@
    <wvobject fp_name="group233" type="group">
       <obj_property name="label">clk_wiz aux</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_mips/u_top_mips/enable_pipeline" type="logic">
+      <obj_property name="ElementShortName">enable_pipeline</obj_property>
+      <obj_property name="ObjectShortName">enable_pipeline</obj_property>
+      <obj_property name="CustomSignalColor">#00FF7F</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_mips/u_top_mips/contador_aux_step" type="array">
+      <obj_property name="ElementShortName">contador_aux_step[31:0]</obj_property>
+      <obj_property name="ObjectShortName">contador_aux_step[31:0]</obj_property>
    </wvobject>
    <wvobject type="divider" fp_name="divider268">
       <obj_property name="label">IF</obj_property>
@@ -166,13 +178,6 @@
             <obj_property name="UseCustomSignalColor">true</obj_property>
             <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
          </wvobject>
-         <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_fetch/reg_PC_aumentado" type="array">
-            <obj_property name="ElementShortName">reg_PC_aumentado[31:0]</obj_property>
-            <obj_property name="ObjectShortName">reg_PC_aumentado[31:0]</obj_property>
-            <obj_property name="CustomSignalColor">#00FFFF</obj_property>
-            <obj_property name="UseCustomSignalColor">true</obj_property>
-            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-         </wvobject>
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_fetch/mem_address" type="array">
             <obj_property name="ElementShortName">mem_address[31:0]</obj_property>
             <obj_property name="ObjectShortName">mem_address[31:0]</obj_property>
@@ -215,7 +220,6 @@
       <wvobject fp_name="group370" type="group">
          <obj_property name="label">ID Inputs</obj_property>
          <obj_property name="DisplayName">label</obj_property>
-         <obj_property name="isExpanded"></obj_property>
          <wvobject fp_name="/tb_top_mips/u_top_mips/u_seg_instruction_decode/i_clk" type="logic">
             <obj_property name="ElementShortName">i_clk</obj_property>
             <obj_property name="ObjectShortName">i_clk</obj_property>

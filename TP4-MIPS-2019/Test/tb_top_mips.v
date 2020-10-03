@@ -86,8 +86,8 @@ module tb_top_mips();
             if(wr_latch_mem_wb==0) $stop;
 
         repeat(500) begin
-            #6 i_step = ~i_step;
-            #3 i_step = ~i_step;
+            #37 i_step = ~i_step;
+            #149 i_step = ~i_step;
         end
     end
 
@@ -97,7 +97,7 @@ module tb_top_mips();
             if (i_preload_instruction == 32'hffffffff) begin
                 i_preload_flag <= 1'b0;
                 i_rst <= 1'b1;
-                // i_step_mode_flag <= 1'b1;
+                i_step_mode_flag <= 1'b1;
             end else begin
                 i_preload_flag <= 1'b1;
                 i_preload_address <= preload_address_aux;

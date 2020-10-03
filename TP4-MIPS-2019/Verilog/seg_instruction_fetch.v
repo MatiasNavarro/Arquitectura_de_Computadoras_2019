@@ -21,6 +21,7 @@ module seg_instruction_fetch
         input wire                          i_preload_flag,
         input wire  [LEN - 1 : 0]           i_preload_address,
         input wire  [LEN - 1 : 0]           i_preload_instruction,
+        input wire                          i_enable_pipeline,
         // OUTPUTS
         output wire [LEN - 1 : 0]           o_instruction,
         output wire [LEN - 1 : 0]           o_PC
@@ -34,7 +35,7 @@ module seg_instruction_fetch
     wire                halt_flag;
 
     // Program Counter Register
-    reg [LEN - 1 : 0]   reg_PC;
+    reg [LEN - 1 : 0]   reg_PC = {LEN{1'b0}};
     reg [LEN - 1 : 0]   reg_PC_aumentado;
     
     //Control Memoria
@@ -46,35 +47,29 @@ module seg_instruction_fetch
     // Program Counter Logic
     //---------------------------------------
 
-    always @(negedge i_clk) begin
-        if (!i_rst) begin
-            reg_PC <= {LEN{1'b0}};
-            reg_PC_aumentado <= 1;
-        end else begin
-            reg_PC <= reg_PC_aumentado;
-        end
-    end
-
     always @(posedge i_clk) begin
         if (!i_rst) begin
             reg_PC <= {LEN{1'b0}};
-            reg_PC_aumentado <= 1;
-        end else if (i_PCSrc) begin
-            if (halt_flag) begin
-                reg_PC_aumentado <= i_PC_branch;
+        end else if (i_enable_pipeline) begin
+            if (i_PCSrc) begin
+                if (halt_flag) begin
+                    reg_PC <= i_PC_branch;
+                end else begin
+                    reg_PC <= i_PC_branch + 1;
+                end
+            end else if (i_jump) begin
+                if (halt_flag) begin
+                    reg_PC <= i_PC_dir_jump;
+                end else begin
+                    reg_PC <= i_PC_dir_jump + 1;
+                end
+            end else if (i_stall_flag || halt_flag) begin
+                reg_PC <= reg_PC;
             end else begin
-                reg_PC_aumentado <= i_PC_branch + 1;
+                reg_PC <= reg_PC + 1;
             end
-        end else if (i_jump) begin
-            if (halt_flag) begin
-                reg_PC_aumentado <= i_PC_dir_jump;
-            end else begin
-                reg_PC_aumentado <= i_PC_dir_jump + 1;
-            end
-        end else if (i_stall_flag || halt_flag) begin
-            reg_PC_aumentado <= reg_PC;
         end else begin
-            reg_PC_aumentado <= reg_PC + 1;
+            reg_PC <= reg_PC;
         end
     end
 
@@ -84,7 +79,7 @@ module seg_instruction_fetch
                          (i_stall_flag) ? reg_PC - 1 :
                          reg_PC;
 
-    assign o_PC = reg_PC_aumentado;
+    assign o_PC = reg_PC;
 
     // Intruction Memory
     mem_instruction #(

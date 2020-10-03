@@ -11,7 +11,6 @@ module registers
         input                       i_clk,
         input                       i_rst,
         input                       i_RegWrite,
-        input                       i_enable,           //Pipeline enable
         input       [NB_ADDR-1:0]   i_read_register_1,
         input       [NB_ADDR-1:0]   i_read_register_2,
         input       [NB_ADDR-1:0]   i_write_register,

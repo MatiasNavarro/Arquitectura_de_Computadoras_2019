@@ -47,8 +47,11 @@ module top_mips
         output      [NB_MEM_WB -1 : 0]  o_latch_mem_wb,
         output wire                     o_clk
     );
-
     
+    // Pipeline enable reg
+    reg enable_pipeline;
+    reg [LEN - 1 : 0] contador_aux_step;
+
     // -----------------------------------------------
     // Clock wizard I/O wires
     //------------------------------------------------
@@ -169,7 +172,6 @@ module top_mips
     reg [NB_CTRL_WB - 1 : 0]    mem_wb_reg_ctrl_wb_bus;
     // MEM/EX
 
-
     // -----------------------------------------------
     // Write Back (WB) I/O wires
     //------------------------------------------------
@@ -233,6 +235,35 @@ module top_mips
                             }; //Total = 72 bits
 
     // -----------------------------------------------
+    // Pipeline enable logic 
+    //------------------------------------------------
+    always @(negedge clock) begin
+        if (!i_rst) begin
+            enable_pipeline <= 0;
+            contador_aux_step <= 0;
+        end else begin
+            if (i_step_mode_flag && i_step) begin
+                if (contador_aux_step == 0) begin // primer negedge => comienza ciclo
+                    // enable_pipeline pipeline advance
+                    enable_pipeline <= 1;
+                end else if (contador_aux_step == 1) begin // paso por 2 negedge => hizo un ciclo completo
+                    // disable pipeline advance
+                    enable_pipeline <= 0;
+                end
+                // contador_aux_step ++
+                contador_aux_step <= contador_aux_step + 1;
+                // HABILITAR ACA EL ENABLE!!!!!!!!!!
+            end else if (i_step_mode_flag && !i_step) begin
+                // contador_aux_step = 0
+                contador_aux_step <= 0;
+            end else if (!i_step_mode_flag) begin
+                // enable_pipeline
+                enable_pipeline <= 1;
+            end
+        end
+    end
+
+    // -----------------------------------------------
     // Inter-segment register logic 
     //------------------------------------------------
     always @(negedge clock) begin
@@ -265,33 +296,72 @@ module top_mips
             mem_wb_reg_write_register   <= {NB_ADDR{1'b0}};
             mem_wb_reg_ctrl_wb_bus      <= {NB_CTRL_WB{1'b0}};
         end else begin
-            // IF/ID registers
-            if_id_reg_PC                <= if_id_o_PC;
-            if_id_reg_instruction       <= if_id_o_instruction;
-            // ID/EX registers
-            id_ex_reg_PC                <= id_ex_o_PC;
-            id_ex_reg_read_data_1       <= id_ex_o_read_data_1;
-            id_ex_reg_read_data_2       <= id_ex_o_read_data_2;
-            id_ex_reg_addr_ext          <= id_ex_o_addr_ext;
-            id_fu_reg_rs                <= id_fu_o_rs;
-            id_ex_reg_rt                <= id_ex_o_rt;
-            id_ex_reg_rd                <= id_ex_o_rd;
-            id_ex_reg_ctrl_wb_bus       <= id_ex_o_ctrl_wb_bus;
-            id_ex_reg_ctrl_mem_bus      <= id_ex_o_ctrl_mem_bus;
-            id_ex_reg_ctrl_exc_bus      <= id_ex_o_ctrl_exc_bus;
-            // EX/MEM registers
-            ex_mem_reg_PC_branch        <= ex_mem_o_PC_branch;
-            ex_mem_reg_ALU_result       <= ex_mem_o_ALU_result;
-            ex_mem_reg_write_data       <= ex_mem_o_write_data;
-            ex_mem_reg_write_register   <= ex_mem_o_write_register;
-            ex_mem_reg_ALU_zero         <= ex_mem_o_ALU_zero;
-            ex_mem_reg_ctrl_wb_bus      <= ex_mem_o_ctrl_wb_bus;
-            ex_mem_reg_ctrl_mem_bus     <= ex_mem_o_ctrl_mem_bus;
-            // MEM/WB registers
-            mem_wb_reg_read_data        <= mem_wb_o_read_data;
-            mem_wb_reg_ALU_result       <= mem_wb_o_address;
-            mem_wb_reg_write_register   <= mem_wb_o_write_register;
-            mem_wb_reg_ctrl_wb_bus      <= mem_wb_o_ctrl_wb_bus;
+            // (i_step_mode_flag && i_step) -> En el primer negedge manteiene registros y habilita una bandera, 
+            // en el prox negedge avanza los reg y baja la bandera hasta el prox step.
+            // 
+            if (enable_pipeline) begin
+                // -------------------------------------------------
+                // Avanza normalmente (enable_pipeline habilitado)
+                // -------------------------------------------------
+                // IF/ID registers
+                if_id_reg_PC                <= if_id_o_PC;
+                if_id_reg_instruction       <= if_id_o_instruction;
+                // ID/EX registers
+                id_ex_reg_PC                <= id_ex_o_PC;
+                id_ex_reg_read_data_1       <= id_ex_o_read_data_1;
+                id_ex_reg_read_data_2       <= id_ex_o_read_data_2;
+                id_ex_reg_addr_ext          <= id_ex_o_addr_ext;
+                id_fu_reg_rs                <= id_fu_o_rs;
+                id_ex_reg_rt                <= id_ex_o_rt;
+                id_ex_reg_rd                <= id_ex_o_rd;
+                id_ex_reg_ctrl_wb_bus       <= id_ex_o_ctrl_wb_bus;
+                id_ex_reg_ctrl_mem_bus      <= id_ex_o_ctrl_mem_bus;
+                id_ex_reg_ctrl_exc_bus      <= id_ex_o_ctrl_exc_bus;
+                // EX/MEM registers
+                ex_mem_reg_PC_branch        <= ex_mem_o_PC_branch;
+                ex_mem_reg_ALU_result       <= ex_mem_o_ALU_result;
+                ex_mem_reg_write_data       <= ex_mem_o_write_data;
+                ex_mem_reg_write_register   <= ex_mem_o_write_register;
+                ex_mem_reg_ALU_zero         <= ex_mem_o_ALU_zero;
+                ex_mem_reg_ctrl_wb_bus      <= ex_mem_o_ctrl_wb_bus;
+                ex_mem_reg_ctrl_mem_bus     <= ex_mem_o_ctrl_mem_bus;
+                // MEM/WB registers
+                mem_wb_reg_read_data        <= mem_wb_o_read_data;
+                mem_wb_reg_ALU_result       <= mem_wb_o_address;
+                mem_wb_reg_write_register   <= mem_wb_o_write_register;
+                mem_wb_reg_ctrl_wb_bus      <= mem_wb_o_ctrl_wb_bus;
+            end else begin
+                // -------------------------------------------------------
+                // Mantiene los registros (enable_pipeline dehabilitado)
+                // -------------------------------------------------------
+                // IF/ID registers
+                if_id_reg_PC                <= if_id_reg_PC;
+                if_id_reg_instruction       <= if_id_reg_instruction;
+                // ID/EX registers
+                id_ex_reg_PC                <= id_ex_reg_PC;
+                id_ex_reg_read_data_1       <= id_ex_reg_read_data_1;
+                id_ex_reg_read_data_2       <= id_ex_reg_read_data_2;
+                id_ex_reg_addr_ext          <= id_ex_reg_addr_ext;
+                id_fu_reg_rs                <= id_fu_reg_rs;
+                id_ex_reg_rt                <= id_ex_reg_rt;
+                id_ex_reg_rd                <= id_ex_reg_rd;
+                id_ex_reg_ctrl_wb_bus       <= id_ex_reg_ctrl_wb_bus;
+                id_ex_reg_ctrl_mem_bus      <= id_ex_reg_ctrl_mem_bus;
+                id_ex_reg_ctrl_exc_bus      <= id_ex_reg_ctrl_exc_bus;
+                // EX/MEM registers
+                ex_mem_reg_PC_branch        <= ex_mem_reg_PC_branch;
+                ex_mem_reg_ALU_result       <= ex_mem_reg_ALU_result;
+                ex_mem_reg_write_data       <= ex_mem_reg_write_data;
+                ex_mem_reg_write_register   <= ex_mem_reg_write_register;
+                ex_mem_reg_ALU_zero         <= ex_mem_reg_ALU_zero;
+                ex_mem_reg_ctrl_wb_bus      <= ex_mem_reg_ctrl_wb_bus;
+                ex_mem_reg_ctrl_mem_bus     <= ex_mem_reg_ctrl_mem_bus;
+                // MEM/WB registers
+                mem_wb_reg_read_data        <= mem_wb_reg_read_data;
+                mem_wb_reg_ALU_result       <= mem_wb_reg_ALU_result;
+                mem_wb_reg_write_register   <= mem_wb_reg_write_register;
+                mem_wb_reg_ctrl_wb_bus      <= mem_wb_reg_ctrl_wb_bus;
+            end
         end
     end
 
@@ -352,6 +422,7 @@ module top_mips
         .i_preload_flag         (i_preload_flag         ),
         .i_preload_address      (i_preload_address      ),
         .i_preload_instruction  (i_preload_instruction  ),
+        .i_enable_pipeline      (enable_pipeline        ),
         // Outputs
         .o_instruction          (if_id_o_instruction    ),
         .o_PC                   (if_id_o_PC             )
