@@ -47,29 +47,38 @@ module seg_instruction_fetch
     // Program Counter Logic
     //---------------------------------------
 
+    // always @(posedge i_clk) begin
+    //     if (!i_rst) begin
+    //         reg_PC <= {LEN{1'b0}};
+    //     end else if (i_enable_pipeline) begin
+    //         if (i_PCSrc) begin
+    //             if (halt_flag) begin
+    //                 reg_PC <= i_PC_branch;
+    //             end else begin
+    //                 reg_PC <= i_PC_branch + 1;
+    //             end
+    //         end else if (i_jump) begin
+    //             if (halt_flag) begin
+    //                 reg_PC <= i_PC_dir_jump;
+    //             end else begin
+    //                 reg_PC <= i_PC_dir_jump + 1;
+    //             end
+    //         end else if (i_stall_flag || halt_flag) begin
+    //             reg_PC <= reg_PC;
+    //         end else begin
+    //             reg_PC <= reg_PC + 1;
+    //         end
+    //     end else begin
+    //         reg_PC <= reg_PC;
+    //     end
+    // end
     always @(posedge i_clk) begin
         if (!i_rst) begin
             reg_PC <= {LEN{1'b0}};
-        end else if (i_enable_pipeline) begin
-            if (i_PCSrc) begin
-                if (halt_flag) begin
-                    reg_PC <= i_PC_branch;
-                end else begin
-                    reg_PC <= i_PC_branch + 1;
-                end
-            end else if (i_jump) begin
-                if (halt_flag) begin
-                    reg_PC <= i_PC_dir_jump;
-                end else begin
-                    reg_PC <= i_PC_dir_jump + 1;
-                end
-            end else if (i_stall_flag || halt_flag) begin
-                reg_PC <= reg_PC;
-            end else begin
-                reg_PC <= reg_PC + 1;
-            end
+        end else if (i_enable_pipeline && !halt_flag) begin
+            reg_PC <= mem_address + 1;
         end else begin
-            reg_PC <= reg_PC;
+            reg_PC <= mem_address;
         end
     end
 

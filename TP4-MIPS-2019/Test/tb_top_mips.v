@@ -45,8 +45,10 @@ module tb_top_mips();
     wire [NB_EX_MEM -1 : 0] o_latch_ex_mem;   
     wire [NB_MEM_WB -1 : 0] o_latch_mem_wb;
     wire                    o_clk_locked_estable;
+    wire                    o_clk;
     
     // Variables de contador de clock
+    wire    clock;
     integer clock_counter;
     integer halt_counter;
 
@@ -87,7 +89,7 @@ module tb_top_mips();
 
         repeat(500) begin
             #37 i_step = ~i_step;
-            #149 i_step = ~i_step;
+            #43 i_step = ~i_step;
         end
     end
 

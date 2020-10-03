@@ -50,7 +50,7 @@ module top_mips
     
     // Pipeline enable reg
     reg enable_pipeline;
-    reg [LEN - 1 : 0] contador_aux_step;
+    // reg [LEN - 1 : 0] step_once_flag;
 
     // -----------------------------------------------
     // Clock wizard I/O wires
@@ -237,27 +237,23 @@ module top_mips
     // -----------------------------------------------
     // Pipeline enable logic 
     //------------------------------------------------
+    reg step_once_flag;
     always @(negedge clock) begin
         if (!i_rst) begin
             enable_pipeline <= 0;
-            contador_aux_step <= 0;
+            step_once_flag <= 1;
         end else begin
             if (i_step_mode_flag && i_step) begin
-                if (contador_aux_step == 0) begin // primer negedge => comienza ciclo
-                    // enable_pipeline pipeline advance
+                if (step_once_flag == 1) begin // primer negedge => comienza ciclo
                     enable_pipeline <= 1;
-                end else if (contador_aux_step == 1) begin // paso por 2 negedge => hizo un ciclo completo
-                    // disable pipeline advance
+                    step_once_flag <= 0;
+                end else if (step_once_flag == 0) begin // paso por 2 negedge => hizo un ciclo completo
                     enable_pipeline <= 0;
                 end
-                // contador_aux_step ++
-                contador_aux_step <= contador_aux_step + 1;
-                // HABILITAR ACA EL ENABLE!!!!!!!!!!
             end else if (i_step_mode_flag && !i_step) begin
-                // contador_aux_step = 0
-                contador_aux_step <= 0;
+                enable_pipeline <= 0;
+                step_once_flag <= 1;
             end else if (!i_step_mode_flag) begin
-                // enable_pipeline
                 enable_pipeline <= 1;
             end
         end
